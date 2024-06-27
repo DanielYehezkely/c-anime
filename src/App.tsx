@@ -29,18 +29,18 @@ function App() {
   if (loading) {
     return (
       <>
-      <Loader />
-      <div>Loading...</div>
+        <Loader actionLabel="Fetching anime ..." />
       </>
-    )
+    );
   }
-
+  
   if (error) {
     return <div>Error: {error}</div>;
   }
-
+  
   return (
     <>
+    
       <div className="">
         <div>
           <h1>Anime List</h1>
