@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Anime } from "../../types/Anime"; 
+import { GET_ANIME_ERR_MSG } from "../../models/constants";
 
 const CLIENT_ID = import.meta.env.VITE_MAL_CLIENT_ID;
 
@@ -21,6 +22,8 @@ export const getAnimeList = async (): Promise<Anime[]> => {
     );
     return response.data.data; 
   } catch (error: unknown) {
-    throw new Error("Error occurred while fetching the anime list.");
+    throw new Error(GET_ANIME_ERR_MSG);
   }
 };
+
+

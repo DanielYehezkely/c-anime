@@ -9,9 +9,9 @@ import {
 import { AuthContextProps, ContextProviderProp } from "./AuthContext.type";
 import { auth } from "../../config/firebaseConfig";
 
-const AuthContext = createContext<AuthContextProps | undefined>(undefined);
+const AuthContext = createContext<AuthContextProps | undefined>(undefined); 
 
-export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
+export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => { 
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
@@ -33,7 +33,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
     } catch (error: unknown) {
-      setError(error instanceof Error ? error : new Error(String(error))); // explain
+      setError(error instanceof Error ? error : new Error(String(error))); // *? Why error is so problematic ? 
     } finally {
       setLoading(false);
     }
@@ -53,7 +53,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       );
       setUser(userCredential.user);
     } catch (error: unknown) {
-      setError(error instanceof Error ? error : new Error(String(error)));
+      setError(error instanceof Error ? error : new Error(String(error))); // *? Why error is so problematic ?
     } finally {
       setLoading(false);
     }
@@ -66,7 +66,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       await auth.signOut();
       setUser(null);
     } catch (error: unknown) {
-      setError(error instanceof Error ? error : new Error(String(error)));
+      setError(error instanceof Error ? error : new Error(String(error))); // *? Why error is so problematic ?
     } finally {
       setLoading(false);
     }

@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
 import { getAnimeList } from "./services/animeApi/animeApiService";
 import { Anime } from "./types/Anime";
+import { Loader } from "./components";
 
 
 
 function App() {
-  const [animes, setAnimes] = useState<Anime[]>([]);
+  const [anime, setAnime] = useState<Anime[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchAnimeList = async () => {
       try {
-        const animesData = await getAnimeList();
-        setAnimes(animesData);
+        const animeData = await getAnimeList();
+        setAnime(animeData);
       } catch (error: any) {
         setError(error.message);
       } finally {
@@ -24,10 +25,14 @@ function App() {
     fetchAnimeList();
   }, []);
 
-  console.log(animes);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <>
+      <Loader />
+      <div>Loading...</div>
+      </>
+    )
   }
 
   if (error) {
@@ -40,8 +45,8 @@ function App() {
         <div>
           <h1>Anime List</h1>
           <ul>
-            {animes.map((anime) => (
-              <li key={anime.node.id}>{anime.node.title}</li>
+            {anime.map((singleAnime) => (
+              <li key={singleAnime.node.id}>{singleAnime.node.title}</li>
             ))}
           </ul>
         </div>
@@ -51,3 +56,4 @@ function App() {
 }
 
 export default App;
+
