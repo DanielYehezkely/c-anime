@@ -20,6 +20,8 @@ export const getAnimeList = async (): Promise<Anime[]> => {
     const response = await axiosInstance.get<AnimeApiResponse>(
       "/anime?q=one&limit=4"
     );
+    console.log(response.data);
+    console.log(response.data.data);
     return response.data.data; 
   } catch (error: unknown) {
     throw new Error(GET_ANIME_ERR_MSG);

@@ -16,7 +16,8 @@ function App() {
         const animeData = await getAnimeList();
         setAnime(animeData);
       } catch (error: any) {
-        setError(error.message);
+        setError(error)
+        throw new Error('Data is not an array');
       } finally {
         setLoading(false);
       }
