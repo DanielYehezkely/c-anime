@@ -5,7 +5,7 @@ import { GET_ANIME_ERR_MSG } from "../../models/constants";
 const CLIENT_ID = import.meta.env.VITE_MAL_CLIENT_ID;
 
 const axiosInstance = axios.create({
-  baseURL: "/api",
+  baseURL: "https://api.myanimelist.net/v2",
   headers: {
     "X-MAL-CLIENT-ID": CLIENT_ID,
   },
