@@ -40,8 +40,7 @@ function App() {
   
   return (
     <>
-    
-      <div className="">
+      {/* <div className="">
         <div>
           <h1>Anime List</h1>
           <ul>
@@ -50,7 +49,7 @@ function App() {
             ))}
           </ul>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }
