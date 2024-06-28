@@ -1,57 +1,24 @@
-import { useEffect, useState } from "react";
-import { getAnimeList } from "./services/animeApi/animeApiService";
-import { Loader } from "./components";
-import { Anime } from "./types/Anime";
+import React from "react";
 
-function App() {
-  const [anime, setAnime] = useState<Anime[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+import {RouterProvider, createBrowserRouter} from 'react-router-dom'
+import SharedLayout from "./layout/SharedLayout";
 
-  useEffect(() => {
-    const fetchAnimeList = async () => {
-      try {
-        const animeData = await getAnimeList();
-        setAnime(animeData);
-      } catch (error: any) {
-        setError(error)
-        throw new Error('Data is not an array');
-      } finally {
-        setLoading(false);
-      }
-    };
+const App:React.FC = () => {
 
-    fetchAnimeList();
-  }, []);
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <SharedLayout/>,
+  },
+]);
 
 
-  if (loading) {
-    return (
-      <>
-        <Loader actionLabel="Fetching anime ..." />
-      </>
-    );
-  }
-  
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-  
   return (
-    <>
-    
-      <div className="">
-        <div>
-          <h1>Anime List</h1>
-          <ul>
-            {anime.map((singleAnime) => (
-              <li key={singleAnime.node.id}>{singleAnime.node.title}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </>
+    <RouterProvider router={router}/>
   );
-}
+    
+  
+};
 
-export default App
+export default App;
+

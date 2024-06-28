@@ -1,5 +1,6 @@
 import React from "react";
 import "./Loader.css";
+import { CircularProgress } from "@mui/material";
 
 interface LoaderProps {
   actionLabel: string;
@@ -8,10 +9,10 @@ interface LoaderProps {
 const Loader: React.FC<LoaderProps> = ({ actionLabel }) => {
   return (
     <div className="loader-overlay">
-    <div className="loader-container">
-      <div className="Loader"></div> 
-      <h2>{actionLabel}</h2>
-    </div>
+      <div className="loader-container">
+        <CircularProgress />
+        <h2>{actionLabel}</h2>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,22 @@
+/* ========================================= Phone - Responsive ======================================= */
+@media only screen and (max-width: 575.98px) {
+
+}
+
+/* ========================================= Bigger Phone - Responsive ======================================= */
+
+@media only screen and (min-width: 576px) and (max-width: 767.98px) {
+ 
+}
+
+/* ========================================= Tablet - Responsive ======================================= */
+
+@media only screen and (min-width: 768px) and (max-width: 1015px) {
+ 
+}
+
+/* ========================================= normal/laptop- screen - Responsive ======================================= */
+
+@media only screen and (min-width: 992px) and (max-width: 1480px) {
+ 
+}
