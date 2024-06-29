@@ -1,19 +1,13 @@
 import React from "react";
 
-import Box from "@mui/material/Box";
-import styled from "styled-components";
+import { StyledLogoBox, StyledLogoImage } from "./NavLogo.styles";
 
-const LogoBox = styled(Box)`
-  padding: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+const Logo: React.FC = () => {
+  return (
+    <StyledLogoBox>
+      <StyledLogoImage src="/assets/images/C-icon.png" alt="logo" />
+    </StyledLogoBox>
+  );
+};
 
-const NavLogo: React.FC = () => (
-  <LogoBox>
-    <img src="/public/assets/images/C-icon.png" alt="logo" className="logo" />
-  </LogoBox>
-);
-
-export default NavLogo;
+export default Logo;

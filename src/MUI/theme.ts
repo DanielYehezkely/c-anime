@@ -22,6 +22,7 @@ const theme = createTheme({
   typography: {
     fontFamily: "'DefaultFont', sans-serif",
   },
+ 
 });
 
 export default theme;
