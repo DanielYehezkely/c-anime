@@ -7,7 +7,7 @@ export const GET_ANIME_ERR_MSG =
 /* ========================================================================== */
 /*                                 Menu ITEMS                                 */
 /* ========================================================================== */
-export const menuItems = [
+export const HORIZONTAL_NAVBAR_TITLES = [
   { name: "Home" },
   { name: "Watch List" },
   { name: "Explore" },

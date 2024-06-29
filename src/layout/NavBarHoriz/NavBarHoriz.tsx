@@ -1,7 +1,7 @@
 import React from "react";
 import { AppBar, Button, Toolbar, Box } from "@mui/material";
-import { menuItems } from "../../models/constants";
-import bgImage from "/assets/svg/pattern-3.svg"; // Adjust the path as necessary
+import { HORIZONTAL_NAVBAR_TITLES } from "../../models/constants";
+import bgImage from "/assets/svg/pattern-3.svg"; 
 
 const NavBarHoriz: React.FC = () => {
   return (
@@ -10,14 +10,15 @@ const NavBarHoriz: React.FC = () => {
         position="static"
         sx={{
           boxShadow: "none",
-          width: "90%",
-          height: "8rem",
+          width: "100%",
+          height: "9rem",
           display: "flex",
           justifyContent: "center",
           position: "relative",
           backgroundImage: `url(${bgImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
+          paddingLeft: "9rem",
         }}
       >
         <Box
@@ -37,9 +38,10 @@ const NavBarHoriz: React.FC = () => {
             display: "flex",
             gap: "3rem",
             zIndex: 2,
+            minWidth: "55rem",
           }}
         >
-          {menuItems.map((item, index) => (
+          {HORIZONTAL_NAVBAR_TITLES.map((item, index) => (
             <Button
               color="inherit"
               key={index}
