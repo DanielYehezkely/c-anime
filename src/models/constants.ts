@@ -1,4 +1,15 @@
 /* ========================================================================== */
 /*                              ERROR - MESSAGES                              */
 /* ========================================================================== */
-export const GET_ANIME_ERR_MSG = "Error occurred while fetching the anime list.";
+export const GET_ANIME_ERR_MSG =
+  "Error occurred while fetching the anime list.";
+
+/* ========================================================================== */
+/*                                 Menu ITEMS                                 */
+/* ========================================================================== */
+export const menuItems = [
+  { name: "Home" },
+  { name: "Watch List" },
+  { name: "Explore" },
+  { name: "Contact" },
+];

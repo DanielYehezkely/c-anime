@@ -6,6 +6,7 @@ import {
   Mail as MailIcon,
   AccountCircleRounded as AccountIcon,
   TravelExplore as ExploreIcon,
+  Search,
 } from "@mui/icons-material";
 import { Tooltip } from "@mui/material";
 
@@ -21,6 +22,7 @@ const menuItems = [
   { text: "Home", icon: <HomeIcon sx={{ fontSize: "2.5rem" }} /> },
   { text: "Watch List", icon: <InfoIcon sx={{ fontSize: "2.5rem" }} /> },
   { text: "Explore", icon: <ExploreIcon sx={{ fontSize: "2.5rem" }} /> },
+  { text: "Search", icon: <Search sx={{ fontSize: "2.5rem" }} /> },
   { text: "Contact", icon: <MailIcon sx={{ fontSize: "2.5rem" }} /> },
   { text: "Sign-In", icon: <AccountIcon sx={{ fontSize: "2.5rem" }} /> },
 ];

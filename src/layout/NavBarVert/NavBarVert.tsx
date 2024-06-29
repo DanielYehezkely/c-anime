@@ -2,29 +2,29 @@ import React, { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { useMediaQuery, useTheme } from "@mui/material";
-import { StyledAppBar, StyledToolbar, StyledDrawer } from "./NavBar.styles";
+import { StyledAppBar, StyledToolbar, StyledDrawer } from "./NavBarVert.styles";
 import Logo from "./NavLogo/NavLogo";
 import MenuList from "./MenuList/MenuList";
 import { useNavigate } from "react-router";
 
-const NavBar: React.FC = () => {
+const VerticalNavBar: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
 
-   const handleDrawerToggle = () => {
+  const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
   };
 
   const handleIconClick = (pageName: string) => {
     setDrawerOpen(false);
-     if (pageName === "Home") {
-       navigate("/");
-     } else {
-       navigate(`/${pageName.trim().toLowerCase().replace(/\s+/g, "")}`);
-     }
-  }
+    if (pageName === "Home") {
+      navigate("/");
+    } else {
+      navigate(`/${pageName.trim().toLowerCase().replace(/\s+/g, "")}`);
+    }
+  };
 
   return (
     <>
@@ -59,4 +59,4 @@ const NavBar: React.FC = () => {
   );
 };
 
-export default NavBar;
+export default VerticalNavBar;

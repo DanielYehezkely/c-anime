@@ -1,18 +1,20 @@
 import React from "react";
-
-import NavBar from "./NavBar/NavBar";
-
-
-import './SharedLayout.css'
 import { Outlet } from "react-router";
 
+import NavBar from "./NavBarVert/NavBarVert";
 
-const SharedLayout:React.FC = () => {
+import "./SharedLayout.css";
+import NavBarHoriz from "./NavBarHoriz/NavBarHoriz";
+
+const SharedLayout: React.FC = () => {
   return (
     <>
       <div className="SharedLayout container">
-      <NavBar />
-      <Outlet/>
+        <NavBar />
+        <NavBarHoriz />
+        <main>
+          <Outlet />
+        </main>
       </div>
     </>
   );
