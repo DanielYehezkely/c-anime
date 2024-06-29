@@ -2,7 +2,7 @@ import React from "react";
 
 import {RouterProvider, createBrowserRouter} from 'react-router-dom'
 import SharedLayout from "./layout/SharedLayout";
-import { Home, SingleAnimePage } from "./pages";
+import { Home, SingleAnimePage, WatchListPage } from "./pages";
 
 const App:React.FC = () => {
 
@@ -16,8 +16,12 @@ const router = createBrowserRouter([
         element: <Home/>
       },
       {
-        path: 'about',
+        path: 'singleAnime/:animeId',
         element: <SingleAnimePage/>
+      },
+      {
+        path: 'watchlist',
+        element: <WatchListPage/>
       },
     ]
   },

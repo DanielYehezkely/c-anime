@@ -22,7 +22,7 @@ const NavBar: React.FC = () => {
      if (pageName === "Home") {
        navigate("/");
      } else {
-       navigate(`/${pageName}`);
+       navigate(`/${pageName.trim().toLowerCase().replace(/\s+/g, "")}`);
      }
   }
 

@@ -3,24 +3,21 @@ import { styled } from "@mui/system";
 import theme from "../../../MUI/theme";
 
 export const StyledList = styled(List)({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  padding: "0 1.5rem",
   [theme.breakpoints.down("md")]: {
     gap: 0,
   },
-  display: "flex",
-  flexDirection: "column",
-  gap: "0.5rem",
-  alignItems: "center",
 });
 
 export const StyledListItem = styled(ListItem)({
-  [theme.breakpoints.down("md")]: {
-    width: "95%",
-  },
   width: "5rem",
   borderRadius: "1rem",
   cursor: "pointer",
-  display: "flex",
-  justifyContent: "center",
+  display: "flex", 
+  justifyContent: "center", 
   alignItems: "center", 
   "&:hover": {
     backgroundColor: "#33333369",
@@ -34,18 +31,16 @@ export const StyledListItem = styled(ListItem)({
   "&.Mui-selected": {
     backgroundColor: "#444",
   },
+  [theme.breakpoints.down("md")]: {
+    width: "100%",
+  },
 });
 
 export const StyledListItemIcon = styled(ListItemIcon)({
-  [theme.breakpoints.down("md")]: {
-    maxWidth: "5rem",
-  },
   color: "#727272",
   display: "flex",
   justifyContent: "center",
-  alignItems: "center",
-  width: "100%",
-  height: "100%",
+  alignItems: "center", 
 });
 
 export const StyledListItemText = styled(ListItemText)({
