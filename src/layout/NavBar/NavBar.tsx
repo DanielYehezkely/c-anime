@@ -28,7 +28,7 @@ const NavBar: React.FC = () => {
               edge="end"
               onClick={handleDrawerToggle}
             >
-              <MenuIcon sx={{ fontSize: "2.5rem" }} />
+              <MenuIcon sx={{ fontSize: "2.5rem", color: "#727272" }} />
             </IconButton>
           )}
         </StyledToolbar>

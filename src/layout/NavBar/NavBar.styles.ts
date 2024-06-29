@@ -38,5 +38,6 @@ export const StyledDrawer = styled(MuiDrawer)(({ theme }) => ({
   "& .MuiDrawer-paper": {
     width: "100%",
     backgroundColor: "#0C0C0C",
+    padding: "3rem 0rem",
   },
 }));

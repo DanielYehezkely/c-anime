@@ -1,13 +1,18 @@
 import React from "react";
 
-import { List, ListItem } from "@mui/material";
 import {
   Home as HomeIcon,
   Info as InfoIcon,
   Mail as MailIcon,
 } from "@mui/icons-material";
+import NavLogo from "../NavLogo/NavLogo";
 
-import { StyledListItemIcon, StyledListItemText } from "./MenuList.styles";
+import {
+  StyledListItemIcon,
+  StyledListItemText,
+  StyledListItem,
+  StyledList,
+} from "./MenuList.styles";
 
 const menuItems = [
   { text: "Home", icon: <HomeIcon sx={{ fontSize: "2.5rem" }} /> },
@@ -20,16 +25,24 @@ interface MenuListProps {
   isMobile?: boolean;
 }
 
-const MenuList: React.FC<MenuListProps> = ({ onItemClick, isMobile }) => {
+const MenuList: React.FC<MenuListProps> = ({
+  onItemClick,
+  isMobile = true,
+}) => {
   return (
-    <List>
+    <StyledList>
+      {isMobile && <NavLogo />}
       {menuItems.map((item, index) => (
-        <ListItem button key={index} onClick={onItemClick}>
+        <StyledListItem key={index} onClick={onItemClick}>
           <StyledListItemIcon>{item.icon}</StyledListItemIcon>
-          {isMobile && <StyledListItemText primary={item.text} />}
-        </ListItem>
+          {isMobile && (
+            <StyledListItemText
+              primary={item.text}
+            />
+          )}
+        </StyledListItem>
       ))}
-    </List>
+    </StyledList>
   );
 };
 
