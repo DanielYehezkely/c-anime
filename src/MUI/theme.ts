@@ -1,6 +1,7 @@
 import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
+
   palette: {
     primary: {
       main: "#0C0C0C",
@@ -10,6 +11,7 @@ const theme = createTheme({
       paper: "#0C0C0C",
     },
   },
+
   breakpoints: {
     values: {
       xs: 0,
@@ -19,9 +21,11 @@ const theme = createTheme({
       xl: 1920,
     },
   },
+
   typography: {
     fontFamily: "'DefaultFont', sans-serif",
   },
+  
 });
 
 export default theme;

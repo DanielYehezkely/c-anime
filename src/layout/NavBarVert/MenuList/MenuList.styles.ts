@@ -2,7 +2,7 @@ import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import { styled } from "@mui/system";
 import theme from "../../../MUI/theme";
 
-export const StyledList = styled("div")({
+export const StyledList = styled(List)({
   display: "flex",
   flexDirection: "column",
   justifyContent: "space-between",

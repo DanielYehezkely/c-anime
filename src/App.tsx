@@ -1,32 +1,37 @@
-import React from "react";
-
 import {RouterProvider, createBrowserRouter} from 'react-router-dom'
 import SharedLayout from "./layout/SharedLayout";
 import { Home, SingleAnimePage, WatchListPage } from "./pages";
 
+import ProtectedRoute from "./routes/protectedRout";
+
 const App:React.FC = () => {
+
+
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <SharedLayout/>,
+    element: <SharedLayout />,
     children: [
       {
         index: true,
-        element: <Home/>
+        element: <Home />,
       },
       {
-        path: 'singleAnime/:animeId',
-        element: <SingleAnimePage/>
+        path: "singleAnime/:animeId",
+        element: <SingleAnimePage />,
       },
       {
-        path: 'watchlist',
-        element: <WatchListPage/>
+        path: "watchlist",
+        element: (
+          <ProtectedRoute>
+            <WatchListPage />
+          </ProtectedRoute>
+        ),
       },
-    ]
+    ],
   },
 ]);
-
 
   return (
     <RouterProvider router={router}/>
