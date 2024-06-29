@@ -5,15 +5,26 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import { StyledAppBar, StyledToolbar, StyledDrawer } from "./NavBar.styles";
 import Logo from "./NavLogo/NavLogo";
 import MenuList from "./MenuList/MenuList";
+import { useNavigate } from "react-router";
 
 const NavBar: React.FC = () => {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const navigate = useNavigate();
 
-  const handleDrawerToggle = () => {
+   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
   };
+
+  const handleIconClick = (pageName: string) => {
+    setDrawerOpen(false);
+     if (pageName === "Home") {
+       navigate("/");
+     } else {
+       navigate(`/${pageName}`);
+     }
+  }
 
   return (
     <>
@@ -33,7 +44,9 @@ const NavBar: React.FC = () => {
           )}
         </StyledToolbar>
 
-        {!isMobile && <MenuList isMobile={isMobile} />}
+        {!isMobile && (
+          <MenuList isMobile={isMobile} onItemClick={handleIconClick} />
+        )}
       </StyledAppBar>
       <StyledDrawer
         anchor="left"

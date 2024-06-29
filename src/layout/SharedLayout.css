@@ -1,4 +1,9 @@
 .SharedLayout{
-  height: 200vh;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #0C0C0C;
+  font-size: 10rem; /* TODO - remove this from here just for the test */ 
+  color: white; /* TODO - remove this from here just for the test */ 
 }

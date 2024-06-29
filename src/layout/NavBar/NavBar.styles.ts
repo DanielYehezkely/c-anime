@@ -12,7 +12,7 @@ export const StyledAppBar = styled(MuiAppBar)(({ theme }) => ({
   alignItems: "center",
   left: 0,
   top: 0,
-  paddingTop: "2rem",
+  paddingTop: "1.5rem",
   width: "8rem",
   height: "100vh",
   borderRight: "1px solid #252525",
@@ -34,10 +34,10 @@ export const StyledToolbar = styled(MuiToolbar)(({ theme }) => ({
   },
 }));
 
-export const StyledDrawer = styled(MuiDrawer)(({ theme }) => ({
+export const StyledDrawer = styled(MuiDrawer)({
   "& .MuiDrawer-paper": {
     width: "100%",
     backgroundColor: "#0C0C0C",
     padding: "3rem 0rem",
   },
-}));
+});

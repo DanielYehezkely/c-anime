@@ -21,7 +21,7 @@ const menuItems = [
 ];
 
 interface MenuListProps {
-  onItemClick?: () => void;
+  onItemClick: (pageName:string) => void;
   isMobile?: boolean;
 }
 
@@ -29,15 +29,19 @@ const MenuList: React.FC<MenuListProps> = ({
   onItemClick,
   isMobile = true,
 }) => {
+
+  
+
   return (
     <StyledList>
       {isMobile && <NavLogo />}
       {menuItems.map((item, index) => (
-        <StyledListItem key={index} onClick={onItemClick}>
+        <StyledListItem key={index} onClick={() => onItemClick(item.text)}>
           <StyledListItemIcon>{item.icon}</StyledListItemIcon>
           {isMobile && (
             <StyledListItemText
               primary={item.text}
+
             />
           )}
         </StyledListItem>
