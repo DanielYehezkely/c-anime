@@ -1,6 +1,8 @@
-
-
 @font-face {
-  font-family: "HeadlineFont";
-  src: url("/assets/fonts/DancingScript-Regular.ttf") format("truetype");
+  font-family: "DefaultFont";
+  src: url("/assets/fonts/Inter-Regular.ttf") format("truetype");
+}
+
+body {
+  font-family: "DefaultFont", sans-serif;
 }

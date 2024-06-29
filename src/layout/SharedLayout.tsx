@@ -1,7 +1,8 @@
 import React from "react";
 
-import './SharedLayout.css'
 import NavBar from "./NavBar/NavBar";
+
+import './SharedLayout.css'
 
 
 const SharedLayout:React.FC = () => {
@@ -9,6 +10,7 @@ const SharedLayout:React.FC = () => {
     <>
       <div className="SharedLayout">
       <NavBar />
+      
       </div>
     </>
   );

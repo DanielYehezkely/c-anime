@@ -2,24 +2,29 @@ import React, { useState } from "react";
 
 import {
   AppBar,
-  Toolbar,
-  IconButton,
+  Box,
   Drawer,
+  IconButton,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
+  Toolbar,
   useMediaQuery,
-  Box,
   useTheme,
-} from "../../MUI/components";
-import ICONS from "../../MUI/icons";
+} from "@mui/material";
+import {
+  Home as HomeIcon,
+  Info as InfoIcon,
+  Mail as MailIcon,
+  Menu as MenuIcon,
+} from "@mui/icons-material";
 
 import "./NavBar.css";
 
 const NavBar: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const theme = useTheme();
+  const theme = useTheme(); 
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleDrawerToggle = () => {
@@ -27,13 +32,14 @@ const NavBar: React.FC = () => {
   };
 
   const menuItems = [
-    { text: "Home", icon: <ICONS.Home sx={{ fontSize: "2.5rem" }} /> },
-    { text: "About", icon: <ICONS.Info sx={{ fontSize: "2.5rem" }} /> },
-    { text: "Contact", icon: <ICONS.Mail sx={{ fontSize: "2.5rem" }} /> },
+    { text: "Home", icon: <HomeIcon sx={{ fontSize: "2.5rem" }} /> },
+    { text: "About", icon: <InfoIcon sx={{ fontSize: "2.5rem" }} /> },
+    { text: "Contact", icon: <MailIcon sx={{ fontSize: "2.5rem" }} /> },
   ];
 
   return (
     <>
+      
       <AppBar
         position="fixed"
         sx={{
@@ -42,11 +48,9 @@ const NavBar: React.FC = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          backgroundColor: "#0C0C0C",
           left: 0,
           top: 0,
           borderRight: isMobile ? "none" : "1px solid #252525",
-          borderBottom: isMobile ? "1px solid #252525" : "none",
         }}
       >
         <Toolbar
@@ -83,7 +87,7 @@ const NavBar: React.FC = () => {
               edge="end"
               onClick={handleDrawerToggle}
             >
-              <ICONS.Menu sx={{ fontSize: "2.5rem" }} />
+              <MenuIcon sx={{ fontSize: "2.5rem" }} />
             </IconButton>
           )}
         </Toolbar>
@@ -106,15 +110,14 @@ const NavBar: React.FC = () => {
           </List>
         )}
       </AppBar>
-
       <Drawer
         anchor="left"
         open={drawerOpen}
         onClose={handleDrawerToggle}
         sx={{
           "& .MuiDrawer-paper": {
+            //* The & symbol in & .MuiDrawer-paper is a reference to the parent component in CSS-in-JS syntax allowing me to target nested elements.
             width: "100%",
-            backgroundColor: "#0C0C0C",
           },
         }}
       >
