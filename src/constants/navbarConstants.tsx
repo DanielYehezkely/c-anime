@@ -38,8 +38,8 @@ export const BOTTOM_MENU_ITEMS = [
 ];
 
 export const HORIZONTAL_NAVBAR_TITLES = [
-  { name: "Home" },
-  { name: "Watch List" },
-  { name: "Explore" },
-  { name: "Contact" },
+  { name: "Home", path: "/" },
+  { name: "Watch List", path: "/watchlist" },
+  { name: "Explore", path: "/explore" },
+  { name: "Contact", path: "/contact" },
 ];

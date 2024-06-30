@@ -46,10 +46,16 @@ export const StyledButton = styled(Button)(
   css`
     font-size: 1.8rem;
     font-weight: 600;
-    color: #cccccc;
+    color: #ccccccbd;
     &:hover {
       background-color: #33333369;
       color: #fff;
     }
+  `
+);
+
+export const ActiveStyledButton = styled(StyledButton)(
+  css`
+    color: #d3c8fd;
   `
 );

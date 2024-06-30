@@ -13,7 +13,6 @@ import {
   StyledButtonBox,
   StyledButton,
 } from "./AnimeCardShow.styles";
-import "./AnimeCardShow.css";
 
 const AnimeCardShow: React.FC<Props> = ({ anime }) => {
   return (
@@ -26,7 +25,7 @@ const AnimeCardShow: React.FC<Props> = ({ anime }) => {
         bgcolor: "transparent",
       }}
     >
-      <StyledCard>
+      <StyledCard >
         <StyledCardContent>
           <StyledTitle variant="h3">{anime.title}</StyledTitle>
           <StyledSubtitle variant="subtitle1" color="text.secondary">
@@ -44,15 +43,22 @@ const AnimeCardShow: React.FC<Props> = ({ anime }) => {
           <StyledButton variant="outlined" href={anime.trailer.url}>
             Watch Trailer
           </StyledButton>
-          <Button
+          <Button               //*TODO - make this styled ( cant styled a link component, maybe try another way)
             variant="outlined"
             component={Link}
             to={`/singleAnime/${anime.mal_id}`}
             sx={{
               fontSize: "1.4rem",
               height: "4rem",
-              color: "white",
-              border: "white 1px solid",
+              color: "#d3c8fd;",
+              border: "#fff 1px solid",
+              boxShadow: "0px 0px 0px 1px #9463d4",
+              fontWeight: "bold",
+              "&:hover": {
+                backgroundColor: "#9463d4",
+                color: " #fff",
+                border: " #9463d4 1px solid",
+              },
             }}
           >
             View Details

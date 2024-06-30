@@ -56,12 +56,20 @@ export const StyledButtonBox = styled(Box)`
   height: 7rem;
   width: 100%;
   gap: 2rem;
+  
 `;
 
 export const StyledButton = styled(Button)`
   font-size: 1.4rem;
+  font-weight: bold;
   height: 4rem;
-  color: white;
-  border: white 1px solid;
+  color: #d3c8fd;
+  border: #fff 1px solid;
+  box-shadow: 0px 0px 0px 1px #9463d4;
+  &:hover {
+    background-color: #9463d4;
+    color: #fff;
+    border: #9463d4 1px solid;
+  }
 `;
 

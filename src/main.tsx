@@ -13,11 +13,11 @@ import "./styles/style.css";
 import "./styles/responsive.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  
     <AuthProvider>
       <ThemeProvider theme={theme}>
         <App />
       </ThemeProvider>
     </AuthProvider>
-  </React.StrictMode>
+  
 );

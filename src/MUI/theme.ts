@@ -1,7 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
-
   palette: {
     primary: {
       main: "#0C0C0C",
@@ -25,7 +24,16 @@ const theme = createTheme({
   typography: {
     fontFamily: "'DefaultFont', sans-serif",
   },
-  
+
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          boxShadow: "none", 
+        },
+      },
+    },
+  },
 });
 
 export default theme;
