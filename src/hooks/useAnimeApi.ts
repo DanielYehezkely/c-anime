@@ -5,24 +5,28 @@ import { Anime } from "../types/Anime";
 export const useAnimeApi = () => {
   const [animeList, setAnimeList] = useState<Anime[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true); // Initially set loading to true
+  const [loading, setLoading] = useState<boolean>(false);
 
   const fetchAnime = async (): Promise<void> => {
     setError(null);
     setLoading(true);
     try {
       const data = await getAnimeList();
-      setAnimeList(data);
+      if (data.length === 0) {
+        setLoading(true);  
+      } else {
+        setAnimeList(data);
+      }
     } catch (error: any) {
       setError(error.message);
     } finally {
-      setLoading(false); // Set loading to false after fetching is done
+      setLoading(false);  
     }
   };
 
   useEffect(() => {
-    fetchAnime(); // Fetch anime data when the component mounts
+    fetchAnime();
   }, []);
 
-  return { animeList, error, loading };
+  return { animeList, error, loading, fetchAnime };
 };

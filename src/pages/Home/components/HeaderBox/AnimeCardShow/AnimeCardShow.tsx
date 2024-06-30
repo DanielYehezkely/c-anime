@@ -1,10 +1,13 @@
-import { Box, Card, CardContent, CardMedia, IconButton, Typography } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
+
+import { Box, Button, Card, CardContent, CardMedia, Typography } from "@mui/material";
+
 import { Props } from "./AnimeCardShow.types";
 import './AnimeCardShow.css'
 
-
 const AnimeCardShow: React.FC<Props> = ( { anime } ) => {
+
   return (
     <Card
       sx={{
@@ -68,8 +71,40 @@ const AnimeCardShow: React.FC<Props> = ( { anime } ) => {
             {anime.background}
           </Typography>
         </CardContent>
-        <Box sx={{ display: "flex", justifyContent: "center", height: "7rem" }}>
-          helo
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            height: "7rem",
+            width: "100%",
+            gap: "2rem",
+          }}
+        >
+          <Button
+            variant="outlined"
+            href={anime.trailer.url}
+            sx={{
+              fontSize: "1.4rem",
+              height: "4rem",
+              color: "white",
+              border: "white 1px solid",
+            }}
+          >
+            Watch Trailer
+          </Button>
+          <Button
+            variant="outlined"
+            component={Link}
+            to={`/singleAnime/${anime.mal_id}`}
+            sx={{
+              fontSize: "1.4rem",
+              height: "4rem",
+              color: "white",
+              border: "white 1px solid",
+            }}
+          >
+            View Details
+          </Button>
         </Box>
       </Box>
       <CardMedia

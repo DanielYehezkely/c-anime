@@ -1,5 +1,6 @@
-import { Box } from "@mui/material";
 import React from "react";
+
+import { Box } from "@mui/material";
 import { useAnimeApi } from "../../../../hooks/useAnimeApi";
 import AnimeCardShow from "./AnimeCardShow/AnimeCardShow";
 import { Anime } from "../../../../types/Anime";
@@ -9,13 +10,10 @@ const HeaderBox: React.FC = () => {
 
   const { animeList } = useAnimeApi();
 
- 
-
   if (animeList.length === 0) {
     return <div>No anime found.</div>;
   }
-
-  const anime: Anime = animeList[0];
+  const anime: Anime = animeList[4];
 
   console.log(animeList);
 
@@ -32,7 +30,7 @@ const HeaderBox: React.FC = () => {
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
-          opacity: "0.8",
+          opacity: "0.6",
           filter: "blur(1px)",
         }}
       ></Box>
