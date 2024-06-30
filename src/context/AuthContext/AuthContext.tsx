@@ -6,9 +6,10 @@ import {
   signInWithPopup,
   User,
 } from "firebase/auth";
-import { AuthContextProps, ContextProviderProp } from "./AuthContext.type";
+import { AuthContextProps } from "./AuthContext.type";
 import { auth } from "../../config/firebaseConfig";
 import { AUTH_PROVIDER_ERR_MSG } from "../../constants/globalConstants";
+import { ContextProviderProp } from "../../types/Context";
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined); 
 

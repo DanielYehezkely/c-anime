@@ -1,6 +1,4 @@
 import { User } from "firebase/auth";
-import React from "react";
-
 
 export interface AuthContextProps {
   user: User | null;
@@ -11,6 +9,3 @@ export interface AuthContextProps {
   error: Error | null;
 }
 
-export interface ContextProviderProp {
-  children: React.ReactNode;
-}
