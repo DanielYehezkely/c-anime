@@ -24,9 +24,9 @@ const router = createBrowserRouter([
       {
         path: "watchlist",
         element: (
-          <ProtectedRoute>
+          // <ProtectedRoute>
             <WatchListPage />
-          </ProtectedRoute>
+          // </ProtectedRoute>
         ),
       },
     ],
