@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Anime } from "../../types/Anime"; 
-import { GET_ANIME_ERR_MSG } from "../../models/constants";
+import { GET_ANIME_ERR_MSG } from "../../constants/globalConstants";
 
 const CLIENT_ID = import.meta.env.VITE_MAL_CLIENT_ID;
 
