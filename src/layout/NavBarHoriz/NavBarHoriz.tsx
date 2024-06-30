@@ -1,23 +1,22 @@
 import React from "react";
-import { HORIZONTAL_NAVBAR_TITLES } from "../../models/constants";
+
+import { HORIZONTAL_NAVBAR_TITLES } from "../../constants/navbarConstants";
+import { useNavigationHelper } from "../../hooks/useNavigationHelper";
+
 import {
   StyledAppBar,
   StyledToolbar,
   StyledBox,
   StyledButton,
 } from "./NavBarHoriz.styles";
-import { useNavigate } from "react-router";
+
 
 const NavBarHoriz: React.FC = () => {
 
-const navigate = useNavigate();
+const navigateToPage = useNavigationHelper();
 
-  const handleButtonClick = (pageName: string) => {
-     if (pageName === "Home") {
-       navigate("/");
-     } else {
-       navigate(`/${pageName.trim().toLowerCase().replace(/\s+/g, "")}`);
-     }
+  const handleButtonClick = (pageName: string): void => {
+    navigateToPage(pageName);
   }
 
   return (

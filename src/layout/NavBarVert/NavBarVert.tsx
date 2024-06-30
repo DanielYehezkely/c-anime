@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
 
 import IconButton from "@mui/material/IconButton";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { useMediaQuery, useTheme } from "@mui/material";
 
+import { useNavigationHelper } from "../../hooks/useNavigationHelper";
 import Logo from "./NavLogo/NavLogo";
 import MenuList from "./MenuList/MenuList";
 
@@ -15,19 +15,15 @@ const VerticalNavBar: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const navigate = useNavigate();
+  const navigateToPage = useNavigationHelper();
 
   const handleDrawerToggle = (): void => {
     setDrawerOpen(!drawerOpen);
   };
 
-  const handleIconClick = (pageName: string) => {
+  const handleIconClick = (pageName: string): void => {
     setDrawerOpen(false);
-    if (pageName === "Home") {
-      navigate("/");
-    } else {
-      navigate(`/${pageName.trim().toLowerCase().replace(/\s+/g, "")}`);
-    }
+    navigateToPage(pageName);
   };
 
   return (
