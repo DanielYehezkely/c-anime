@@ -1,13 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { Box, Button, Card, CardContent, CardMedia, Typography } from "@mui/material";
-
+import { Button, Card, CardMedia } from "@mui/material";
 import { Props } from "./AnimeCardShow.types";
-import './AnimeCardShow.css'
 
-const AnimeCardShow: React.FC<Props> = ( { anime } ) => {
+import {
+  StyledCard,
+  StyledCardContent,
+  StyledTitle,
+  StyledSubtitle,
+  StyledDescription,
+  StyledButtonBox,
+  StyledButton,
+} from "./AnimeCardShow.styles";
+import "./AnimeCardShow.css";
 
+const AnimeCardShow: React.FC<Props> = ({ anime }) => {
   return (
     <Card
       sx={{
@@ -18,80 +26,24 @@ const AnimeCardShow: React.FC<Props> = ( { anime } ) => {
         bgcolor: "transparent",
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          color: "white",
-          width: "50rem",
-        }}
-      >
-        <CardContent
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "1rem",
-            flex: "1 0 auto",
-            color: "white",
-            textAlign: "center",
-          }}
-        >
-          <Typography
-            component="div"
-            variant="h3"
-            sx={{
-              fontWeight: "bold",
-            }}
-          >
-            {anime.title}
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            color="text.secondary"
-            component="div"
-            sx={{
-              fontSize: "1.8rem",
-              color: "#ebeaea",
-            }}
-          >
+      <StyledCard>
+        <StyledCardContent>
+          <StyledTitle variant="h3">{anime.title}</StyledTitle>
+          <StyledSubtitle variant="subtitle1" color="text.secondary">
             {`${anime.episodes} Episodes`}
-          </Typography>
-          <Typography
+          </StyledSubtitle>
+          <StyledDescription
             variant="subtitle1"
             color="text.secondary"
-            component="div"
             className="custom-scrollbar"
-            sx={{
-              fontSize: "1.4rem",
-              color: "#ebeaea",
-              overflow: "scroll",
-              maxHeight: "12rem",
-            }}
           >
             {anime.background}
-          </Typography>
-        </CardContent>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            height: "7rem",
-            width: "100%",
-            gap: "2rem",
-          }}
-        >
-          <Button
-            variant="outlined"
-            href={anime.trailer.url}
-            sx={{
-              fontSize: "1.4rem",
-              height: "4rem",
-              color: "white",
-              border: "white 1px solid",
-            }}
-          >
+          </StyledDescription>
+        </StyledCardContent>
+        <StyledButtonBox>
+          <StyledButton variant="outlined" href={anime.trailer.url}>
             Watch Trailer
-          </Button>
+          </StyledButton>
           <Button
             variant="outlined"
             component={Link}
@@ -105,8 +57,8 @@ const AnimeCardShow: React.FC<Props> = ( { anime } ) => {
           >
             View Details
           </Button>
-        </Box>
-      </Box>
+        </StyledButtonBox>
+      </StyledCard>
       <CardMedia
         component="img"
         sx={{ width: "20rem", borderRadius: "1rem", height: "90%" }}

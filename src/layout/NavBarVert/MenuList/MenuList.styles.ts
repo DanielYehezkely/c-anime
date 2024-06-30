@@ -13,7 +13,6 @@ export const StyledTopList = styled(List)({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
- 
 });
 
 export const StyledBottomList = styled(List)({
@@ -58,7 +57,7 @@ export const StyledBottomListItem = styled(ListItem)({
   cursor: "pointer",
   display: "flex",
   justifyContent: "center",
-  alignItems: "center", 
+  alignItems: "center",
   "&:hover": {
     backgroundColor: "#33333369",
     "& .MuiListItemIcon-root": {

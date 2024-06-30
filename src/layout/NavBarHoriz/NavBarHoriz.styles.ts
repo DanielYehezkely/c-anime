@@ -1,47 +1,55 @@
 import { AppBar, Box, Button, Toolbar } from "@mui/material";
-import { styled } from "@mui/system";
+import { styled, css } from "@mui/system";
 import bgImage from "/assets/svg/pattern-3.svg";
 
-export const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  boxShadow: "none",
-  backgroundColor: "transparent",
-  width: "100%",
-  height: "9rem",
-  display: "flex",
-  justifyContent: "center",
-  position: "absolute",
-  backgroundImage: `url(${bgImage})`,
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  paddingLeft: "9rem",
-  [theme.breakpoints.down("md")]: {
-    display: "none"
-  },
-}));
+export const StyledAppBar = styled(AppBar)(
+  ({ theme }) => css`
+    box-shadow: none;
+    background-color: transparent;
+    width: 100%;
+    height: 9rem;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    background-image: url(${bgImage});
+    background-size: cover;
+    background-position: center;
+    padding-left: 9rem;
+    ${theme.breakpoints.down("md")} {
+      display: none;
+    }
+  `
+);
 
-export const StyledToolbar = styled(Toolbar)({
-  display: "flex",
-  gap: "3rem",
-  zIndex: 2,
-  minWidth: "55rem",
-});
+export const StyledToolbar = styled(Toolbar)(
+  css`
+    display: flex;
+    gap: 3rem;
+    z-index: 2;
+    min-width: 55rem;
+  `
+);
 
-export const StyledBox = styled(Box)({
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  width: "100%",
-  height: "100%",
-  backgroundImage: "linear-gradient(to top, #0C0C0C, rgba(0, 0, 0, 0.541))",
-  zIndex: 1,
-});
+export const StyledBox = styled(Box)(
+  css`
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to top, #0c0c0c, rgba(0, 0, 0, 0.541));
+    z-index: 1;
+  `
+);
 
-export const StyledButton = styled(Button)({
-  fontSize: "1.8rem",
-  fontWeight: 600,
-  color: "#cccccc",
-  "&:hover": {
-    backgroundColor: "#33333369",
-    color: "#fff",
-  },
-});
+export const StyledButton = styled(Button)(
+  css`
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #cccccc;
+    &:hover {
+      background-color: #33333369;
+      color: #fff;
+    }
+  `
+);
