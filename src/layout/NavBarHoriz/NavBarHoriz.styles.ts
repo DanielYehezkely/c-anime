@@ -4,14 +4,15 @@ import bgImage from "/assets/svg/pattern-3.svg";
 
 export const StyledAppBar = styled(AppBar)(({ theme }) => ({
   boxShadow: "none",
+  backgroundColor: "transparent",
   width: "100%",
   height: "9rem",
   display: "flex",
   justifyContent: "center",
-  position: "relative",
-  backgroundImage: `url(${bgImage})`,
-  backgroundSize: "cover",
-  backgroundPosition: "center",
+  position: "absolute",
+  // backgroundImage: `url(${bgImage})`,
+  // backgroundSize: "cover",
+  // backgroundPosition: "center",
   paddingLeft: "9rem",
   [theme.breakpoints.down("md")]: {
     display: "none"
@@ -31,7 +32,7 @@ export const StyledBox = styled(Box)({
   left: 0,
   width: "100%",
   height: "100%",
-  backgroundImage: "linear-gradient(to top, #0C0C0C, rgba(0, 0, 0, 0.541))",
+  // backgroundImage: "linear-gradient(to top, #0C0C0C, rgba(0, 0, 0, 0.541))",
   zIndex: 1,
 });
 

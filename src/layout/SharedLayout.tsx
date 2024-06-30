@@ -12,7 +12,7 @@ const SharedLayout: React.FC = () => {
       <div className="SharedLayout container">
         <VerticalNavBar />
         <NavBarHoriz />
-        <main>
+        <main className="main-outlet">
           <Outlet />
         </main>
       </div>

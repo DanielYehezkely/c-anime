@@ -8,6 +8,7 @@ import {
 } from "firebase/auth";
 import { AuthContextProps, ContextProviderProp } from "./AuthContext.type";
 import { auth } from "../../config/firebaseConfig";
+import { AUTH_PROVIDER_ERR_MSG } from "../../constants/globalConstants";
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined); 
 
@@ -84,7 +85,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
 export const useAuth = (): AuthContextProps => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider"); //*TODO move to constants
+    throw new Error(AUTH_PROVIDER_ERR_MSG); 
   }
   return context;
 };

@@ -1,10 +1,18 @@
 .SharedLayout{
   min-height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   flex-direction: column;
   justify-content: flex-start;
   background-color: #0C0C0C;
   font-size: 10rem; /* TODO - remove this from here just for the test */ 
   color: white; /* TODO - remove this from here just for the test */ 
+}
+
+.main-outlet {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
 }
