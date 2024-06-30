@@ -1,13 +1,23 @@
 import { Box } from "@mui/material";
 import React from "react";
 import { useAnimeApi } from "../../../../hooks/useAnimeApi";
+import AnimeCardShow from "./AnimeCardShow/AnimeCardShow";
+import { Anime } from "../../../../types/Anime";
 
 
 const HeaderBox: React.FC = () => {
 
+  const { animeList } = useAnimeApi();
 
-  const { animeList } = useAnimeApi(); 
+ 
 
+  if (animeList.length === 0) {
+    return <div>No anime found.</div>;
+  }
+
+  const anime: Anime = animeList[0];
+
+  console.log(animeList);
 
   return (
     <>
@@ -15,34 +25,29 @@ const HeaderBox: React.FC = () => {
         position="absolute"
         sx={{
           right: 0,
-          bgcolor: "#00ff0036",
           height: "54rem",
           width: "95%",
-          backgroundImage:
-            "linear-gradient(to top, #0C0C0C , rgba(0, 0, 0, 0) 30%)",
           zIndex: 1,
+          backgroundImage: `linear-gradient(to top, rgba(12, 12, 12, 1), rgba(0, 0, 0, 0) 30%), url(${anime.images.webp.large_image_url})`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          opacity: "0.8",
+          filter: "blur(1px)",
         }}
       ></Box>
       <Box
         component="header"
         sx={{
-          border: "1px solid white",
+          display: "flex",
+          justifyContent: "flex-end",
           height: "30rem",
           width: "95%",
           zIndex: 10,
           marginTop: "10rem",
         }}
       >
-        {animeList.map((anime) => {
-          return (
-            <div className="div" key={anime.id}>
-              <h1>{anime.title}</h1>
-              {anime.main_picture && anime.main_picture.medium && (
-                <img src={anime.main_picture.medium} alt={anime.title} />
-              )}
-            </div>
-          );
-        })}
+        <AnimeCardShow anime={anime} />
       </Box>
     </>
   );

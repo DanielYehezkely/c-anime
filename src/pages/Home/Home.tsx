@@ -3,10 +3,17 @@ import React from "react";
 
 import theme from "../../MUI/theme";
 import { HeaderBox, SearchBox } from "./components";
+import { useAnimeApi } from "../../hooks/useAnimeApi";
+import { Loader } from "../../components";
 
 
 const Home: React.FC = () => {
+
+  const { loading } = useAnimeApi();
+
   return (
+    <>
+    {loading && <Loader actionLabel="Fetching..."/>}
     <Container
       maxWidth={false}
       sx={{
@@ -20,7 +27,7 @@ const Home: React.FC = () => {
           width: "100%",
         },
       }}
-    >
+      >
       <HeaderBox/>
       <SearchBox/>
       <Box
@@ -44,6 +51,7 @@ const Home: React.FC = () => {
         }}
       ></Box>
     </Container>
+        </>
   );
 };
 

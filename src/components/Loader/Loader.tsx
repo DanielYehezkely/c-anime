@@ -10,7 +10,9 @@ const Loader: React.FC<LoaderProps> = ({ actionLabel }) => {
   return (
     <div className="loader-overlay">
       <div className="loader-container">
-        <CircularProgress />
+        <CircularProgress sx={{
+          color:"white"
+        }} />
         <h2>{actionLabel}</h2>
       </div>
     </div>

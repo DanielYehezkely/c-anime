@@ -8,6 +8,7 @@ import { styled } from "@mui/system";
 
 export const StyledAppBar = styled(MuiAppBar)(({ theme }) => ({
   display: "flex",
+  zIndex: "8",
   flexDirection: "column",
   alignItems: "center",
   left: 0,
