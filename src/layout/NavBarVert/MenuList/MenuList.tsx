@@ -36,7 +36,7 @@ const MenuList: React.FC<MenuListProps> = ({
           <StyledListItem
             key={index}
             onClick={() => onItemClick(item.text)}
-            className={isActive(item.path) ? "active" : ""}
+            className={isActive(item.path || "") ? "active" : ""}
           >
             {!isMobile ? (
               <Tooltip
@@ -69,7 +69,7 @@ const MenuList: React.FC<MenuListProps> = ({
           <StyledBottomListItem
             key={index}
             onClick={() => onItemClick(item.text)}
-            className={isActive(item.path) ? "active" : ""}
+            className={isActive(item.path || "") ? "active" : ""}
           >
             {!isMobile ? (
               <Tooltip

@@ -51,7 +51,7 @@ export const StyledListItem = styled(ListItem)(
     }
     &.Mui-selected,
     &.active {
-      background-color: #444;
+      background-color: #33333369;
     }
     ${theme.breakpoints.down("md")} {
       width: 100%;
@@ -78,7 +78,7 @@ export const StyledBottomListItem = styled(ListItem)(
     }
     &.Mui-selected,
     &.active {
-      background-color: #444;
+      background-color: #33333369;
     }
     ${theme.breakpoints.down("md")} {
       width: 100%;

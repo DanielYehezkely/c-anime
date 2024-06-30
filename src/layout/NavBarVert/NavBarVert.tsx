@@ -1,17 +1,13 @@
 import React, { useState } from "react";
-
 import IconButton from "@mui/material/IconButton";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { useMediaQuery, useTheme } from "@mui/material";
-
 import { useNavigationHelper } from "../../hooks/useNavigationHelper";
 import Logo from "./NavLogo/NavLogo";
 import MenuList from "./MenuList/MenuList";
-
 import { StyledAppBar, StyledToolbar, StyledDrawer } from "./NavBarVert.styles";
 
 const VerticalNavBar: React.FC = () => {
-
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -42,16 +38,10 @@ const VerticalNavBar: React.FC = () => {
             </IconButton>
           )}
         </StyledToolbar>
-        {!isMobile && (
-          <MenuList isMobile={isMobile} onItemClick={handleIconClick} />
-        )}
+        {!isMobile && <MenuList isMobile={isMobile} onItemClick={handleIconClick} />}
       </StyledAppBar>
 
-      <StyledDrawer
-        anchor="left"
-        open={drawerOpen}
-        onClose={handleDrawerToggle}
-      >
+      <StyledDrawer anchor="left" open={drawerOpen} onClose={handleDrawerToggle}>
         <MenuList onItemClick={handleIconClick} />
       </StyledDrawer>
     </>
