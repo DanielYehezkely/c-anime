@@ -18,3 +18,5 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 };
 
 export default ProtectedRoute;
+
+//*TODO - mention its in the frontend for name convention because usually it used for backend.

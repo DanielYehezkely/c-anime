@@ -1,19 +1,23 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
+
 import IconButton from "@mui/material/IconButton";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import { useMediaQuery, useTheme } from "@mui/material";
-import { StyledAppBar, StyledToolbar, StyledDrawer } from "./NavBarVert.styles";
+
 import Logo from "./NavLogo/NavLogo";
 import MenuList from "./MenuList/MenuList";
-import { useNavigate } from "react-router";
+
+import { StyledAppBar, StyledToolbar, StyledDrawer } from "./NavBarVert.styles";
 
 const VerticalNavBar: React.FC = () => {
+
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
 
-  const handleDrawerToggle = () => {
+  const handleDrawerToggle = (): void => {
     setDrawerOpen(!drawerOpen);
   };
 

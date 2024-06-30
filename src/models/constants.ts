@@ -13,3 +13,4 @@ export const HORIZONTAL_NAVBAR_TITLES = [
   { name: "Explore" },
   { name: "Contact" },
 ];
+
