@@ -2,7 +2,7 @@ import {RouterProvider, createBrowserRouter} from 'react-router-dom'
 import SharedLayout from "./layout/SharedLayout";
 import { Home, SingleAnimePage, WatchListPage } from "./pages";
 
-// import ProtectedRoute from "./routes/protectedRout";
+import ProtectedRoute from "./routes/protectedRout";
 
 const App:React.FC = () => {
 
@@ -24,9 +24,9 @@ const router = createBrowserRouter([
       {
         path: "watchlist",
         element: (
-          // <ProtectedRoute>
+          <ProtectedRoute>
             <WatchListPage />
-          /* </ProtectedRoute> */
+          </ProtectedRoute>
         ),
       },
     ],
