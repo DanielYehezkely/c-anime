@@ -31,7 +31,6 @@ const VerticalNavBar: React.FC = () => {
       <StyledAppBar position="fixed">
         <StyledToolbar>
           {!isMobile && <Logo />}
-
           {isMobile && (
             <IconButton
               color="inherit"
@@ -43,17 +42,17 @@ const VerticalNavBar: React.FC = () => {
             </IconButton>
           )}
         </StyledToolbar>
-
         {!isMobile && (
           <MenuList isMobile={isMobile} onItemClick={handleIconClick} />
         )}
       </StyledAppBar>
+
       <StyledDrawer
         anchor="left"
         open={drawerOpen}
         onClose={handleDrawerToggle}
       >
-        <MenuList onItemClick={handleDrawerToggle} />
+        <MenuList onItemClick={handleIconClick} />
       </StyledDrawer>
     </>
   );

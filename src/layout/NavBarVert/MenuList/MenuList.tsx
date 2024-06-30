@@ -1,9 +1,11 @@
 import React from "react";
-
+import { useLocation } from "react-router-dom";
 import { Tooltip } from "@mui/material";
-import { BOTTOM_MENU_ITEMS, VERTICAL_MENU_ITEMS } from "../../../constants/navbarConstants";
+import {
+  BOTTOM_MENU_ITEMS,
+  VERTICAL_MENU_ITEMS,
+} from "../../../constants/navbarConstants";
 import NavLogo from "../NavLogo/NavLogo";
-
 import {
   StyledListItemIcon,
   StyledListItemText,
@@ -22,14 +24,22 @@ const MenuList: React.FC<MenuListProps> = ({
   onItemClick,
   isMobile = true,
 }) => {
+  const location = useLocation();
+
+  const isActive = (path: string) => location.pathname === path;
+
   return (
     <>
       <StyledTopList>
         {isMobile && <NavLogo />}
         {VERTICAL_MENU_ITEMS.map((item, index) => (
-          <StyledListItem key={index} onClick={() => onItemClick(item.text)}>
+          <StyledListItem
+            key={index}
+            onClick={() => onItemClick(item.text)}
+            className={isActive(item.path) ? "active" : ""}
+          >
             {!isMobile ? (
-              <Tooltip   //*? I can take this out to the styles file but with changing it to tsx file , the problem is with the tooltip syntax requiring tsx ...
+              <Tooltip
                 title={item.text}
                 placement="right"
                 componentsProps={{
@@ -59,6 +69,7 @@ const MenuList: React.FC<MenuListProps> = ({
           <StyledBottomListItem
             key={index}
             onClick={() => onItemClick(item.text)}
+            className={isActive(item.path) ? "active" : ""}
           >
             {!isMobile ? (
               <Tooltip
