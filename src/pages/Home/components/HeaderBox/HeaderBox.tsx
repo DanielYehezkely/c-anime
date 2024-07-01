@@ -6,7 +6,8 @@ import { useAnimeApi } from "../../../../hooks/useAnimeApi";
 import getAnimeBannerByTitle from "../../../../services/animeMalApi/animeAnilistService";
 
 const HeaderBox: React.FC = () => {
-  const { animeList, error, loading } = useAnimeApi();
+  
+  const { animeList } = useAnimeApi();
   const [currentAnime, setCurrentAnime] = useState<Anime | null>(null);
   const [bannerImage, setBannerImage] = useState<string | null>(null);
   const [opacity, setOpacity] = useState<number>(1);
@@ -36,14 +37,6 @@ const HeaderBox: React.FC = () => {
     }
   }, [animeList]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
   if (!currentAnime) {
     return <div>No anime found.</div>;
   }
@@ -59,7 +52,7 @@ const HeaderBox: React.FC = () => {
           zIndex: 1,
           transition:
             "background-image 0.5s ease-in-out, opacity 0.5s ease-in-out",
-          backgroundImage: `linear-gradient(to top, rgba(12, 12, 12, 1), rgba(0, 0, 0, 0.767) 30%), url(${
+          backgroundImage: `linear-gradient(to top, rgba(12, 12, 12, 1), rgba(0, 0, 0, 0.445) 30%), url(${
             bannerImage || currentAnime.images.webp.large_image_url
           })`,
           backgroundSize: "cover",
