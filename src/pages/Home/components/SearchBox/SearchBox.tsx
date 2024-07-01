@@ -39,7 +39,8 @@ const SearchBox: React.FC = () => {
           id="free-solo-2-demo"
           options={animeList.map((option) => option.title)}
           getOptionLabel={(option: string) => option}
-          onChange={(event, value) =>
+          
+          onChange={(_, value) =>
             handleOptionSelect(value)    //*? need to go over it again ! 
           }
           sx={autoCompleteStyle}
