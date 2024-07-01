@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import React from "react";
 import CarouselPagination from "./CarouselPagination/CarouselPagination";
+import CarouselFilter from "./CarouselFilter/CarouselFilter";
 
 const CarouselShowcase:React.FC = () => {
 
@@ -16,16 +17,8 @@ const CarouselShowcase:React.FC = () => {
         paddingTop: "4rem",
       }}
     >
-      <CarouselPagination label="Trending this season" />
-      <Box
-        component="section"
-        sx={{
-          border: "1px solid white",
-          height: "7.5rem",
-          width: "100%",
-          zIndex: 10,
-        }}
-      />
+      <CarouselPagination label="Trending this season" pageCount={16} />
+      <CarouselFilter/>
       <Box
         component="section"
         sx={{

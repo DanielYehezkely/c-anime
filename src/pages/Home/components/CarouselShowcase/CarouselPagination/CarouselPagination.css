@@ -1,5 +1,40 @@
+/* CarouselPagination.css */
 .carousel-label {
-  color: #e5e5e5;
+  color: white;
   font-size: 3rem;
-  letter-spacing: -0.08rem; 
+  letter-spacing: -0.08px;
+}
+
+.pagination {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.page-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-link {
+  width: 1.6rem;
+  height: 1.6rem;
+  display: block;
+  border-radius: 50%;
+  background-color: #2f2f2f;
+  color: transparent;
+  cursor: pointer;
+}
+
+.page-link:hover {
+  background-color: #868686;
+}
+
+.active .page-link {
+  background-color: #868686;
+}
+
+.prev,
+.next {
+  display: none;
 }
