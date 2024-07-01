@@ -5,7 +5,6 @@
   flex-direction: column;
   justify-content: flex-start;
   background-color: #0C0C0C;
-  color: white; /* TODO - remove this from here just for the test */ 
 }
 
 .main-outlet {

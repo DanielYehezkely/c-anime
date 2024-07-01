@@ -23,7 +23,7 @@ const SearchBox: React.FC = () => {
   const navigate = useNavigate();
 
   const handleOptionSelect = (
-    value: string | Anime | number | null | undefined
+    value: string | Anime | null | undefined
   ) => {
     if (value && typeof value !== "string" && typeof value !== "number") {
       navigate(`/singleAnime/${value.mal_id}`);
