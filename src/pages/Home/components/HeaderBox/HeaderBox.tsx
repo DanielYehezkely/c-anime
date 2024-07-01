@@ -1,35 +1,48 @@
 import React, { useEffect, useState } from "react";
-
 import { Box } from "@mui/material";
-import { useAnimeApi } from "../../../../hooks/useAnimeApi";
 import AnimeCardShow from "./AnimeCardShow/AnimeCardShow";
 import { Anime } from "../../../../types/Anime";
+import { useAnimeApi } from "../../../../hooks/useAnimeApi";
+import getAnimeBannerByTitle from "../../../../services/animeMalApi/animeAnilistService";
 
 const HeaderBox: React.FC = () => {
-  const { animeList } = useAnimeApi();
-  const [currentAnime, setCurrentAnime] = useState<Anime>();
+  const { animeList, error, loading } = useAnimeApi();
+  const [currentAnime, setCurrentAnime] = useState<Anime | null>(null);
+  const [bannerImage, setBannerImage] = useState<string | null>(null);
   const [opacity, setOpacity] = useState<number>(1);
   const [translateY, setTranslateY] = useState<string>("0rem");
 
   useEffect(() => {
     if (animeList.length > 0) {
-      const updateAnime = () => {
+      const updateAnime = async () => {
         setOpacity(0);
         setTranslateY("-3.5rem");
-        setTimeout(() => {
-          const index = Math.floor(Math.random() * animeList.length); //*TODO - make an explain for this logic
-          setCurrentAnime(animeList[index]);
+        setTimeout(async () => {
+          const index = Math.floor(Math.random() * animeList.length);
+          const selectedAnime = animeList[index];
+          setCurrentAnime(selectedAnime);
+          if (selectedAnime) {
+            const bannerImg = await getAnimeBannerByTitle(selectedAnime);
+            setBannerImage(bannerImg);
+          }
+
           setOpacity(1);
           setTranslateY("0rem");
         }, 900);
       };
-
       updateAnime();
-      const intervalId = setInterval(updateAnime, 5000);
-
+      const intervalId = setInterval(updateAnime, 8000);
       return () => clearInterval(intervalId);
     }
   }, [animeList]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   if (!currentAnime) {
     return <div>No anime found.</div>;
@@ -46,12 +59,13 @@ const HeaderBox: React.FC = () => {
           zIndex: 1,
           transition:
             "background-image 0.5s ease-in-out, opacity 0.5s ease-in-out",
-          backgroundImage: `linear-gradient(to top, rgba(12, 12, 12, 1), rgba(0, 0, 0, 0.596) 30%), url(${currentAnime.images.webp.large_image_url})`,
+          backgroundImage: `linear-gradient(to top, rgba(12, 12, 12, 1), rgba(0, 0, 0, 0.767) 30%), url(${
+            bannerImage || currentAnime.images.webp.large_image_url
+          })`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           opacity: opacity,
-          filter: "blur(2px)",
         }}
       ></Box>
       <Box

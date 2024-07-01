@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAnimeList } from "../services/animeApi/animeApiService";
+import { getTopAnimeData } from "../services/animeMalApi/animeMalApiService";
 import { Anime } from "../types/Anime";
 
 export const useAnimeApi = () => {
@@ -11,18 +11,16 @@ export const useAnimeApi = () => {
     setError(null);
     setLoading(true);
     try {
-      const data = await getAnimeList();
-      if (data.length === 0) {
-        setLoading(true);  
-      } else {
-        setAnimeList(data);
-      }
+      const data = await getTopAnimeData();
+      setAnimeList(data);
     } catch (error: any) {
       setError(error.message);
     } finally {
-      setLoading(false);  
+      setLoading(false);
     }
   };
+
+ 
 
   useEffect(() => {
     fetchAnime();

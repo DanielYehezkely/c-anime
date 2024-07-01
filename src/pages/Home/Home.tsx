@@ -7,9 +7,12 @@ import { useAnimeApi } from "../../hooks/useAnimeApi";
 import { Loader } from "../../components";
 
 
+
 const Home: React.FC = () => {
 
   const { loading } = useAnimeApi();
+
+ 
 
   return (
     <>
