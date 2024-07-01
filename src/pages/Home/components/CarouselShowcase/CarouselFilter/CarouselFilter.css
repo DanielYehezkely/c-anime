@@ -1,0 +1,78 @@
+.carousel-filter-container {
+  display: flex;
+  align-items: flex-start;
+  height: 7.5rem;
+  width: 100%;
+  z-index: 10;
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-filter-container::before,
+.carousel-filter-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 10rem;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 0.3s ease;
+}
+
+.carousel-filter-container::before {
+  left: 0;
+  background: linear-gradient(to right, #0C0C0C, transparent);
+  opacity: 1;
+}
+
+.carousel-filter-container::after {
+  right: 0;
+  background: linear-gradient(to left, #0C0C0C, transparent);
+  opacity: 1;
+}
+
+.carousel-filter-container.at-start::before,
+.carousel-filter-container.at-end::after {
+  opacity: 0;
+}
+
+.carousel-filter {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  flex-grow: 1;
+  position: relative;
+}
+
+.filter-item {
+  font-size: 1.6rem;
+  padding: 1rem 1.5rem;
+  white-space: nowrap;
+  color: #ccccccbd;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.filter-item:hover {
+  color: #ffffff;
+}
+
+.filter-item.active {
+  color: #C7C2FF;
+  border-radius: 1rem;
+  font-weight: bold;
+  background-color: #191919;
+  border: solid 1px #6152DF;
+}
+
+.carousel-filter::-webkit-scrollbar {
+  height: 0;
+}
+
+
+
+
+
+
