@@ -1,46 +1,62 @@
 import React from "react";
-import { useNavigate } from "react-router";
-
+import { useNavigate } from "react-router-dom";
 import {
+  Box,
   Stack,
+  Autocomplete,
   TextField,
   CircularProgress,
   InputAdornment,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-
 import { useAnimeApi } from "../../../../hooks/useAnimeApi";
-
 import {
-  StyledBox,
-  StyledAutocomplete,
+  boxStyle,
+  autoCompleteStyle,
   inputLabelPropsStyle,
   startAdornmentStyle,
 } from "./SearchBox.styles";
+import { Anime } from "../../../../types/Anime";
 
 const SearchBox: React.FC = () => {
   const { animeList, loading, error } = useAnimeApi();
+  const navigate = useNavigate();
 
-   const navigate = useNavigate();
-
-   const handleOptionSelect = (event: any, value: string | null): void => {
-     if (value) {
-       const selectedAnime = animeList.find((anime) => anime.title === value);
-       if (selectedAnime) {
-         navigate(`/singleAnime/${selectedAnime.mal_id}`);
-       }
-     }
-   };
+  const handleOptionSelect = (
+    value: string | Anime | number | null | undefined
+  ) => {
+    if (value && typeof value !== "string" && typeof value !== "number") {
+      navigate(`/singleAnime/${value.mal_id}`);
+    }
+  };
 
   return (
-    <StyledBox component="section">
+    <Box component="section" sx={boxStyle}>
       {error && <div>Error fetching data: {error}</div>}
       <Stack spacing={2} sx={{ width: 300 }}>
-        <StyledAutocomplete
+        <Autocomplete
           freeSolo
           id="free-solo-2-demo"
           options={animeList.map((option) => option.title)}
-          onChange={handleOptionSelect}
+          getOptionLabel={(option: string) => option}
+          onChange={(event, value) =>
+            handleOptionSelect(value)    //*? need to go over it again ! 
+          }
+          sx={autoCompleteStyle}
+          renderOption={(props, option) => {
+            const selectedAnime = animeList.find(
+              (anime) => anime.title === option
+            );
+            return (
+              <li
+                {...props}
+                onClick={() => handleOptionSelect(selectedAnime)}
+                style={{ cursor: "pointer" }}
+              >
+                {option}
+              </li>
+            );
+          }}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -69,7 +85,7 @@ const SearchBox: React.FC = () => {
           )}
         />
       </Stack>
-    </StyledBox>
+    </Box>
   );
 };
 
