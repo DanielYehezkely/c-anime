@@ -36,7 +36,7 @@ const AnimeCardShow: React.FC<Props> = ({ anime }) => {
             color="text.secondary"
             className="custom-scrollbar"
           >
-            {anime.background}
+            {anime.synopsis}
           </StyledDescription>
         </StyledCardContent>
         <StyledButtonBox>

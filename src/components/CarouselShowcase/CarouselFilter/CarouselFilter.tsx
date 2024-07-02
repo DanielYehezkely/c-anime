@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Box, IconButton } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { GENRES_FILTER } from "../../../../../constants/globalConstants";
+import { GENRES_FILTER } from "../../../constants/globalConstants";
 
 import "./CarouselFilter.css";
 

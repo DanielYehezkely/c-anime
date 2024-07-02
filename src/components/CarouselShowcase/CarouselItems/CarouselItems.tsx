@@ -8,7 +8,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 import "./CarouselItems.css";
-import { Anime } from "../../../../../types/Anime";
+import { Anime } from "../../../types/Anime";
 import CarouselAnimeCard from "../CarouselAnimeCard/CarouselAnimeCard";
 
 interface CarouselItemsProps {

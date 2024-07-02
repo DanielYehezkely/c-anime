@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardContent, CardMedia, Typography, Box } from "@mui/material";
-import { Anime } from "../../../../../types/Anime";
+import { Anime } from "../../../types/Anime";
 import { CalendarToday as DateIcon } from "@mui/icons-material";
 
 interface CarouselAnimeCardProps {

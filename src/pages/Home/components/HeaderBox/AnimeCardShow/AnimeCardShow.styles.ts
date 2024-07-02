@@ -31,7 +31,7 @@ export const StyledDescription = styled(Typography)`
   font-size: 1.4rem;
   color: #ebeaea;
   overflow: scroll;
-  max-height: 12rem;
+  max-height: 10rem;
 
   &::-webkit-scrollbar {
     width: 8px;

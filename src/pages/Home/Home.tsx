@@ -2,9 +2,10 @@ import { Container } from "@mui/material";
 import React from "react";
 
 import theme from "../../MUI/theme";
-import { CarouselShowcase, HeaderBox, SearchBox } from "./components";
+import { HeaderBox, SearchBox } from "./components";
 import { useAnimeApi } from "../../hooks/useAnimeApi";
 import { Loader } from "../../components";
+import CarouselShowcase from "../../components/CarouselShowcase/CarouselShowcase";
 
 const Home: React.FC = () => {
   
