@@ -9,6 +9,7 @@ import "swiper/css/pagination";
 
 import "./CarouselItems.css";
 import { Anime } from "../../../../../types/Anime";
+import CarouselAnimeCard from "../CarouselAnimeCard/CarouselAnimeCard";
 
 interface CarouselItemsProps {
   onSlideChange: (currentSlide: number) => void;
@@ -25,7 +26,7 @@ const CarouselItems: React.FC<CarouselItemsProps> = ({
     <Box
       component="section"
       sx={{
-        height: "40rem",
+        height: "50rem",
         width: "100%",
         zIndex: 10,
         marginBottom: "6rem",
@@ -33,7 +34,7 @@ const CarouselItems: React.FC<CarouselItemsProps> = ({
     >
       <Swiper
         ref={swiperRef}
-        slidesPerView={5.5}
+        slidesPerView="auto" // Use 'auto' to adapt to the card width
         spaceBetween={20}
         modules={[Navigation, Pagination]}
         className="mySwiper"
@@ -41,8 +42,8 @@ const CarouselItems: React.FC<CarouselItemsProps> = ({
         onSlideChange={() => onSlideChange(swiperRef.current.swiper.realIndex)}
       >
         {animeList.map((anime) => (
-          <SwiperSlide key={anime.mal_id}>
-            <div className="item">{anime.title}</div>
+          <SwiperSlide key={anime.mal_id} style={{ width: "25rem" }}>
+            <CarouselAnimeCard anime={anime} />
           </SwiperSlide>
         ))}
       </Swiper>

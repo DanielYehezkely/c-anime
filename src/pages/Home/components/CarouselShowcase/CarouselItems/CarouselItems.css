@@ -1,12 +1,5 @@
 .mySwiper {
   height: 100%;
+  padding-top: 0.2rem;
 }
 
-.item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #eee;
-  border-radius: 10px;
-  height: 100%; 
-}
