@@ -1,7 +1,8 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext/AuthContext";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router";
 
+import { useAuth } from "../context/AuthContext/AuthContext";
+import LoginPromptModal from "../components/LoginPromptModal/LoginPromptModal";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
@@ -9,12 +10,43 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { user } = useAuth();
+  const [modalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  
 
-  if (!user) {
-    return <Navigate to="/" replace />;
+  const handleShowModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    if (location.pathname !== "/") {
+      navigate('/')
+    }
+  };
+
+  useEffect(() => {
+    if (!user) {
+      handleShowModal();
+    }
+  }, [user]);
+
+  if (!user && !modalOpen) {
+    return null; 
   }
 
-  return children;
+  return (
+    <>
+      {!user ? (
+        <>
+          <LoginPromptModal open={modalOpen} handleClose={handleCloseModal} />
+        </>
+      ) : (
+        children
+      )}
+    </>
+  );
 };
 
 export default ProtectedRoute;
