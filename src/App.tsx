@@ -1,6 +1,6 @@
 import {RouterProvider, createBrowserRouter} from 'react-router-dom'
 import SharedLayout from "./layout/SharedLayout";
-import { Home, SingleAnimePage, WatchListPage } from "./pages";
+import { Home, NotFoundPage, SingleAnimePage, WatchListPage } from "./pages";
 
 import ProtectedRoute from "./routes/protectedRout";
 
@@ -35,6 +35,10 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "*",
+    element: <NotFoundPage/>
+  }
 ]);
 
   return (
