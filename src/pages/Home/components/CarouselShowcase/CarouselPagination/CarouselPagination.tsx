@@ -1,16 +1,20 @@
 import React from "react";
 import { Box } from "@mui/material";
-import "./CarouselPagination.css";
 import ReactPaginate from "react-paginate";
+import "./CarouselPagination.css";
 
 interface CarouselPaginationProps {
   label: string;
   pageCount: number;
+  onPageChange: (selectedItem: { selected: number }) => void;
+  currentPage: number;
 }
 
 const CarouselPagination: React.FC<CarouselPaginationProps> = ({
   label,
   pageCount,
+  onPageChange,
+  currentPage,
 }) => {
   return (
     <Box
@@ -28,7 +32,7 @@ const CarouselPagination: React.FC<CarouselPaginationProps> = ({
       <ReactPaginate
         pageCount={pageCount}
         pageRangeDisplayed={pageCount}
-        marginPagesDisplayed={0}
+        marginPagesDisplayed={1}
         containerClassName={"pagination"}
         pageClassName={"page-item"}
         pageLinkClassName={"page-link"}
@@ -36,7 +40,8 @@ const CarouselPagination: React.FC<CarouselPaginationProps> = ({
         previousClassName={"prev"}
         nextClassName={"next"}
         disabledClassName={"disabled"}
-        
+        onPageChange={onPageChange}
+        forcePage={currentPage}
       />
     </Box>
   );

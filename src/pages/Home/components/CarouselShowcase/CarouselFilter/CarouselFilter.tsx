@@ -9,9 +9,9 @@ import "./CarouselFilter.css";
 
 const CarouselFilter: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [isAtStart, setIsAtStart] = useState(true);
-  const [isAtEnd, setIsAtEnd] = useState(false);
-  const [activeFilter, setActiveFilter] = useState("All");
+  const [isAtStart, setIsAtStart] = useState<boolean>(true);
+  const [isAtEnd, setIsAtEnd] = useState<boolean>(false);
+  const [activeFilter, setActiveFilter] = useState<string>("All");
 
   const checkScrollPosition = () => {
     if (scrollRef.current) {

@@ -3,6 +3,7 @@ import { getTopAnimeData } from "../services/animeMalApi/animeMalApiService";
 import { Anime } from "../types/Anime";
 
 export const useAnimeApi = () => {
+  
   const [animeList, setAnimeList] = useState<Anime[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
