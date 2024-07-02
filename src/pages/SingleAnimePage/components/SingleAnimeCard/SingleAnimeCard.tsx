@@ -1,15 +1,22 @@
-import { Box, CardContent, CardMedia, Typography } from "@mui/material";
 import React from "react";
+import {
+  SingleAnimeCardBox,
+  SingleAnimeContent,
+  SynopsisTypography,
+  TitleTypography,
+  YearTypography,
+  
+} from "./SingleAnimeCard.styles";
+import { CardMedia } from "@mui/material";
 import { Anime } from "../../../../types/Anime";
-import { SingleAnimeCardBox } from "./SingleAnimeCard.styles";
 
 interface SingleAnimeCardProp {
   anime: Anime;
 }
 
-const SingleAnimeCard:React.FC<SingleAnimeCardProp> = ({ anime }) => {
+const SingleAnimeCard: React.FC<SingleAnimeCardProp> = ({ anime }) => {
   return (
-    <SingleAnimeCardBox>
+    <SingleAnimeCardBox component="header">
       <CardMedia
         component="img"
         image={anime.images.jpg.large_image_url}
@@ -21,31 +28,17 @@ const SingleAnimeCard:React.FC<SingleAnimeCardProp> = ({ anime }) => {
           borderRadius: "1rem",
         }}
       />
-
-      <CardContent
-        sx={{
-          width: "50%",
-          color: "white",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <Typography variant="h3" component="h1" gutterBottom fontWeight="bold">
+      <SingleAnimeContent>
+        <TitleTypography variant="h3" gutterBottom>
           {anime.title}
-        </Typography>
-        <Typography
-          variant="body1"
-          gutterBottom
-          fontSize="1.4rem"
-          maxHeight="70%"
-          overflow="scroll"
-        >
+        </TitleTypography>
+        <SynopsisTypography variant="body1">
           {anime.synopsis}
-        </Typography>
-        <Typography variant="h5" color="#9b9a9a">
+        </SynopsisTypography>
+        <YearTypography variant="h5">
           {anime.season} {anime.year}
-        </Typography>
-      </CardContent>
+        </YearTypography>
+      </SingleAnimeContent>
     </SingleAnimeCardBox>
   );
 };

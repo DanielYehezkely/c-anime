@@ -1,8 +1,6 @@
 import {
   Box,
-  Container,
   CardContent,
-  CardMedia,
   Typography,
   Button,
   TextareaAutosize,

@@ -1,5 +1,5 @@
 import { styled } from "@mui/material/styles";
-import { Box, CardContent, CardMedia, Typography } from "@mui/material";
+import { Box, CardContent, Typography } from "@mui/material";
 
 export const SingleAnimeCardBox = styled(Box)`
   width: 95%;
@@ -10,13 +10,6 @@ export const SingleAnimeCardBox = styled(Box)`
   padding: 2rem 0 0 2rem;
 `;
 
-export const SingleAnimeImage = styled(CardMedia)`
-  width: 20rem;
-  height: 22.5rem;
-  object-fit: cover;
-  border-radius: 1rem;
-`;
-
 export const SingleAnimeContent = styled(CardContent)`
   width: 50%;
   color: white;
@@ -24,16 +17,16 @@ export const SingleAnimeContent = styled(CardContent)`
   flex-direction: column;
 `;
 
-export const SingleAnimeTitle = styled(Typography)`
+export const TitleTypography = styled(Typography)`
   font-weight: bold;
 `;
 
-export const SingleAnimeSynopsis = styled(Typography)`
+export const SynopsisTypography = styled(Typography)`
   font-size: 1.4rem;
   max-height: 70%;
   overflow: scroll;
 `;
 
-export const SingleAnimeYear = styled(Typography)`
+export const YearTypography = styled(Typography)`
   color: #9b9a9a;
 `;
