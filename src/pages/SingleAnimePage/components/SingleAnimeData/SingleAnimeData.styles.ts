@@ -9,7 +9,9 @@ export const StyledCardContent = styled(CardContent)`
   z-index: 2;
 `;
 
-export const BackgroundInfoTypography = styled(Typography)``;
+export const BackgroundInfoTypography = styled(Typography)`
+  max-width: 50% ;
+`;
 
 export const RankTypography = styled(Typography)`
   color: #b967da;

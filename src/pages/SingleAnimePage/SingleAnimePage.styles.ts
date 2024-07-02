@@ -16,7 +16,8 @@ export const UnderlayBackgroundBox = styled(Box)`
   left: 0;
   width: 100%;
   min-height: 85%;
-  filter: blur(1px);
+  /* filter: blur(1px); */
+  transition: all 0.4s ease;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -26,4 +27,5 @@ export const UnderlayBackgroundBox = styled(Box)`
       rgba(0, 0, 0, 0.425) 50%
     ),
     linear-gradient(to top, #0c0c0c, #00000000 20%);
+  opacity: 1;
 `;

@@ -1,32 +1,32 @@
 import React from "react";
 import { AccountCircleRounded } from "@mui/icons-material";
 import {
-  CommentSectionContainer,
-  CommentHeader,
+  CommentsSectionContainer,
+  CommentsHeader,
   StyledDivider,
-  CommentForm,
-  CommentInput,
+  CommentsForm,
+  CommentsInput,
   SubmitButton,
   NoCommentsBox,
 } from "./CommentSection.styles";
 
 const CommentSection: React.FC = () => {
   return (
-    <CommentSectionContainer>
-      <CommentHeader variant="h5">
+    <CommentsSectionContainer>
+      <CommentsHeader variant="h5">
         0 Comments
         {/* //*TODO - put the number of comments based on api comments array */}
-      </CommentHeader>
+      </CommentsHeader>
       <StyledDivider />
-      <CommentForm component="form">
+      <CommentsForm component="form">
         <AccountCircleRounded sx={{ color: "white", fontSize: "4rem" }} />
-        <CommentInput placeholder="Leave a comment" />
+        <CommentsInput placeholder="Leave a comment" />
         <SubmitButton variant="contained" color="primary">
           Submit
         </SubmitButton>
-      </CommentForm>
+      </CommentsForm>
       <NoCommentsBox>No Comments Yet</NoCommentsBox>
-    </CommentSectionContainer>
+    </CommentsSectionContainer>
   );
 };
 

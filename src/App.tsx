@@ -19,7 +19,11 @@ const router = createBrowserRouter([
       },
       {
         path: "singleAnime/:animeId",
-        element: <SingleAnimePage />,
+        element: (
+          <ProtectedRoute>
+            <SingleAnimePage  />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "watchlist",

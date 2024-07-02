@@ -1,8 +1,9 @@
 import { styled } from "@mui/material/styles";
 import { Box, Typography, Divider, Button } from "@mui/material";
 
-export const CommentSectionContainer = styled(Box)`
-  width: 95%;
+export const CommentsSectionContainer = styled(Box)`
+  width: 70%;
+  align-self: center;
   z-index: 2;
   display: flex;
   flex-direction: column;
@@ -13,7 +14,7 @@ export const CommentSectionContainer = styled(Box)`
   margin-top: 2rem;
 `;
 
-export const CommentHeader = styled(Typography)`
+export const CommentsHeader = styled(Typography)`
   color: white;
 `;
 
@@ -21,13 +22,13 @@ export const StyledDivider = styled(Divider)`
   border-color: white;
 `;
 
-export const CommentForm = styled(Box)`
+export const CommentsForm = styled(Box)`
   display: flex;
   gap: 1rem;
   align-items: center;
 `;
 
-export const CommentInput = styled("textarea")`
+export const CommentsInput = styled("textarea")`
   width: 90%;
   border-radius: 0.5rem;
   padding: 1rem;
