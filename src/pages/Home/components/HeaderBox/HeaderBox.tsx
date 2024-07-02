@@ -60,7 +60,7 @@ const HeaderBox: React.FC = () => {
           backgroundPosition: "center",
           opacity: opacity,
         }}
-      ></Box>
+      />
       <Box
         component="header"
         sx={{

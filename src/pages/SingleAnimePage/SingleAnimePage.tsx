@@ -21,8 +21,11 @@ import {
 } from "@mui/icons-material";
 
 import CarouselShowcase from "../../components/CarouselShowcase/CarouselShowcase";
+import { SingleAnimePageContainer, UnderlayBackgroundBox } from "./SingleAnimePage.styles";
+import SingleAnimeCard from "./components/SingleAnimeCard/SingleAnimeCard";
 
 const SingleAnimePage: React.FC = () => {
+  
   const { animeId } = useParams<{ animeId: string }>();
   const { animeList } = useAnimeApi();
   const [bannerImageBackground, setBannerImageBackground] = useState<
@@ -48,89 +51,18 @@ const SingleAnimePage: React.FC = () => {
   }
 
   return (
-    <Container
-      maxWidth={false}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-end",
-        justifyContent: "flex-start",
-        minHeight: "100vh",
-        position: "relative",
-      }}
-    >
-      <Box
-        component="div"
-        sx={{
-          position: "fixed",
-          zIndex: 1,
-          left: 0,
-          width: "100%",
-          minHeight: "85%",
-          filter: "blur(1px)",
+    <SingleAnimePageContainer  maxWidth={false}>
+      <UnderlayBackgroundBox
+      component="div"
+        style={{
           backgroundImage: `
-            linear-gradient(to right, #000000 10%, rgba(0, 0, 0, 0.425) 50%),
-            linear-gradient(to top, #0C0C0C, #00000000 20%),
-            url(${bannerImageBackground || anime.images.jpg.large_image_url})
-          `,
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
+      linear-gradient(to right, #000000 10%, rgba(0, 0, 0, 0.425) 50%),
+      linear-gradient(to top, #0C0C0C, #00000000 20%),
+      url(${bannerImageBackground || anime.images.jpg.large_image_url})
+    `,
         }}
       />
-      <Box
-        component="header"
-        sx={{
-          width: "95%",
-          height: "25rem",
-          zIndex: 2,
-          marginTop: "10rem",
-          display: "flex",
-          padding: "2rem 0 0 2rem",
-        }}
-      >
-        <CardMedia
-          component="img"
-          image={anime.images.jpg.large_image_url}
-          alt={anime.title}
-          sx={{
-            width: "20rem",
-            height: "22.5rem",
-            objectFit: "cover",
-            borderRadius: "1rem",
-          }}
-        />
-
-        <CardContent
-          sx={{
-            width: "50%",
-            color: "white",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Typography
-            variant="h3"
-            component="h1"
-            gutterBottom
-            fontWeight="bold"
-          >
-            {anime.title}
-          </Typography>
-          <Typography
-            variant="body1"
-            gutterBottom
-            fontSize="1.4rem"
-            maxHeight="70%"
-            overflow="scroll"
-          >
-            {anime.synopsis}
-          </Typography>
-          <Typography variant="h5" color="#9b9a9a">
-            {anime.season} {anime.year}
-          </Typography>
-        </CardContent>
-      </Box>
+    <SingleAnimeCard anime={anime}/>
       <Box
         component="div"
         sx={{
@@ -310,8 +242,8 @@ const SingleAnimePage: React.FC = () => {
           No Commets Yet
         </Box>
       </Box>
-      <CarouselShowcase carouselLabel={'Recommendations'}/>
-    </Container>
+      <CarouselShowcase carouselLabel={"Recommendations"} />
+    </SingleAnimePageContainer>
   );
 };
 
