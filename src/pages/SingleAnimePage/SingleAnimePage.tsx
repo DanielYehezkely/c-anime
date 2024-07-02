@@ -4,9 +4,10 @@ import {
   CardContent,
   CardMedia,
   Typography,
+  Button,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams, Link } from "react-router-dom";
 import { useAnimeApi } from "../../hooks/useAnimeApi";
 import { Anime } from "../../types/Anime";
 import { Loader } from "../../components";
@@ -134,7 +135,6 @@ const SingleAnimePage: React.FC = () => {
         <CardContent
           sx={{
             width: "50%",
-
             color: "white",
             display: "flex",
             flexDirection: "column",
@@ -144,7 +144,9 @@ const SingleAnimePage: React.FC = () => {
             Rank (out of 100): {anime.rank}
           </Typography>
           <Typography component="p" gutterBottom fontWeight="bold">
-            {anime.background}
+            {anime.background
+              ? anime.background
+              : "No Background Provided on this anime"}
           </Typography>
           <Typography variant="body1" gutterBottom fontSize="1.4rem">
             Released : {anime.aired.string}
@@ -158,6 +160,39 @@ const SingleAnimePage: React.FC = () => {
           <Typography variant="h5" color="#d10707">
             {anime.rating}
           </Typography>
+          <Box
+            sx={{
+              marginTop: "2rem",
+              display: "flex",
+              gap: "1rem",
+            }}
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              component={Link}
+              to={anime.trailer.url}
+              sx={{
+                color: "white",
+                fontSize: "1.4rem",
+              }} //*TODO - make condition where there is no trailer maybe give demographics
+            >
+              Watch Trailer
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              component="a"
+              href={anime.url}
+              target="_blank"
+              sx={{
+                color: "white",
+                fontSize: "1.4rem",
+              }}
+            >
+              Read Manga
+            </Button>
+          </Box>
         </CardContent>
       </Box>
     </Container>
