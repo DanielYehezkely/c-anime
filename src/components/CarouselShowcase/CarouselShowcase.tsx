@@ -4,8 +4,11 @@ import CarouselPagination from "./CarouselPagination/CarouselPagination";
 import CarouselFilter from "./CarouselFilter/CarouselFilter";
 import CarouselItems from "./CarouselItems/CarouselItems";
 import { useAnimeApi } from "../../hooks/useAnimeApi";
+import { CarouselShowcaseProps } from "./CarouselShowcase.types";
 
-const CarouselShowcase: React.FC = () => {
+
+
+const CarouselShowcase: React.FC<CarouselShowcaseProps> = ({carouselLabel}) => {
   const { animeList } = useAnimeApi(); //*TODO - refactor when i can no need to prop it i will make context out of the anime api
   const [currentPage, setCurrentPage] = useState<number>(0);
   const swiperRef = useRef<any>(null);
@@ -45,7 +48,7 @@ const CarouselShowcase: React.FC = () => {
     >
       <CarouselPagination
         currentPage={currentPage}
-        label="Trending this season"
+        label={carouselLabel}
         pageCount={animeList ? animeList.length - 4 : 21}
         onPageChange={handlePageChange}
       />

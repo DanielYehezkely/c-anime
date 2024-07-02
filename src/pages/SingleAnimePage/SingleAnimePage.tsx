@@ -5,6 +5,8 @@ import {
   CardMedia,
   Typography,
   Button,
+  TextareaAutosize,
+  Divider,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
@@ -12,6 +14,13 @@ import { useAnimeApi } from "../../hooks/useAnimeApi";
 import { Anime } from "../../types/Anime";
 import { Loader } from "../../components";
 import getAnimeBannerByTitle from "../../services/animeMalApi/animeAnilistService";
+import {
+  AccountCircleRounded,
+  ThumbDown as DislikeIcon,
+  ThumbUp as LikeIcon,
+} from "@mui/icons-material";
+
+import CarouselShowcase from "../../components/CarouselShowcase/CarouselShowcase";
 
 const SingleAnimePage: React.FC = () => {
   const { animeId } = useParams<{ animeId: string }>();
@@ -61,7 +70,7 @@ const SingleAnimePage: React.FC = () => {
           filter: "blur(1px)",
           backgroundImage: `
             linear-gradient(to right, #000000 10%, rgba(0, 0, 0, 0.425) 50%),
-            linear-gradient(to top, #0c0c0c, rgba(0, 0, 0, 0) 20%),
+            linear-gradient(to top, #0C0C0C, #00000000 20%),
             url(${bannerImageBackground || anime.images.jpg.large_image_url})
           `,
           backgroundPosition: "center",
@@ -129,7 +138,7 @@ const SingleAnimePage: React.FC = () => {
           height: "27rem",
           zIndex: 2,
           display: "flex",
-          padding: "0 0 0 2rem",
+          padding: "0",
         }}
       >
         <CardContent
@@ -168,14 +177,19 @@ const SingleAnimePage: React.FC = () => {
             }}
           >
             <Button
-              variant="contained"
               color="primary"
               component={Link}
-              to={anime.trailer.url}
+              to={`/trailer/${anime.mal_id}`} //*? Putted template literal here and the overload prob was gone .
               sx={{
                 color: "white",
                 fontSize: "1.4rem",
-              }} //*TODO - make condition where there is no trailer maybe give demographics
+                border: "1px solid white",
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  color: "gold",
+                  borderColor: "gold",
+                },
+              }}
             >
               Watch Trailer
             </Button>
@@ -192,9 +206,111 @@ const SingleAnimePage: React.FC = () => {
             >
               Read Manga
             </Button>
+            <Button
+              variant="contained"
+              color="success"
+              sx={{
+                color: "white",
+                fontSize: "1.4rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+              }}
+            >
+              Like <LikeIcon />
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              sx={{
+                color: "white",
+                fontSize: "1.4rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+              }}
+            >
+              Unlike <DislikeIcon />
+            </Button>
+            <Button
+              sx={{
+                color: "white",
+                fontSize: "1.4rem",
+                border: "1px solid transparent",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                bgcolor: "#806900",
+                "&:hover": {
+                  color: "#d47100",
+                  borderColor: "gold",
+                  bgcolor: "#dadada",
+                },
+              }}
+            >
+              Add to watch list
+            </Button>
           </Box>
         </CardContent>
       </Box>
+      <Box
+        component="div"
+        sx={{
+          width: "95%",
+          zIndex: 2,
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+          padding: "2rem 0 2rem 2rem",
+          bgcolor: "rgba(0, 0, 0, 0.7)",
+          borderRadius: "1rem",
+          marginTop: "2rem",
+        }}
+      >
+        <Typography variant="h5" color="white">
+          0 Comments
+          {/* //*TODO - put the number of comments based on api comments array */}
+        </Typography>
+        <Divider sx={{ borderColor: "white" }} />
+        <Box
+          component="form"
+          sx={{ display: "flex", gap: "1rem", alignItems: "center" }}
+        >
+          <AccountCircleRounded sx={{ color: "white", fontSize: "4rem" }} />
+          <TextareaAutosize //*TODO - user image will be here next to comment
+            minRows={2}
+            placeholder="Leave a comment"
+            style={{
+              width: "90%",
+              borderRadius: "0.5rem",
+              padding: "1rem",
+              fontSize: "1rem",
+              borderColor: "white",
+              backgroundColor: "white",
+            }}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ fontSize: "1rem", bgcolor: "#6327d1" }}
+          >
+            Submit
+          </Button>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "1rem",
+            marginTop: "2rem",
+            color: "white",
+          }}
+        >
+          No Commets Yet
+        </Box>
+      </Box>
+      <CarouselShowcase carouselLabel={'Recommendations'}/>
     </Container>
   );
 };

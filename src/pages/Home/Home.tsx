@@ -30,7 +30,7 @@ const Home: React.FC = () => {
       >
         <HeaderBox />
         <SearchBox />
-       <CarouselShowcase/>
+       <CarouselShowcase carouselLabel="Trending this season"/>
       </Container>
     </>
   );

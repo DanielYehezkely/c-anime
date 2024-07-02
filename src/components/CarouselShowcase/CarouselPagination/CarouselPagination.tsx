@@ -26,6 +26,7 @@ const CarouselPagination: React.FC<CarouselPaginationProps> = ({
         height: "7.5rem",
         width: "100%",
         paddingLeft: "1.5rem",
+        zIndex: 6
       }}
     >
       <h1 className="carousel-label">{label}</h1>
