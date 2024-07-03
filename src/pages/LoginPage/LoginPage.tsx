@@ -16,7 +16,7 @@ import {
   createTheme,
   ThemeProvider,
 } from "@mui/material";
-import { FcGoogle } from "react-icons/fc";
+// import { FcGoogle } from "react-icons/fc";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { TabPanelProps } from "./LoginPage.types";
 import { useAuth } from "../../context/AuthContext/AuthContext";
@@ -47,7 +47,7 @@ const theme = createTheme();
 
 export default function SignInOutContainer() {
   const [tabValue, setTabValue] = useState(0);
-  const { loginWithGoogle, loginWithEmail, user, logout } = useAuth(); 
+  const {  loginWithEmail, user, logout } = useAuth(); 
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -82,14 +82,14 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
   }
 };
 
-  const handleGoogleSignIn = async () => {
-    try {
-      await loginWithGoogle(); 
-      console.log(user); 
-    } catch (error) {
-      console.error("Error signing in with Google:", error);
-    }
-  };
+  // const handleGoogleSignIn = async () => {
+  //   try {
+  //     await loginWithGoogle(); 
+  //     console.log(user); 
+  //   } catch (error) {
+  //     console.error("Error signing in with Google:", error);
+  //   }
+  // };
 
   return (
     <ThemeProvider theme={theme}>
@@ -176,7 +176,7 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
               >
                 Sign In
               </Button>
-              <Button
+              {/* <Button
                 startIcon={<FcGoogle />}
                 fullWidth
                 variant="outlined"
@@ -184,7 +184,7 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
                 sx={{ mt: 1, mb: 2 }}
               >
                 Sign In with Google
-              </Button>
+              </Button> */}
               <Button
                 fullWidth
                 variant="outlined"
@@ -262,7 +262,7 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
               >
                 Sign Up
               </Button>
-              <Button
+              {/* <Button
                 startIcon={<FcGoogle />}
                 fullWidth
                 variant="outlined"
@@ -270,7 +270,7 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
                 sx={{ mt: 1, mb: 2 }}
               >
                 Sign Up with Google
-              </Button>
+              </Button> */}
             </Box>
           </TabPanel>
         </Box>
