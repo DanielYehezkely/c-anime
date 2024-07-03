@@ -47,7 +47,7 @@ const theme = createTheme();
 
 export default function SignInOutContainer() {
   const [tabValue, setTabValue] = useState(0);
-  const {  loginWithEmail, user, logout } = useAuth(); 
+  const {  loginWithEmail, user, logout, signUpWithEmail } = useAuth(); 
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -75,10 +75,17 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
   }
 
   try {
-    await loginWithEmail(email, password);
+    if (tabValue === 0) {
+      // Sign In tab
+      await loginWithEmail(email, password);
+    } else if (tabValue === 1) {
+      // Sign Up tab
+      await signUpWithEmail(email, password);
+      console.log(user);
+    }
     console.log(user);
   } catch (error) {
-    console.error("Error signing in with email and password:", error);
+    console.error("Authentication error:", error);
   }
 };
 

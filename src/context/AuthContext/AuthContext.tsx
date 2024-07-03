@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-
 import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
+  createUserWithEmailAndPassword, // Import the createUserWithEmailAndPassword function
   User,
 } from "firebase/auth";
 import { AuthContextProps } from "./AuthContext.type";
@@ -11,9 +11,9 @@ import { auth } from "../../config/firebaseConfig";
 import { AUTH_PROVIDER_ERR_MSG } from "../../constants/globalConstants";
 import { ContextProviderProp } from "../../types/Context";
 
-const AuthContext = createContext<AuthContextProps | undefined>(undefined); 
+const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => { 
+export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<any>(null);
@@ -35,7 +35,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
     } catch (error: unknown) {
-      setError(error instanceof Error ? error : new Error(String(error))); // *? Why error is so problematic ? 
+      setError(error instanceof Error ? error : new Error(String(error)));
     } finally {
       setLoading(false);
     }
@@ -55,7 +55,29 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       );
       setUser(userCredential.user);
     } catch (error: any) {
-      setError(`Error: ${error}`); // *? Why error is so problematic ?
+      console.error("Firebase error:", error.message);
+      setError(`Firebase Error: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const signUpWithEmail = async (
+    email: string,
+    password: string
+  ): Promise<void> => {
+    setLoading(true);
+    setError(null);
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      setUser(userCredential.user);
+    } catch (error: any) {
+      console.error("Firebase error:", error.message);
+      setError(`Firebase Error: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -68,7 +90,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       await auth.signOut();
       setUser(null);
     } catch (error: unknown) {
-      setError(error instanceof Error ? error : new Error(String(error))); // *? Why error is so problematic ?
+      setError(error instanceof Error ? error : new Error(String(error)));
     } finally {
       setLoading(false);
     }
@@ -76,7 +98,15 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, loginWithGoogle, loginWithEmail, logout, loading, error }}
+      value={{
+        user,
+        loginWithGoogle,
+        loginWithEmail,
+        signUpWithEmail,
+        logout,
+        loading,
+        error,
+      }}
     >
       {children}
     </AuthContext.Provider>
@@ -86,7 +116,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
 export const useAuth = (): AuthContextProps => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error(AUTH_PROVIDER_ERR_MSG); 
+    throw new Error(AUTH_PROVIDER_ERR_MSG);
   }
   return context;
 };
