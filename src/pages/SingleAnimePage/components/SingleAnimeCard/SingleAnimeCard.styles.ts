@@ -25,6 +25,21 @@ export const SynopsisTypography = styled(Typography)`
   font-size: 1.4rem;
   max-height: 70%;
   overflow: scroll;
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 0px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #ffffff50;
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #ffffffef;
+  }
 `;
 
 export const YearTypography = styled(Typography)`
