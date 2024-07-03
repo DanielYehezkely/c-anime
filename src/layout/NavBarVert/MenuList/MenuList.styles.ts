@@ -59,33 +59,6 @@ export const StyledListItem = styled(ListItem)(
   `
 );
 
-export const StyledBottomListItem = styled(ListItem)(
-  ({ theme }) => css`
-    width: 5rem;
-    border-radius: 1rem;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    &:hover {
-      background-color: #33333369;
-      & .MuiListItemIcon-root {
-        color: #fff;
-      }
-      & .MuiTypography-root {
-        color: #fff;
-      }
-    }
-    &.Mui-selected,
-    &.active {
-      background-color: #33333369;
-    }
-    ${theme.breakpoints.down("md")} {
-      width: 100%;
-    }
-  `
-);
-
 export const StyledListItemIcon = styled(ListItemIcon)(
   css`
     color: #727272;

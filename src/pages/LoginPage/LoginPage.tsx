@@ -111,7 +111,7 @@ const LoginPage: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       {loading && <Loader actionLabel="Authenticating..." />}
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" >
         <Box
           position="absolute"
           component="img"

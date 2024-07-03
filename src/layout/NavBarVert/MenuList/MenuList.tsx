@@ -1,20 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Tooltip } from "@mui/material";
-import {
-  BOTTOM_MENU_ITEMS,
-  VERTICAL_MENU_ITEMS,
-} from "../../../constants/navbarConstants";
+import { Avatar, Typography, Button, Box } from "@mui/material";
+import { VERTICAL_MENU_ITEMS } from "../../../constants/navbarConstants";
 import NavLogo from "../NavLogo/NavLogo";
 import {
   StyledListItemIcon,
   StyledListItemText,
   StyledListItem,
-  StyledBottomListItem,
   StyledTopList,
   StyledBottomList,
 } from "./MenuList.styles";
 import { useAuth } from "../../../context/AuthContext/AuthContext";
+import { AccountCircle } from "@mui/icons-material";
+import { Popover } from "react-tiny-popover";
+import { Loader } from "../../../components";
+
 
 interface MenuListProps {
   onItemClick: (pageName: string) => void;
@@ -27,11 +27,25 @@ const MenuList: React.FC<MenuListProps> = ({
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user, loading } = useAuth();
   const isActive = (path: string) => location.pathname === path;
+
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
+  const handleAvatarClick = () => {
+    setIsPopoverOpen(!isPopoverOpen);
+  };
+
+  const handleLogout = () => {
+    logout(() => {
+      setIsPopoverOpen(false);
+      navigate("/login");
+    });
+  };
 
   return (
     <>
+    {loading && <Loader actionLabel="Logging out ..."/>}
       <StyledTopList>
         {isMobile && <NavLogo />}
         {VERTICAL_MENU_ITEMS.map((item, index) => (
@@ -40,66 +54,76 @@ const MenuList: React.FC<MenuListProps> = ({
             onClick={() => onItemClick(item.text)}
             className={isActive(item.path || "") ? "active" : ""}
           >
-            {!isMobile ? (
-              <Tooltip
-                title={item.text}
-                placement="right"
-                componentsProps={{
-                  tooltip: {
-                    sx: {
-                      backgroundColor: "#333",
-                      color: "white",
-                      fontSize: "1.6rem",
-                      borderRadius: "0.5rem",
-                      padding: "0.5rem",
-                    },
-                  },
-                }}
-              >
-                <StyledListItemIcon>{item.icon}</StyledListItemIcon>
-              </Tooltip>
-            ) : (
-              <StyledListItemIcon>{item.icon}</StyledListItemIcon>
-            )}
+            <StyledListItemIcon>{item.icon}</StyledListItemIcon>
             {isMobile && <StyledListItemText primary={item.text} />}
           </StyledListItem>
         ))}
       </StyledTopList>
 
       <StyledBottomList>
-        {BOTTOM_MENU_ITEMS.map((item, index) => (
-          <StyledBottomListItem
-            key={index}
-            onClick={()=> logout(()=> navigate('/login'))}
-            className={isActive(item.path || "") ? "active" : ""}
-          >
-            {!isMobile ? (
-              <Tooltip
-                title={item.text}
-                placement="right"
-                componentsProps={{
-                  tooltip: {
-                    sx: {
-                      backgroundColor: "#333",
-                      color: "white",
-                      fontSize: "1.6rem",
-                      borderRadius: "0.5rem",
-                      padding: "0.5rem",
+        <Popover
+          containerStyle={{ zIndex: "10" }}
+          positions={["top"]}
+          isOpen={isPopoverOpen}
+          padding={10}
+          onClickOutside={() => setIsPopoverOpen(false)}
+          content={
+            <Box
+              sx={{
+                backgroundColor: "#2e2c2c",
+                color: "#fdfdfd",
+                padding: "1rem",
+                borderRadius: "0.5rem",
+                boxShadow: "0px 0px 1px 1px rgba(253, 253, 253, 0.5)",
+                marginLeft: "1rem",
+              }}
+            >
+              <Typography variant="body1">
+                Are you sure you want to sign out?
+              </Typography>
+              <Box mt={2} display="flex" justifyContent="space-between">
+                <Button
+                  onClick={handleLogout}
+                  sx={{
+                    color: "white",
+                    fontSize: "1.4rem",
+                    backgroundColor: "#b93f3f60",
+                    "&:hover": {
+                      bgcolor: "#bd0606d6",
                     },
-                  },
-                }}
-              >
-                <StyledListItemIcon>{item.icon}</StyledListItemIcon>
-              </Tooltip>
-            ) : (
-              <StyledListItemIcon>{item.icon}</StyledListItemIcon>
-            )}
-            {isMobile && <StyledListItemText primary={item.text} />}
-          </StyledBottomListItem>
-        ))}
+                  }}
+                >
+                  Yes
+                </Button>
+                <Button
+                    onClick={() => setIsPopoverOpen(false)}
+                  sx={{
+                    color: "white",
+                    fontSize: "1.4rem",
+                    backgroundColor: "#2eb93a5f",
+                    "&:hover": {
+                      bgcolor: "#07d823a7",
+                    },
+                  }}
+                >
+                  No
+                </Button>
+              </Box>
+            </Box>
+          }
+        >
+          <Avatar
+            alt="user-avatar"
+            src={user && user.photoURL ? user.photoURL : ""}
+            onClick={handleAvatarClick}
+            style={{ cursor: "pointer" }}
+          >
+            {!user || !user.photoURL ? <AccountCircle /> : null}
+          </Avatar>
+        </Popover>
       </StyledBottomList>
     </>
   );
 };
-
 export default MenuList;
+
