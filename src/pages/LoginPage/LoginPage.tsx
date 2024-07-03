@@ -53,7 +53,6 @@ const LoginPage: React.FC = () => {
   const {
     loginWithEmail,
     user,
-    logout,
     signUpWithEmail,
     loading,
     loginWithGoogle,
