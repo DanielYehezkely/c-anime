@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Button,
@@ -21,6 +21,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { TabPanelProps } from "./LoginPage.types";
 import { useAuth } from "../../context/AuthContext/AuthContext";
 import { Loader } from "../../components";
+import { useNavigate } from "react-router";
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -46,51 +47,63 @@ function a11yProps(index: number) {
 
 const theme = createTheme();
 
-export default function SignInOutContainer() {
+const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
   const [tabValue, setTabValue] = useState(0);
-  const {  loginWithEmail, user, logout, signUpWithEmail, loading, loginWithGoogle } = useAuth(); 
+  const {
+    loginWithEmail,
+    user,
+    logout,
+    signUpWithEmail,
+    loading,
+    loginWithGoogle,
+  } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
 
-const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  event.preventDefault();
-  const data = new FormData(event.currentTarget);
-  const email = data.get("email") as string;
-  const password = data.get("password") as string;
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const email = data.get("email") as string;
+    const password = data.get("password") as string;
 
-  if (!email || !password) {
-    console.error("Email and password are required.");
-    return;
-  }
-
-  if (!/\S+@\S+\.\S+/.test(email)) {
-    console.error("Email format is invalid.");
-    return;
-  }
-
-  if (password.length < 6) {
-    console.error("Password should be at least 6 characters long.");
-    return;
-  }
-
-  try {
-    if (tabValue === 0) {
-      // Sign In tab
-      await loginWithEmail(email, password);
-    } else if (tabValue === 1) {
-      // Sign Up tab
-      await signUpWithEmail(email, password);
+    if (!email || !password) {
+      console.error("Email and password are required.");
+      return;
     }
-  } catch (error) {
-    console.error("Authentication error:", error);
-  }
-};
+
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      console.error("Email format is invalid.");
+      return;
+    }
+
+    if (password.length < 6) {
+      console.error("Password should be at least 6 characters long.");
+      return;
+    }
+
+    try {
+      if (tabValue === 0) {
+        await loginWithEmail(email, password, () => navigate("/"));
+      } else if (tabValue === 1) {
+        await signUpWithEmail(email, password, () => setTabValue(0));
+      }
+    } catch (error) {
+      console.error("Authentication error:", error);
+    }
+  };
 
   const handleGoogleSignIn = async () => {
     try {
-      await loginWithGoogle();  
+      await loginWithGoogle(() => navigate("/"));
     } catch (error) {
       console.error("Error signing in with Google:", error);
     }
@@ -98,7 +111,7 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 
   return (
     <ThemeProvider theme={theme}>
-        {loading && <Loader actionLabel="Authenticating..."/>}
+      {loading && <Loader actionLabel="Authenticating..." />}
       <Container component="main" maxWidth="xs">
         <Box
           position="absolute"
@@ -191,22 +204,6 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
               >
                 Sign In with Google
               </Button>
-              <Button
-                fullWidth
-                variant="outlined"
-                onClick={() => logout()}
-                sx={{ mt: 1, mb: 2 }}
-              >
-                logout
-              </Button>
-              <Button
-                fullWidth
-                variant="outlined"
-                onClick={() => console.log(user)}
-                sx={{ mt: 1, mb: 2 }}
-              >
-                log
-              </Button>
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">
@@ -283,7 +280,6 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       </Container>
     </ThemeProvider>
   );
-}
- 
+};
 
-
+export default LoginPage;

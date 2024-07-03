@@ -22,6 +22,8 @@ const VerticalNavBar: React.FC = () => {
     navigateToPage(pageName);
   };
 
+
+
   return (
     <>
       <StyledAppBar position="fixed">
@@ -42,7 +44,7 @@ const VerticalNavBar: React.FC = () => {
       </StyledAppBar>
 
       <StyledDrawer anchor="left" open={drawerOpen} onClose={handleDrawerToggle}>
-        <MenuList onItemClick={handleIconClick} />
+        <MenuList onItemClick={handleIconClick}/>
       </StyledDrawer>
     </>
   );

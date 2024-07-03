@@ -27,7 +27,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  const loginWithGoogle = async () => {
+  const loginWithGoogle = async (navigateCallback: () => void) => {
     setLoading(true);
     setError(null);
     const provider = new GoogleAuthProvider();
@@ -35,6 +35,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       const result = await signInWithPopup(auth, provider);
       console.log(result.user);
       setUser(result.user);
+      navigateCallback(); // Call the navigation callback
     } catch (error: unknown) {
       setError(error instanceof Error ? error : new Error(String(error)));
     } finally {
@@ -44,7 +45,8 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
 
   const loginWithEmail = async (
     email: string,
-    password: string
+    password: string,
+    navigateCallback: () => void
   ): Promise<void> => {
     setLoading(true);
     setError(null);
@@ -56,6 +58,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       );
       console.log(userCredential.user);
       setUser(userCredential.user);
+      navigateCallback(); // Call the navigation callback
     } catch (error: any) {
       console.error("Firebase error:", error.message);
       setError(`Firebase Error: ${error.message}`);
@@ -66,7 +69,8 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
 
   const signUpWithEmail = async (
     email: string,
-    password: string
+    password: string,
+    navigateCallback: () => void
   ): Promise<void> => {
     setLoading(true);
     setError(null);
@@ -77,6 +81,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
         password
       );
       setUser(userCredential.user);
+      navigateCallback(); // Call the navigation callback
     } catch (error: any) {
       console.error("Firebase error:", error.message);
       setError(`Firebase Error: ${error.message}`);
@@ -85,13 +90,14 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
     }
   };
 
-  const logout = async (): Promise<void> => {
+  const logout = async (navigateCallback: () => void): Promise<void> => {
     setLoading(true);
     setError(null);
     try {
       await auth.signOut();
       console.log(`user: ${user} has signed out .`);
       setUser(null);
+      navigateCallback(); // Call the navigation callback
     } catch (error: unknown) {
       setError(error instanceof Error ? error : new Error(String(error)));
     } finally {

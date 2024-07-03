@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Tooltip } from "@mui/material";
 import {
   BOTTOM_MENU_ITEMS,
@@ -14,6 +14,7 @@ import {
   StyledTopList,
   StyledBottomList,
 } from "./MenuList.styles";
+import { useAuth } from "../../../context/AuthContext/AuthContext";
 
 interface MenuListProps {
   onItemClick: (pageName: string) => void;
@@ -25,7 +26,8 @@ const MenuList: React.FC<MenuListProps> = ({
   isMobile = true,
 }) => {
   const location = useLocation();
-
+  const navigate = useNavigate();
+  const { logout } = useAuth();
   const isActive = (path: string) => location.pathname === path;
 
   return (
@@ -68,7 +70,7 @@ const MenuList: React.FC<MenuListProps> = ({
         {BOTTOM_MENU_ITEMS.map((item, index) => (
           <StyledBottomListItem
             key={index}
-            onClick={() => onItemClick(item.text)}
+            onClick={()=> logout(()=> navigate('/login'))}
             className={isActive(item.path || "") ? "active" : ""}
           >
             {!isMobile ? (

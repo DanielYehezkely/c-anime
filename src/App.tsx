@@ -1,10 +1,15 @@
-import {RouterProvider, createBrowserRouter} from 'react-router-dom'
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import SharedLayout from "./layout/SharedLayout";
-import { Home, NotFoundPage, SingleAnimePage, WatchListPage,LoginPage } from "./pages";
-
+import {
+  Home,
+  NotFoundPage,
+  SingleAnimePage,
+  WatchListPage,
+  LoginPage,
+} from "./pages";
 import ProtectedRoute from "./routes/protectedRout";
+import AuthRedirect from "./routes/authRedirect";
 
-const App:React.FC = () => {
 
 const router = createBrowserRouter([
   {
@@ -19,7 +24,7 @@ const router = createBrowserRouter([
         path: "singleAnime/:animeId",
         element: (
           <ProtectedRoute>
-            <SingleAnimePage  />
+            <SingleAnimePage />
           </ProtectedRoute>
         ),
       },
@@ -35,20 +40,20 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <LoginPage/>
+    element: (
+      <AuthRedirect>
+        <LoginPage />
+      </AuthRedirect>
+    ),
   },
   {
     path: "*",
-    element: <NotFoundPage/>
-  }
+    element: <NotFoundPage />,
+  },
 ]);
 
-  return (
-    <RouterProvider router={router}/>
-  );
-    
-  
+const App: React.FC = () => {
+  return <RouterProvider router={router} />;
 };
 
 export default App;
-
