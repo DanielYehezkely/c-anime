@@ -80,6 +80,8 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
         email,
         password
       );
+      console.log(userCredential);
+      console.log(userCredential.user);
       setUser(userCredential.user);
       navigateCallback(); // Call the navigation callback
     } catch (error: any) {
