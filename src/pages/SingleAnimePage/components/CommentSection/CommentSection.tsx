@@ -36,24 +36,27 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   const { user, addComment } = useAuth();
   const [comment, setComment] = useState("");
   const [userAvatars, setUserAvatars] = useState<{ [key: string]: string }>({});
-
+  
   useEffect(() => {
-    const fetchUserAvatars = async () => {
+    const fetchUserDetails = async () => {
       const avatars: { [key: string]: string } = {};
+      const names: { [key: string]: string } = {};
       for (const comment of comments) {
-        if (!avatars[comment.userId]) {
+        if (!avatars[comment.userId] || !names[comment.userId]) {
           const userRef = doc(db, "users", comment.userId);
           const userDoc = await getDoc(userRef);
           if (userDoc.exists()) {
             const userData = userDoc.data();
             avatars[comment.userId] = userData.photoURL || "";
+            names[comment.userId] = userData.name || "";
           }
         }
       }
       setUserAvatars(avatars);
+      
     };
 
-    fetchUserAvatars();
+    fetchUserDetails();
   }, [comments]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLDivElement>) => {
@@ -68,7 +71,6 @@ const CommentSection: React.FC<CommentSectionProps> = ({
     setComments((prevComments) => [...prevComments, newComment]);
     setComment("");
   };
-
 
   return (
     <CommentsSectionContainer sx={{ bgcolor: "transparent" }}>
@@ -89,12 +91,21 @@ const CommentSection: React.FC<CommentSectionProps> = ({
         comments.map((commentObj, index) => (
           <Box key={index} display="flex" alignItems="center" mb={2} mt={2}>
             <Avatar
-              src={userAvatars[commentObj.userId]}
+              src={
+                userAvatars[commentObj.userId] || " "
+              }
               alt="user-avatar"
-              sx={{ mr: 2 , alignSelf:"flex-start"}}
+              sx={{ mr: 2, alignSelf: "flex-start" }}
             />
             <Box>
-              <Box sx={{ display: "flex",alignItems:"center", gap: "1rem", mb: "1rem" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "1rem",
+                  mb: "1rem",
+                }}
+              >
                 <Typography sx={{ color: "white", fontSize: "1.4rem" }}>
                   {user?.displayName ? user.displayName : user?.email}
                 </Typography>
@@ -118,3 +129,5 @@ const CommentSection: React.FC<CommentSectionProps> = ({
 };
 
 export default CommentSection;
+
+
