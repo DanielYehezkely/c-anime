@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { useAnimeApi } from "../../hooks/useAnimeApi";
 import { Anime } from "../../types/Anime";
 import getAnimeBannerByTitle from "../../services/animeMalApi/animeAnilistService";
+import { getDoc, doc } from "firebase/firestore";
+import { db } from "../../config/firebaseConfig";
 
 import { Loader } from "../../components";
 import {
@@ -26,6 +28,7 @@ const SingleAnimePage: React.FC = () => {
     string | null
   >(null);
   const [scrollY, setScrollY] = useState<number>(0);
+  const [comments, setComments] = useState<any[]>([]);
 
   const anime = animeList.find(
     (anime: Anime) => anime.mal_id === Number(animeId)
@@ -50,8 +53,20 @@ const SingleAnimePage: React.FC = () => {
     fetchAnimeBannerImage();
   }, [anime]);
 
-  const backgroundColor =
-    scrollY > 150 ? "0.1" : 1 ;
+  useEffect(() => {
+    const fetchComments = async () => {
+      if (animeId) {
+        const commentsRef = doc(db, "comments", animeId);
+        const commentsDoc = await getDoc(commentsRef);
+        if (commentsDoc.exists()) {
+          setComments(commentsDoc.data().comments);
+        }
+      }
+    };
+    fetchComments();
+  }, [animeId]);
+
+  const backgroundColor = scrollY > 150 ? "0.1" : 1;
 
   if (!anime) {
     return <Loader actionLabel="fetching..." />;
@@ -73,7 +88,7 @@ const SingleAnimePage: React.FC = () => {
       <SingleAnimeCard anime={anime} />
       <SingleAnimeData anime={anime} />
       <SingleAnimeActionBtns anime={anime} />
-      <CommentSection />
+      <CommentSection animeId={String(anime.mal_id)} comments={comments} />
       <CarouselShowcase carouselLabel={"Recommendations"} />
       <CarouselShowcase carouselLabel={"Relations"} />
     </SingleAnimePageContainer>

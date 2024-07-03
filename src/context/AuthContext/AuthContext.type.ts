@@ -19,6 +19,11 @@ export interface AuthContextProps {
   likeAnime: (animeId: string) => Promise<void>;
   dislikeAnime: (animeId: string) => Promise<void>;
   addComment: (animeId: string, comment: string) => Promise<void>;
+  editComment: (
+    animeId: string,
+    commentId: string,
+    updatedComment: string
+  ) => Promise<void>;
   loading: boolean;
   error: any;
 }

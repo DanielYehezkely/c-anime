@@ -166,17 +166,48 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       dislikedAnimes: arrayUnion(animeId),
     });
   };
+  
+const addComment = async (animeId: string, comment: string) => {
+  if (!user) return;
+  const commentsRef = doc(db, "comments", animeId);
+  const newComment = {
+    userId: user.uid,
+    comment,
+    timestamp: new Date(),
+  };
 
-  const addComment = async (animeId: string, comment: string) => {
+  const commentsDoc = await getDoc(commentsRef);
+  if (commentsDoc.exists()) {
+    await updateDoc(commentsRef, {
+      comments: arrayUnion(newComment),
+    });
+  } else {
+    await setDoc(commentsRef, {
+      comments: [newComment],
+    });
+  }
+};
+
+
+  const editComment = async (
+    animeId: string,
+    commentId: string,
+    updatedComment: string
+  ) => {
     if (!user) return;
     const commentsRef = doc(db, "comments", animeId);
-    await updateDoc(commentsRef, {
-      comments: arrayUnion({
-        userId: user.uid,
-        comment,
-        timestamp: new Date(),
-      }),
-    });
+    const commentsDoc = await getDoc(commentsRef);
+    if (commentsDoc.exists()) {
+      const comments = commentsDoc.data().comments;
+      const commentIndex = comments.findIndex(
+        (c: any) => c.id === commentId && c.userId === user.uid
+      );
+      if (commentIndex > -1) {
+        comments[commentIndex].comment = updatedComment;
+        comments[commentIndex].timestamp = new Date();
+        await updateDoc(commentsRef, { comments });
+      }
+    }
   };
 
   return (
@@ -194,6 +225,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
         likeAnime,
         dislikeAnime,
         addComment,
+        editComment,
       }}
     >
       {children}

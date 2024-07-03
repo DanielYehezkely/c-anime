@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { AccountCircleRounded } from "@mui/icons-material";
 import {
   CommentsSectionContainer,
@@ -11,20 +11,24 @@ import {
 } from "./CommentSection.styles";
 import { useAuth } from "../../../../context/AuthContext/AuthContext";
 
-
-const CommentSection: React.FC<{ animeId: string }> = ({ animeId }) => {
+const CommentSection: React.FC<{ animeId: string; comments: any[] }> = ({
+  animeId,
+  comments,
+}) => {
   const { addComment } = useAuth();
-  const [comment, setComment] = React.useState("");
+  const [comment, setComment] = useState("");
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    addComment(animeId, comment);
-    setComment("");
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (comment.trim()) {
+      await addComment(animeId, comment);
+      setComment("");
+    }
   };
 
   return (
     <CommentsSectionContainer>
-      <CommentsHeader variant="h5">0 Comments</CommentsHeader>
+      <CommentsHeader variant="h5">{comments.length} Comments</CommentsHeader>
       <StyledDivider />
       <CommentsForm component="form" onSubmit={handleSubmit}>
         <AccountCircleRounded sx={{ color: "white", fontSize: "4rem" }} />
@@ -33,11 +37,19 @@ const CommentSection: React.FC<{ animeId: string }> = ({ animeId }) => {
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         />
-        <SubmitButton variant="contained" color="primary">
+        <SubmitButton variant="contained" color="primary" type="submit">
           Submit
         </SubmitButton>
       </CommentsForm>
-      <NoCommentsBox>No Comments Yet</NoCommentsBox>
+      {comments.length > 0 ? (
+        comments.map((commentObj, index) => (
+          <div key={index}>
+            <p>{commentObj.comment}</p>
+          </div>
+        ))
+      ) : (
+        <NoCommentsBox>No Comments Yet</NoCommentsBox>
+      )}
     </CommentsSectionContainer>
   );
 };
