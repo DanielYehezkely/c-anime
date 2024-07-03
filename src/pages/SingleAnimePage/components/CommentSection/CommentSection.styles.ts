@@ -2,8 +2,8 @@ import { styled } from "@mui/material/styles";
 import { Box, Typography, Divider, Button } from "@mui/material";
 
 export const CommentsSectionContainer = styled(Box)`
-  width: 70%;
-  align-self: center;
+  width: 60%;
+  align-self: flex-start;
   z-index: 2;
   display: flex;
   flex-direction: column;
@@ -12,6 +12,7 @@ export const CommentsSectionContainer = styled(Box)`
   background-color: rgba(0, 0, 0, 0.7);
   border-radius: 1rem;
   margin-top: 2rem;
+  padding-left: 9rem;
 `;
 
 export const CommentsHeader = styled(Typography)`

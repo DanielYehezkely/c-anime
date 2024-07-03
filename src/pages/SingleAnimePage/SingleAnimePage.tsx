@@ -88,7 +88,11 @@ const SingleAnimePage: React.FC = () => {
       <SingleAnimeCard anime={anime} />
       <SingleAnimeData anime={anime} />
       <SingleAnimeActionBtns anime={anime} />
-      <CommentSection animeId={String(anime.mal_id)} comments={comments} />
+      <CommentSection
+        animeId={String(anime.mal_id)}
+        comments={comments}
+        setComments={setComments}
+      />
       <CarouselShowcase carouselLabel={"Recommendations"} />
       <CarouselShowcase carouselLabel={"Relations"} />
     </SingleAnimePageContainer>

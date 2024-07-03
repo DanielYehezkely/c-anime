@@ -26,6 +26,8 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<any>(null);
 
+  console.log(user);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
@@ -40,17 +42,23 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  const createUserDocument = async (user: User) => {
-    const userRef = doc(db, "users", user.uid);
-    const docSnap = await getDoc(userRef);
-    if (!docSnap.exists()) {
-      await setDoc(userRef, {
-        watchlist: [],
-        likedAnimes: [],
-        dislikedAnimes: [],
-      });
-    }
-  };
+ const createUserDocument = async (user: User) => {
+   const userRef = doc(db, "users", user.uid);
+   const docSnap = await getDoc(userRef);
+   if (!docSnap.exists()) {
+     const displayName = user.displayName
+       ? user.displayName
+       : user.email
+       ? user.email.split("@")[0]
+       : "Anonymous";
+     await setDoc(userRef, {
+       name: displayName,
+       watchlist: [],
+       likedAnimes: [],
+       dislikedAnimes: [],
+     });
+   }
+ };
 
   const loginWithGoogle = async (navigateCallback: () => void) => {
     setLoading(true);
@@ -166,7 +174,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       dislikedAnimes: arrayUnion(animeId),
     });
   };
-  
+
 const addComment = async (animeId: string, comment: string) => {
   if (!user) return;
   const commentsRef = doc(db, "comments", animeId);
