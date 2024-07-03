@@ -7,7 +7,15 @@ import {
   User,
 } from "firebase/auth";
 import { AuthContextProps } from "./AuthContext.type";
-import { auth } from "../../config/firebaseConfig";
+import {
+  doc,
+  setDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+  getDoc,
+} from "firebase/firestore";
+import { auth, db } from "../../config/firebaseConfig";
 import { AUTH_PROVIDER_ERR_MSG } from "../../constants/globalConstants";
 import { ContextProviderProp } from "../../types/Context";
 
@@ -35,7 +43,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       const result = await signInWithPopup(auth, provider);
       console.log(result.user);
       setUser(result.user);
-      navigateCallback(); // Call the navigation callback
+      navigateCallback(); 
     } catch (error: unknown) {
       setError(error instanceof Error ? error : new Error(String(error)));
     } finally {
@@ -58,7 +66,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       );
       console.log(userCredential.user);
       setUser(userCredential.user);
-      navigateCallback(); // Call the navigation callback
+      navigateCallback();
     } catch (error: any) {
       console.error("Firebase error:", error.message);
       setError(`Firebase Error: ${error.message}`);
@@ -83,7 +91,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       console.log(userCredential);
       console.log(userCredential.user);
       setUser(userCredential.user);
-      navigateCallback(); // Call the navigation callback
+      navigateCallback(); 
     } catch (error: any) {
       console.error("Firebase error:", error.message);
       setError(`Firebase Error: ${error.message}`);
@@ -99,13 +107,57 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       await auth.signOut();
       console.log(`user: ${user} has signed out .`);
       setUser(null);
-      navigateCallback(); // Call the navigation callback
+      navigateCallback(); 
     } catch (error: unknown) {
       setError(error instanceof Error ? error : new Error(String(error)));
     } finally {
       setLoading(false);
     }
   };
+
+   const addToWatchlist = async (animeId: string) => {
+     if (!user) return;
+     const userRef = doc(db, "users", user.uid);
+     await updateDoc(userRef, {
+       watchlist: arrayUnion(animeId),
+     });
+   };
+
+   const removeFromWatchlist = async (animeId: string) => {
+     if (!user) return;
+     const userRef = doc(db, "users", user.uid);
+     await updateDoc(userRef, {
+       watchlist: arrayRemove(animeId),
+     });
+   };
+
+   const likeAnime = async (animeId: string) => {
+     if (!user) return;
+     const userRef = doc(db, "users", user.uid);
+     await updateDoc(userRef, {
+       likedAnimes: arrayUnion(animeId),
+     });
+   };
+
+   const dislikeAnime = async (animeId: string) => {
+     if (!user) return;
+     const userRef = doc(db, "users", user.uid);
+     await updateDoc(userRef, {
+       dislikedAnimes: arrayUnion(animeId),
+     });
+   };
+
+   const addComment = async (animeId: string, comment: string) => {
+     if (!user) return;
+     const commentsRef = doc(db, "comments", animeId);
+     await updateDoc(commentsRef, {
+       comments: arrayUnion({
+         userId: user.uid,
+         comment,
+         timestamp: new Date(),
+       }),
+     });
+   };
 
   return (
     <AuthContext.Provider
@@ -117,6 +169,11 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
         logout,
         loading,
         error,
+        addToWatchlist,
+        removeFromWatchlist,
+        likeAnime,
+        dislikeAnime,
+        addComment,
       }}
     >
       {children}
