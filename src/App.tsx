@@ -1,12 +1,10 @@
 import {RouterProvider, createBrowserRouter} from 'react-router-dom'
 import SharedLayout from "./layout/SharedLayout";
-import { Home, NotFoundPage, SingleAnimePage, WatchListPage } from "./pages";
+import { Home, NotFoundPage, SingleAnimePage, WatchListPage,LoginPage } from "./pages";
 
 import ProtectedRoute from "./routes/protectedRout";
 
 const App:React.FC = () => {
-
-
 
 const router = createBrowserRouter([
   {
@@ -34,6 +32,10 @@ const router = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <LoginPage/>
   },
   {
     path: "*",

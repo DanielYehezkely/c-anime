@@ -16,7 +16,7 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => { 
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<any>(null);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -54,8 +54,8 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
         password
       );
       setUser(userCredential.user);
-    } catch (error: unknown) {
-      setError(error instanceof Error ? error : new Error(String(error))); // *? Why error is so problematic ?
+    } catch (error: any) {
+      setError(`Error: ${error}`); // *? Why error is so problematic ?
     } finally {
       setLoading(false);
     }
