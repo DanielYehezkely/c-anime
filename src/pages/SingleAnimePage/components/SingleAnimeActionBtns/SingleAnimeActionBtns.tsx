@@ -12,6 +12,7 @@ import {
   UnlikeButton,
   WatchlistButton,
 } from "./SingleAnimeActionBtns.styles";
+import { useAuth } from "../../../../context/AuthContext/AuthContext";
 
 interface SingleAnimeActionBtnsProps {
   anime: Anime;
@@ -20,22 +21,27 @@ interface SingleAnimeActionBtnsProps {
 const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
   anime,
 }) => {
+  const { addToWatchlist, likeAnime, dislikeAnime } = useAuth();
+
+const handleAddToWatchlist = () => addToWatchlist(String(anime.mal_id));
+const handleLikeAnime = () => likeAnime(String(anime.mal_id));
+const handleDislikeAnime = () => dislikeAnime(String(anime.mal_id));
+
   return (
     <ActionButtonsContainer>
       <TrailerButton href={anime.trailer.url}>Watch Trailer</TrailerButton>
-      <MangaButton
-        variant="contained"
-        href={anime.url}
-      >
+      <MangaButton variant="contained" href={anime.url}>
         Read Manga
       </MangaButton>
-      <LikeButton variant="contained">
+      <LikeButton variant="contained" onClick={handleLikeAnime}>
         Like <LikeIcon />
       </LikeButton>
-      <UnlikeButton variant="contained">
+      <UnlikeButton variant="contained" onClick={handleDislikeAnime}>
         Unlike <DislikeIcon />
       </UnlikeButton>
-      <WatchlistButton>Add to watch list</WatchlistButton>
+      <WatchlistButton onClick={handleAddToWatchlist}>
+        Add to Watchlist
+      </WatchlistButton>
     </ActionButtonsContainer>
   );
 };

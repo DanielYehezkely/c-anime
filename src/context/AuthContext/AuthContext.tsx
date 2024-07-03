@@ -27,13 +27,30 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
   const [error, setError] = useState<any>(null);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setUser(user);
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        setUser(user);
+        await createUserDocument(user);
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
+
+  const createUserDocument = async (user: User) => {
+    const userRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(userRef);
+    if (!docSnap.exists()) {
+      await setDoc(userRef, {
+        watchlist: [],
+        likedAnimes: [],
+        dislikedAnimes: [],
+      });
+    }
+  };
 
   const loginWithGoogle = async (navigateCallback: () => void) => {
     setLoading(true);
@@ -43,7 +60,8 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       const result = await signInWithPopup(auth, provider);
       console.log(result.user);
       setUser(result.user);
-      navigateCallback(); 
+      await createUserDocument(result.user);
+      navigateCallback();
     } catch (error: unknown) {
       setError(error instanceof Error ? error : new Error(String(error)));
     } finally {
@@ -66,6 +84,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       );
       console.log(userCredential.user);
       setUser(userCredential.user);
+      await createUserDocument(userCredential.user);
       navigateCallback();
     } catch (error: any) {
       console.error("Firebase error:", error.message);
@@ -91,7 +110,8 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       console.log(userCredential);
       console.log(userCredential.user);
       setUser(userCredential.user);
-      navigateCallback(); 
+      await createUserDocument(userCredential.user);
+      navigateCallback();
     } catch (error: any) {
       console.error("Firebase error:", error.message);
       setError(`Firebase Error: ${error.message}`);
@@ -107,7 +127,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       await auth.signOut();
       console.log(`user: ${user} has signed out .`);
       setUser(null);
-      navigateCallback(); 
+      navigateCallback();
     } catch (error: unknown) {
       setError(error instanceof Error ? error : new Error(String(error)));
     } finally {
@@ -115,49 +135,49 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
     }
   };
 
-   const addToWatchlist = async (animeId: string) => {
-     if (!user) return;
-     const userRef = doc(db, "users", user.uid);
-     await updateDoc(userRef, {
-       watchlist: arrayUnion(animeId),
-     });
-   };
+  const addToWatchlist = async (animeId: string) => {
+    if (!user) return;
+    const userRef = doc(db, "users", user.uid);
+    await updateDoc(userRef, {
+      watchlist: arrayUnion(animeId),
+    });
+  };
 
-   const removeFromWatchlist = async (animeId: string) => {
-     if (!user) return;
-     const userRef = doc(db, "users", user.uid);
-     await updateDoc(userRef, {
-       watchlist: arrayRemove(animeId),
-     });
-   };
+  const removeFromWatchlist = async (animeId: string) => {
+    if (!user) return;
+    const userRef = doc(db, "users", user.uid);
+    await updateDoc(userRef, {
+      watchlist: arrayRemove(animeId),
+    });
+  };
 
-   const likeAnime = async (animeId: string) => {
-     if (!user) return;
-     const userRef = doc(db, "users", user.uid);
-     await updateDoc(userRef, {
-       likedAnimes: arrayUnion(animeId),
-     });
-   };
+  const likeAnime = async (animeId: string) => {
+    if (!user) return;
+    const userRef = doc(db, "users", user.uid);
+    await updateDoc(userRef, {
+      likedAnimes: arrayUnion(animeId),
+    });
+  };
 
-   const dislikeAnime = async (animeId: string) => {
-     if (!user) return;
-     const userRef = doc(db, "users", user.uid);
-     await updateDoc(userRef, {
-       dislikedAnimes: arrayUnion(animeId),
-     });
-   };
+  const dislikeAnime = async (animeId: string) => {
+    if (!user) return;
+    const userRef = doc(db, "users", user.uid);
+    await updateDoc(userRef, {
+      dislikedAnimes: arrayUnion(animeId),
+    });
+  };
 
-   const addComment = async (animeId: string, comment: string) => {
-     if (!user) return;
-     const commentsRef = doc(db, "comments", animeId);
-     await updateDoc(commentsRef, {
-       comments: arrayUnion({
-         userId: user.uid,
-         comment,
-         timestamp: new Date(),
-       }),
-     });
-   };
+  const addComment = async (animeId: string, comment: string) => {
+    if (!user) return;
+    const commentsRef = doc(db, "comments", animeId);
+    await updateDoc(commentsRef, {
+      comments: arrayUnion({
+        userId: user.uid,
+        comment,
+        timestamp: new Date(),
+      }),
+    });
+  };
 
   return (
     <AuthContext.Provider

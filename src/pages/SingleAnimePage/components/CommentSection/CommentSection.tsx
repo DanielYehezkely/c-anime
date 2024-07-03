@@ -9,18 +9,30 @@ import {
   SubmitButton,
   NoCommentsBox,
 } from "./CommentSection.styles";
+import { useAuth } from "../../../../context/AuthContext/AuthContext";
 
-const CommentSection: React.FC = () => {
+
+const CommentSection: React.FC<{ animeId: string }> = ({ animeId }) => {
+  const { addComment } = useAuth();
+  const [comment, setComment] = React.useState("");
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    addComment(animeId, comment);
+    setComment("");
+  };
+
   return (
     <CommentsSectionContainer>
-      <CommentsHeader variant="h5">
-        0 Comments
-        {/* //*TODO - put the number of comments based on api comments array */}
-      </CommentsHeader>
+      <CommentsHeader variant="h5">0 Comments</CommentsHeader>
       <StyledDivider />
-      <CommentsForm component="form">
+      <CommentsForm component="form" onSubmit={handleSubmit}>
         <AccountCircleRounded sx={{ color: "white", fontSize: "4rem" }} />
-        <CommentsInput placeholder="Leave a comment" />
+        <CommentsInput
+          placeholder="Leave a comment"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        />
         <SubmitButton variant="contained" color="primary">
           Submit
         </SubmitButton>
