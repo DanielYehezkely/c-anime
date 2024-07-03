@@ -16,10 +16,11 @@ import {
   createTheme,
   ThemeProvider,
 } from "@mui/material";
-// import { FcGoogle } from "react-icons/fc";
+import { FcGoogle } from "react-icons/fc";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { TabPanelProps } from "./LoginPage.types";
 import { useAuth } from "../../context/AuthContext/AuthContext";
+import { Loader } from "../../components";
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -47,7 +48,7 @@ const theme = createTheme();
 
 export default function SignInOutContainer() {
   const [tabValue, setTabValue] = useState(0);
-  const {  loginWithEmail, user, logout, signUpWithEmail } = useAuth(); 
+  const {  loginWithEmail, user, logout, signUpWithEmail, loading, loginWithGoogle } = useAuth(); 
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -81,25 +82,23 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     } else if (tabValue === 1) {
       // Sign Up tab
       await signUpWithEmail(email, password);
-      console.log(user);
     }
-    console.log(user);
   } catch (error) {
     console.error("Authentication error:", error);
   }
 };
 
-  // const handleGoogleSignIn = async () => {
-  //   try {
-  //     await loginWithGoogle(); 
-  //     console.log(user); 
-  //   } catch (error) {
-  //     console.error("Error signing in with Google:", error);
-  //   }
-  // };
+  const handleGoogleSignIn = async () => {
+    try {
+      await loginWithGoogle();  
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
+        {loading && <Loader actionLabel="Authenticating..."/>}
       <Container component="main" maxWidth="xs">
         <Box
           position="absolute"
@@ -183,7 +182,7 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
               >
                 Sign In
               </Button>
-              {/* <Button
+              <Button
                 startIcon={<FcGoogle />}
                 fullWidth
                 variant="outlined"
@@ -191,7 +190,7 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
                 sx={{ mt: 1, mb: 2 }}
               >
                 Sign In with Google
-              </Button> */}
+              </Button>
               <Button
                 fullWidth
                 variant="outlined"
@@ -269,7 +268,7 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
               >
                 Sign Up
               </Button>
-              {/* <Button
+              <Button
                 startIcon={<FcGoogle />}
                 fullWidth
                 variant="outlined"
@@ -277,7 +276,7 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
                 sx={{ mt: 1, mb: 2 }}
               >
                 Sign Up with Google
-              </Button> */}
+              </Button>
             </Box>
           </TabPanel>
         </Box>

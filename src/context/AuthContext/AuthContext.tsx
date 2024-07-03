@@ -3,7 +3,7 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
-  createUserWithEmailAndPassword, // Import the createUserWithEmailAndPassword function
+  createUserWithEmailAndPassword,
   User,
 } from "firebase/auth";
 import { AuthContextProps } from "./AuthContext.type";
@@ -33,6 +33,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
+      console.log(result.user);
       setUser(result.user);
     } catch (error: unknown) {
       setError(error instanceof Error ? error : new Error(String(error)));
@@ -53,6 +54,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
         email,
         password
       );
+      console.log(userCredential.user);
       setUser(userCredential.user);
     } catch (error: any) {
       console.error("Firebase error:", error.message);
@@ -88,6 +90,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
     setError(null);
     try {
       await auth.signOut();
+      console.log(`user: ${user} has signed out .`);
       setUser(null);
     } catch (error: unknown) {
       setError(error instanceof Error ? error : new Error(String(error)));
