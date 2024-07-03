@@ -49,7 +49,7 @@ export default function SignInOutContainer() {
   const [tabValue, setTabValue] = useState(0);
   const { loginWithGoogle, loginWithEmail, user, logout } = useAuth(); 
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
 
