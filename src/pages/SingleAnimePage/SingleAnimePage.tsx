@@ -76,19 +76,19 @@ const SingleAnimePage: React.FC = () => {
     };
     fetchAnimeBannerImage();
   }, [anime]);
-
-  useEffect(() => {
-    const fetchComments = async () => {
-      if (animeId) {
-        const commentsRef = doc(db, "comments", animeId);
-        const commentsDoc = await getDoc(commentsRef);
-        if (commentsDoc.exists()) {
-          setComments(commentsDoc.data().comments);
-        }
+  
+useEffect(() => {
+  const fetchComments = async () => {
+    if (animeId) {
+      const commentsRef = doc(db, "comments", animeId);
+      const commentsDoc = await getDoc(commentsRef);
+      if (commentsDoc.exists()) {
+        setComments(commentsDoc.data().comments);
       }
-    };
-    fetchComments();
-  }, [animeId]);
+    }
+  };
+  fetchComments();
+}, [animeId]);
 
   useEffect(() => {
     const fetchLikedDislikedStatus = async () => {

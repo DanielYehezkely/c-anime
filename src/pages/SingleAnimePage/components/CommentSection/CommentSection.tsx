@@ -30,7 +30,6 @@ interface Comment {
 
 interface CommentSectionProps {
   animeId: string;
-  animeTitle: string;
   comments: Comment[];
   setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
   liked: boolean;
@@ -39,7 +38,6 @@ interface CommentSectionProps {
 
 const CommentSection: React.FC<CommentSectionProps> = ({
   animeId,
-  animeTitle,
   comments,
   setComments,
   liked,
@@ -90,7 +88,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
       comment,
       timestamp: Timestamp.now(),
     };
-    await addComment(animeTitle, newComment.comment);
+    await addComment(animeId, newComment.comment);
     setComments((prevComments) => [...prevComments, newComment]);
     setComment("");
   };

@@ -31,6 +31,7 @@ const MenuList: React.FC<MenuListProps> = ({
   const isActive = (path: string) => location.pathname === path;
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  
 
   const handleAvatarClick = () => {
     setIsPopoverOpen(!isPopoverOpen);
@@ -45,7 +46,7 @@ const MenuList: React.FC<MenuListProps> = ({
 
   return (
     <>
-    {loading && <Loader actionLabel="Logging out ..."/>}
+      {loading && <Loader actionLabel="Logging out ..." />}
       <StyledTopList>
         {isMobile && <NavLogo />}
         {VERTICAL_MENU_ITEMS.map((item, index) => (
@@ -96,7 +97,7 @@ const MenuList: React.FC<MenuListProps> = ({
                   Yes
                 </Button>
                 <Button
-                    onClick={() => setIsPopoverOpen(false)}
+                  onClick={() => setIsPopoverOpen(false)}
                   sx={{
                     color: "white",
                     fontSize: "1.4rem",
@@ -112,14 +113,16 @@ const MenuList: React.FC<MenuListProps> = ({
             </Box>
           }
         >
-          <Avatar
-            alt="user-avatar"
-            src={user && user.photoURL ? user.photoURL : ""}
-            onClick={handleAvatarClick}
-            style={{ cursor: "pointer" }}
-          >
-            {!user || !user.photoURL ? <AccountCircle /> : null}
-          </Avatar>
+          {user ?  (
+            <Avatar
+              alt="user-avatar"
+              src={user && user.photoURL ? user.photoURL : ""}
+              onClick={handleAvatarClick}
+              style={{ cursor: "pointer" }}
+            >
+              {!user || !user.photoURL ? <AccountCircle /> : null}
+            </Avatar>
+          ) : <Loader actionLabel="Loading.."/>}
         </Popover>
       </StyledBottomList>
     </>

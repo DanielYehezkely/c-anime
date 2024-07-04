@@ -13,6 +13,7 @@ import {
   arrayUnion,
   arrayRemove,
   getDoc,
+  Timestamp,
 } from "firebase/firestore";
 import { auth, db } from "../../config/firebaseConfig";
 import { AUTH_PROVIDER_ERR_MSG } from "../../constants/globalConstants";
@@ -168,26 +169,28 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
     });
   };
 
-  const addComment = async (animeTitle: string, comment: string) => {
-    if (!user) return;
-    const commentsRef = doc(db, "comments", animeTitle);
-    const newComment = {
-      userId: user.uid,
-      comment,
-      timestamp: new Date(),
-    };
-
-    const commentsDoc = await getDoc(commentsRef);
-    if (commentsDoc.exists()) {
-      await updateDoc(commentsRef, {
-        comments: arrayUnion(newComment),
-      });
-    } else {
-      await setDoc(commentsRef, {
-        comments: [newComment],
-      });
-    }
+const addComment = async (animeId: string, comment: string) => {
+  if (!user) return;
+  const commentsRef = doc(db, "comments", animeId);
+  const newComment = {
+    id: `${user.uid}-${Timestamp.now().seconds}`, // Create a unique ID for each comment
+    userId: user.uid,
+    comment,
+    timestamp: new Date(),
   };
+
+  const commentsDoc = await getDoc(commentsRef);
+  if (commentsDoc.exists()) {
+    await updateDoc(commentsRef, {
+      comments: arrayUnion(newComment),
+    });
+  } else {
+    await setDoc(commentsRef, {
+      comments: [newComment],
+    });
+  }
+};
+
 
   const editComment = async (
     animeId: string,
@@ -216,12 +219,15 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
     const commentsDoc = await getDoc(commentsRef);
     if (commentsDoc.exists()) {
       const comments = commentsDoc.data().comments;
-      const updatedComments = comments.filter(
-        (c: any) => c.userId !== commentId
-      );
-      await updateDoc(commentsRef, { comments: updatedComments });
+      const commentToRemove = comments.find((c: any) => c.id === commentId);
+      if (commentToRemove) {
+        await updateDoc(commentsRef, {
+          comments: arrayRemove(commentToRemove),
+        });
+      }
     }
   };
+
 
   const fetchUserLikedDislikedAnimes = async (userId: string) => {
     const userRef = doc(db, "users", userId);
