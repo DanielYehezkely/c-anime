@@ -168,9 +168,9 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
     });
   };
 
-  const addComment = async (animeId: string, comment: string) => {
+  const addComment = async (animeTitle: string, comment: string) => {
     if (!user) return;
-    const commentsRef = doc(db, "comments", animeId);
+    const commentsRef = doc(db, "comments", animeTitle);
     const newComment = {
       userId: user.uid,
       comment,
@@ -210,18 +210,16 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
     }
   };
 
-  const deleteComment = async (animeId: string, commentId: string) => {
-    if (!user) return;
-    const commentsRef = doc(db, "comments", animeId);
-    const commentsDoc = await getDoc(commentsRef);
-    if (commentsDoc.exists()) {
-      const comments = commentsDoc.data().comments;
-      const updatedComments = comments.filter(
-        (c: any) => c.userId !== commentId
-      );
-      await updateDoc(commentsRef, { comments: updatedComments });
-    }
-  };
+const deleteComment = async (animeId: string, commentId: string) => {
+  if (!user) return;
+  const commentsRef = doc(db, "comments", animeId);
+  const commentsDoc = await getDoc(commentsRef);
+  if (commentsDoc.exists()) {
+    const comments = commentsDoc.data().comments;
+    const updatedComments = comments.filter((c: any) => c.id !== commentId);
+    await updateDoc(commentsRef, { comments: updatedComments });
+  }
+};
 
   const fetchUserLikedDislikedAnimes = async (userId: string) => {
     const userRef = doc(db, "users", userId);

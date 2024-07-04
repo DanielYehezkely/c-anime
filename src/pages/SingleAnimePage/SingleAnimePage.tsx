@@ -133,6 +133,7 @@ const SingleAnimePage: React.FC = () => {
       />
       <CommentSection
         animeId={String(anime.mal_id)}
+        animeTitle={anime.title}
         comments={comments}
         setComments={setComments}
         liked={liked}

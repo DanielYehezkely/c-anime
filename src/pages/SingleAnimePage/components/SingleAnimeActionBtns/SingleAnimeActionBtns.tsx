@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Anime } from "../../../../types/Anime";
 import {
   ThumbDown as DislikeIcon,
@@ -13,6 +13,17 @@ import {
   WatchlistButton,
 } from "./SingleAnimeActionBtns.styles";
 import { useAuth } from "../../../../context/AuthContext/AuthContext";
+import { db } from "../../../../config/firebaseConfig";
+import {
+  doc,
+  getDocs,
+  getDoc,
+  query,
+  collection,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+} from "firebase/firestore";
 
 interface SingleAnimeActionBtnsProps {
   anime: Anime;
@@ -31,22 +42,67 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
   likeCount,
   setLikeCount,
 }) => {
-  const { addToWatchlist, likeAnime, dislikeAnime } = useAuth();
+  const { user, addToWatchlist } = useAuth();
 
-  const handleAddToWatchlist = () => addToWatchlist(String(anime.mal_id));
+  useEffect(() => {
+    const fetchLikeCount = async () => {
+      const usersSnapshot = await getDocs(query(collection(db, "users")));
+      let count = 0;
+      usersSnapshot.forEach((userDoc) => {
+        const userData = userDoc.data();
+        if (
+          userData.likedAnimes &&
+          userData.likedAnimes.includes(String(anime.mal_id))
+        ) {
+          count++;
+        }
+      });
+      setLikeCount(count);
+    };
+    fetchLikeCount();
+  }, [anime.mal_id, setLikeCount]);
+
   const handleLikeAnime = async () => {
-    await likeAnime(String(anime.mal_id));
-    setLiked(true);
-    setDisliked(false);
-    setLikeCount((prevCount) => prevCount + 1);
+    if (!user) return;
+
+    const userRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userRef);
+
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      if (!userData.likedAnimes.includes(String(anime.mal_id))) {
+        await updateDoc(userRef, {
+          likedAnimes: arrayUnion(String(anime.mal_id)),
+          dislikedAnimes: arrayRemove(String(anime.mal_id)),
+        });
+        setLiked(true);
+        setDisliked(false);
+        setLikeCount((prevCount) => prevCount + 1);
+      }
+    }
   };
 
   const handleDislikeAnime = async () => {
-    await dislikeAnime(String(anime.mal_id));
-    setDisliked(true);
-    setLiked(false);
-    setLikeCount((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
+    if (!user) return;
+
+    const userRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userRef);
+
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      if (!userData.dislikedAnimes.includes(String(anime.mal_id))) {
+        await updateDoc(userRef, {
+          dislikedAnimes: arrayUnion(String(anime.mal_id)),
+          likedAnimes: arrayRemove(String(anime.mal_id)),
+        });
+        setDisliked(true);
+        setLiked(false);
+        setLikeCount((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
+      }
+    }
   };
+
+  const handleAddToWatchlist = () => addToWatchlist(String(anime.mal_id));
 
   return (
     <ActionButtonsContainer>

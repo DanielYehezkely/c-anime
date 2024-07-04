@@ -22,6 +22,7 @@ import {
 import "./CommentSection.css"; // Import CSS for custom modal styles
 
 interface Comment {
+  id: string;
   userId: string;
   comment: string;
   timestamp: any;
@@ -29,6 +30,7 @@ interface Comment {
 
 interface CommentSectionProps {
   animeId: string;
+  animeTitle: string;
   comments: Comment[];
   setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
   liked: boolean;
@@ -37,6 +39,7 @@ interface CommentSectionProps {
 
 const CommentSection: React.FC<CommentSectionProps> = ({
   animeId,
+  animeTitle,
   comments,
   setComments,
   liked,
@@ -45,7 +48,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   const { user, addComment, deleteComment } = useAuth();
   const [comment, setComment] = useState("");
   const [userAvatars, setUserAvatars] = useState<{ [key: string]: string }>({});
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState<{ [key: string]: boolean }>(
+    {}
+  );
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
     null
   );
@@ -70,23 +75,22 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   }, [comments]);
 
   const handleModalToggle = (commentId: string) => {
-    if (selectedCommentId === commentId && isModalOpen) {
-      setIsModalOpen(false);
-    } else {
-      setSelectedCommentId(commentId);
-      setIsModalOpen(true);
-    }
+    setIsModalOpen((prev) => ({
+      ...prev,
+      [commentId]: !prev[commentId],
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (!comment) return;
     const newComment = {
+      id: `${user!.uid}-${Timestamp.now().seconds}`, // Create a unique ID for each comment
       userId: user!.uid,
       comment,
       timestamp: Timestamp.now(),
     };
-    await addComment(animeId, comment);
+    await addComment(animeTitle, newComment.comment);
     setComments((prevComments) => [...prevComments, newComment]);
     setComment("");
   };
@@ -95,9 +99,13 @@ const CommentSection: React.FC<CommentSectionProps> = ({
     if (selectedCommentId) {
       await deleteComment(animeId, selectedCommentId);
       setComments((prevComments) =>
-        prevComments.filter((comment) => comment.userId !== selectedCommentId)
+        prevComments.filter((comment) => comment.id !== selectedCommentId)
       );
-      setIsModalOpen(false);
+      setIsModalOpen((prev) => ({
+        ...prev,
+        [selectedCommentId!]: false,
+      }));
+      setSelectedCommentId(null);
     }
   };
 
@@ -152,7 +160,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({
               >
                 <Box display="flex" alignItems="center" gap="1rem">
                   <Typography sx={{ color: "white", fontSize: "1.4rem" }}>
-                    {user?.displayName ? user.displayName : user?.email}
+                    {commentObj.userId === user?.uid
+                      ? user.displayName
+                      : "Anonymous"}
                   </Typography>
                   <Typography sx={{ color: "#ffffff83" }}>
                     {new Date(
@@ -167,19 +177,18 @@ const CommentSection: React.FC<CommentSectionProps> = ({
             </Box>
             {commentObj.userId === user?.uid && (
               <IconButton
-                onClick={() => handleModalToggle(commentObj.userId)}
+                onClick={() => {
+                  handleModalToggle(commentObj.id);
+                  setSelectedCommentId(commentObj.id);
+                }}
                 sx={{ color: "white" }}
               >
                 <MoreVertIcon sx={{ fontSize: "2rem" }} />
               </IconButton>
             )}
-            {isModalOpen && selectedCommentId === commentObj.userId && (
-              <div className={`custom-modal ${isModalOpen ? "open" : ""}`}>
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  gap="1rem"
-                >
+            {isModalOpen[commentObj.id] && (
+              <div className={`custom-modal open`}>
+                <Box display="flex" flexDirection="column" gap="1rem">
                   <Button
                     onClick={handleDeleteComment}
                     sx={{
@@ -194,7 +203,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
                   </Button>
                   <StyledDivider />
                   <Button
-                    onClick={() => setIsModalOpen(false)}
+                    onClick={() => handleModalToggle(commentObj.id)}
                     sx={{
                       color: "white",
                       fontSize: "1.4rem",
