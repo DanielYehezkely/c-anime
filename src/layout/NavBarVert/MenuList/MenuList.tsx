@@ -46,7 +46,6 @@ const MenuList: React.FC<MenuListProps> = ({
 
   return (
     <>
-      {loading && <Loader actionLabel="Logging out ..." />}
       <StyledTopList>
         {isMobile && <NavLogo />}
         {VERTICAL_MENU_ITEMS.map((item, index) => (
@@ -80,7 +79,9 @@ const MenuList: React.FC<MenuListProps> = ({
               }}
             >
               <Typography variant="body1">
-                {user ? "Are you sure you want to sign out?" : "You are not registered yet , join us now !"}
+                {user
+                  ? "Are you sure you want to sign out?"
+                  : "You are not registered yet , join us now !"}
               </Typography>
               <Box mt={2} display="flex" justifyContent="space-between">
                 <Button
@@ -94,7 +95,7 @@ const MenuList: React.FC<MenuListProps> = ({
                     },
                   }}
                 >
-                  {user ? "Yes": "Not now "}
+                  {user ? "Yes" : "Not now "}
                 </Button>
                 <Button
                   onClick={() => setIsPopoverOpen(false)}
@@ -107,22 +108,22 @@ const MenuList: React.FC<MenuListProps> = ({
                     },
                   }}
                 >
-                  {user ?"No" :"Register"}
+                  {user ? "No" : "Register"}
                 </Button>
               </Box>
             </Box>
           }
         >
-        
-            <Avatar
-              alt="user-avatar"
-              src={user && user.photoURL ? user.photoURL : ""}
-              onClick={handleAvatarClick}
-              style={{ cursor: "pointer" }}
-            >
-              {!user || !user.photoURL ? <AccountCircle /> : null}
-            </Avatar>
-         
+          {loading ?  (<Loader actionLabel="Logging..." />) : (
+          <Avatar
+            alt="user-avatar"
+            src={user && user.photoURL ? user.photoURL : ""}
+            onClick={handleAvatarClick}
+            style={{ cursor: "pointer" }}
+          >
+            {!user || !user.photoURL ? <AccountCircle /> : null}
+          </Avatar>
+          )}
         </Popover>
       </StyledBottomList>
     </>

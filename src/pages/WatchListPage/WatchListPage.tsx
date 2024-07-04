@@ -1,40 +1,79 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  IconButton,
-  Box,
-} from "@mui/material";
-import { Delete as DeleteIcon } from "@mui/icons-material";
+import { Container, Grid, Typography, Tabs, Tab, Box } from "@mui/material";
 import { doc, getDoc, updateDoc, arrayRemove } from "firebase/firestore";
 import { useAuth } from "../../context/AuthContext/AuthContext";
 import { db } from "../../config/firebaseConfig";
 import { Anime } from "../../types/Anime";
-import { useAnimeApi } from "../../hooks/useAnimeApi"; 
+import { useAnimeApi } from "../../hooks/useAnimeApi";
+import { Loader } from "../../components";
+import CarouselAnimeCard from "../../components/CarouselShowcase/CarouselAnimeCard/CarouselAnimeCard";
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box
+          sx={{
+            p: 3,
+            mt: -0.2,
+            border: "1px solid #ffffff57",
+            borderRadius: "0.5rem",
+            borderTopLeftRadius: "0"
+          }}
+        >
+          {children}
+        </Box>
+      )}
+    </div>
+  );
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
 
 const WatchListPage: React.FC = () => {
   const { user } = useAuth();
   const { animeList, loading } = useAnimeApi();
   const [watchlist, setWatchlist] = useState<string[]>([]);
-  const [filteredAnime, setFilteredAnime] = useState<Anime[]>([]);
+  const [doneWatchingList, setDoneWatchingList] = useState<string[]>([]);
+  const [filteredWatchlist, setFilteredWatchlist] = useState<Anime[]>([]);
+  const [filteredDoneWatchingList, setFilteredDoneWatchingList] = useState<
+    Anime[]
+  >([]);
+  const [value, setValue] = useState(0);
 
   useEffect(() => {
-    const fetchWatchlist = async () => {
+    const fetchLists = async () => {
       if (user) {
         const userRef = doc(db, "users", user.uid);
         const userDoc = await getDoc(userRef);
         if (userDoc.exists()) {
           const userData = userDoc.data();
           setWatchlist(userData.watchlist || []);
+          setDoneWatchingList(userData.doneWatching || []);
         }
       }
     };
 
-    fetchWatchlist();
+    fetchLists();
   }, [user]);
 
   useEffect(() => {
@@ -42,81 +81,110 @@ const WatchListPage: React.FC = () => {
       const filtered = animeList.filter((anime) =>
         watchlist.includes(anime.mal_id.toString())
       );
-      setFilteredAnime(filtered);
+      setFilteredWatchlist(filtered);
     }
   }, [animeList, watchlist]);
 
-  const handleRemove = async (id: number) => {
+  useEffect(() => {
+    if (animeList.length && doneWatchingList.length) {
+      const filtered = animeList.filter((anime) =>
+        doneWatchingList.includes(anime.mal_id.toString())
+      );
+      setFilteredDoneWatchingList(filtered);
+    }
+  }, [animeList, doneWatchingList]);
+
+  const handleRemove = async (id: number, list: string[]) => {
     if (user) {
       const userRef = doc(db, "users", user.uid);
       await updateDoc(userRef, {
         watchlist: arrayRemove(id.toString()),
+        doneWatching: arrayRemove(id.toString()),
       });
       setWatchlist(watchlist.filter((animeId) => animeId !== id.toString()));
-      setFilteredAnime(filteredAnime.filter((anime) => anime.mal_id !== id));
+      setDoneWatchingList(
+        doneWatchingList.filter((animeId) => animeId !== id.toString())
+      );
+      setFilteredWatchlist(
+        filteredWatchlist.filter((anime) => anime.mal_id !== id)
+      );
+      setFilteredDoneWatchingList(
+        filteredDoneWatchingList.filter((anime) => anime.mal_id !== id)
+      );
     }
   };
 
-  if (loading) {
-    return (
-      <Container sx={{ paddingTop: "10rem" }}>
-        <Typography variant="h4" gutterBottom sx={{ color: "white" }}>
-          Loading Watchlist...
-        </Typography>
-      </Container>
-    );
-  }
+  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
   return (
-    <Container sx={{ paddingTop: "10rem" }}>
-      <Typography variant="h4" gutterBottom sx={{ color: "white" }}>
-        My Watchlist
-      </Typography>
-      {filteredAnime.length === 0 ? (
-        <Typography variant="h6" sx={{ color: "white" }}>
-          Your watchlist is empty.
+    <>
+      {loading && <Loader actionLabel="Loading Your Watchlist ..." />}
+      <Container sx={{ paddingTop: "10rem" }}>
+        <Typography variant="h4" gutterBottom sx={{ color: "white" }}>
+          My Anime Lists
         </Typography>
-      ) : (
-        <Grid container spacing={4}>
-          {filteredAnime.map((anime) => (
-            <Grid item key={anime.mal_id} xs={12} sm={6} md={4}>
-              <Card
-                sx={{
-                  backgroundColor: "#1c1c1c",
-                  color: "white",
-                  position: "relative",
-                  height: "100%",
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={anime.images.webp.image_url}
-                  alt={anime.title}
-                />
-                <CardContent>
-                  <Typography variant="h5" gutterBottom sx={{ color: "white" }}>
-                    {anime.title}
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: "gray" }}>
-                    {anime.synopsis}
-                  </Typography>
-                </CardContent>
-                <Box sx={{ position: "absolute", top: "10px", right: "10px" }}>
-                  <IconButton
-                    aria-label="delete"
-                    sx={{ color: "white" }}
-                    onClick={() => handleRemove(anime.mal_id)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </Box>
-              </Card>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="anime lists tabs"
+            sx={{
+              "& .MuiTab-root": {
+                color: "white",
+              },
+              "& .Mui-selected": {
+                color: "#ffffe0",
+                fontSize: "1.6rem",
+                fontWeight: "bold",
+                borderTopLeftRadius: "0.5rem",
+                borderTopRightRadius: "0.5rem",
+                backgroundColor: "#0c0c0c",
+                border: "1px solid #ffffff57",
+                borderBottom: "none",
+              },
+              "& .MuiTabs-indicator": {
+                display: "none", // remove the default indicator
+              },
+            }}
+          >
+            <Tab label="Watchlist" {...a11yProps(0)} />
+            <Tab label="Done Watching" {...a11yProps(1)} />
+          </Tabs>
+        </Box>
+        <CustomTabPanel value={value} index={0}>
+          {filteredWatchlist.length === 0 ? (
+            <Typography variant="h6" sx={{ color: "white" }}>
+              Your watchlist is empty.
+            </Typography>
+          ) : (
+            <Grid container spacing={4}>
+              {filteredWatchlist.map((anime) => (
+                <Grid item key={anime.mal_id} xs={12} sm={6} md={4}>
+                  <CarouselAnimeCard anime={anime} />
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-      )}
-    </Container>
+          )}
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          {filteredDoneWatchingList.length === 0 ? (
+            <Typography variant="h6" sx={{ color: "white" }}>
+              Your done watching list is empty.
+            </Typography>
+          ) : (
+            <Grid container spacing={4}>
+              {filteredDoneWatchingList.map((anime) => (
+                <Grid item key={anime.mal_id} xs={12} sm={6} md={4}>
+                  <CarouselAnimeCard anime={anime} />
+                </Grid>
+              ))}
+            </Grid>
+          )}
+        </CustomTabPanel>
+      </Container>
+    </>
   );
 };
 

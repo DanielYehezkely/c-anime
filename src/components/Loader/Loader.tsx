@@ -1,22 +1,24 @@
-import React from "react";
+import  { forwardRef } from "react";
 import "./Loader.css";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Box, Typography } from "@mui/material";
 
 interface LoaderProps {
   actionLabel: string;
 }
 
-const Loader: React.FC<LoaderProps> = ({ actionLabel }) => {
-  return (
-    <div className="loader-overlay">
-      <div className="loader-container">
-        <CircularProgress sx={{
-          color:"white"
-        }} />
-        <h2>{actionLabel}</h2>
+const Loader = forwardRef<HTMLDivElement, LoaderProps>(
+  ({ actionLabel }, ref) => {
+    return (
+      <div ref={ref} className="loader-overlay">
+        <Box className="loader-container" textAlign="center">
+          <CircularProgress sx={{ color: "white" }} />
+          <Typography variant="h6" sx={{ color: "white" }}>
+            {actionLabel}
+          </Typography>
+        </Box>
       </div>
-    </div>
-  );
-};
+    );
+  }
+);
 
 export default Loader;
