@@ -192,26 +192,26 @@ const addComment = async (animeId: string, comment: string) => {
 };
 
 
-  const editComment = async (
-    animeId: string,
-    commentId: string,
-    updatedComment: string
-  ) => {
-    if (!user) return;
-    const commentsRef = doc(db, "comments", animeId);
-    const commentsDoc = await getDoc(commentsRef);
-    if (commentsDoc.exists()) {
-      const comments = commentsDoc.data().comments;
-      const commentIndex = comments.findIndex(
-        (c: any) => c.id === commentId && c.userId === user.uid
-      );
-      if (commentIndex > -1) {
-        comments[commentIndex].comment = updatedComment;
-        comments[commentIndex].timestamp = new Date();
-        await updateDoc(commentsRef, { comments });
-      }
+const editComment = async (
+  animeId: string,
+  commentId: string,
+  updatedComment: string
+) => {
+  if (!user) return;
+  const commentsRef = doc(db, "comments", animeId);
+  const commentsDoc = await getDoc(commentsRef);
+  if (commentsDoc.exists()) {
+    const comments = commentsDoc.data().comments;
+    const commentIndex = comments.findIndex(
+      (c: any) => c.id === commentId && c.userId === user.uid
+    );
+    if (commentIndex > -1) {
+      comments[commentIndex].comment = updatedComment;
+      comments[commentIndex].timestamp = new Date();
+      await updateDoc(commentsRef, { comments });
     }
-  };
+  }
+};
 
   const deleteComment = async (animeId: string, commentId: string) => {
     if (!user) return;

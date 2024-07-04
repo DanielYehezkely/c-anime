@@ -43,8 +43,10 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   liked,
   disliked,
 }) => {
-  const { user, addComment, deleteComment } = useAuth();
+  const { user, addComment, deleteComment, editComment } = useAuth();
   const [comment, setComment] = useState("");
+  const [editingComment, setEditingComment] = useState<string | null>(null);
+  const [editedComment, setEditedComment] = useState<string>("");
   const [userAvatars, setUserAvatars] = useState<{ [key: string]: string }>({});
   const [isModalOpen, setIsModalOpen] = useState<{ [key: string]: boolean }>(
     {}
@@ -107,6 +109,30 @@ const CommentSection: React.FC<CommentSectionProps> = ({
     }
   };
 
+  const handleEditComment = (commentObj: Comment) => {
+    setEditingComment(commentObj.id);
+    setEditedComment(commentObj.comment);
+    setIsModalOpen((prev) => ({
+      ...prev,
+      [commentObj.id]: false,
+    }));
+  };
+
+  const handleSaveEdit = async () => {
+    if (editingComment) {
+      await editComment(animeId, editingComment, editedComment);
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.id === editingComment
+            ? { ...comment, comment: editedComment }
+            : comment
+        )
+      );
+      setEditingComment(null);
+      setEditedComment("");
+    }
+  };
+
   return (
     <CommentsSectionContainer sx={{ bgcolor: "transparent" }}>
       <CommentsHeader variant="h5">{comments.length} Comments</CommentsHeader>
@@ -142,8 +168,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({
             <Box display="flex">
               <Avatar
                 src={
-                  userAvatars[commentObj.userId] ||
-                  "/path/to/default/avatar.png"
+                  userAvatars[commentObj.userId]
+                    ? userAvatars[commentObj.userId]
+                    : "Anonymous" //*todo - check the assign here
                 }
                 alt="user-avatar"
                 sx={{ mr: 2, alignSelf: "flex-start" }}
@@ -168,9 +195,16 @@ const CommentSection: React.FC<CommentSectionProps> = ({
                     ).toLocaleString()}
                   </Typography>
                 </Box>
-                <Typography sx={{ color: "#ffffffe1", fontSize: "1.6rem" }}>
-                  {commentObj.comment}
-                </Typography>
+                {editingComment === commentObj.id ? (
+                  <CommentsInput
+                    value={editedComment}
+                    onChange={(e) => setEditedComment(e.target.value)}
+                  />
+                ) : (
+                  <Typography sx={{ color: "#ffffffe1", fontSize: "1.6rem" }}>
+                    {commentObj.comment}
+                  </Typography>
+                )}
               </Box>
             </Box>
             {commentObj.userId === user?.uid && (
@@ -201,7 +235,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
                   </Button>
                   <StyledDivider />
                   <Button
-                    onClick={() => handleModalToggle(commentObj.id)}
+                    onClick={() => handleEditComment(commentObj)}
                     sx={{
                       color: "white",
                       fontSize: "1.4rem",
@@ -219,6 +253,21 @@ const CommentSection: React.FC<CommentSectionProps> = ({
         ))
       ) : (
         <NoCommentsBox>No Comments Yet</NoCommentsBox>
+      )}
+      {editingComment && (
+        <Box display="flex" justifyContent="center" mt={2}>
+          <Button variant="contained" color="primary" onClick={handleSaveEdit}>
+            Save
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => setEditingComment(null)}
+            sx={{ ml: 2 }}
+          >
+            Cancel
+          </Button>
+        </Box>
       )}
     </CommentsSectionContainer>
   );
