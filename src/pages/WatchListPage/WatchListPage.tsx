@@ -32,7 +32,7 @@ function CustomTabPanel(props: TabPanelProps) {
             mt: -0.2,
             border: "1px solid #ffffff57",
             borderRadius: "0.5rem",
-            borderTopLeftRadius: "0"
+            borderTopLeftRadius: "0",
           }}
         >
           {children}
@@ -94,7 +94,7 @@ const WatchListPage: React.FC = () => {
     }
   }, [animeList, doneWatchingList]);
 
-  const handleRemove = async (id: number, list: string[]) => {
+  const handleRemove = async (id: number) => {
     if (user) {
       const userRef = doc(db, "users", user.uid);
       await updateDoc(userRef, {
@@ -110,6 +110,21 @@ const WatchListPage: React.FC = () => {
       );
       setFilteredDoneWatchingList(
         filteredDoneWatchingList.filter((anime) => anime.mal_id !== id)
+      );
+    }
+  };
+
+  const handleDoneWatching = async (id: number) => {
+    if (user) {
+      const userRef = doc(db, "users", user.uid);
+      await updateDoc(userRef, {
+        doneWatching: arrayRemove(id.toString()),
+      });
+      setDoneWatchingList(
+        doneWatchingList.filter((animeId) => animeId !== id.toString())
+      );
+      setFilteredWatchlist(
+        filteredWatchlist.filter((anime) => anime.mal_id !== id)
       );
     }
   };
@@ -134,7 +149,7 @@ const WatchListPage: React.FC = () => {
               "& .MuiTab-root": {
                 color: "white",
               },
-              "& .Mui-selected": {
+              "& .css-bjr47-MuiButtonBase-root-MuiTab-root.Mui-selected": {
                 color: "#ffffe0",
                 fontSize: "1.6rem",
                 fontWeight: "bold",
@@ -145,7 +160,7 @@ const WatchListPage: React.FC = () => {
                 borderBottom: "none",
               },
               "& .MuiTabs-indicator": {
-                display: "none", // remove the default indicator
+                display: "none",
               },
             }}
           >
@@ -162,7 +177,11 @@ const WatchListPage: React.FC = () => {
             <Grid container spacing={4}>
               {filteredWatchlist.map((anime) => (
                 <Grid item key={anime.mal_id} xs={12} sm={6} md={4}>
-                  <CarouselAnimeCard anime={anime} />
+                  <CarouselAnimeCard
+                    anime={anime}
+                    onRemove={handleRemove}
+                    onDoneWatching={handleDoneWatching}
+                  />
                 </Grid>
               ))}
             </Grid>
@@ -177,7 +196,11 @@ const WatchListPage: React.FC = () => {
             <Grid container spacing={4}>
               {filteredDoneWatchingList.map((anime) => (
                 <Grid item key={anime.mal_id} xs={12} sm={6} md={4}>
-                  <CarouselAnimeCard anime={anime} />
+                  <CarouselAnimeCard
+                    anime={anime}
+                    onRemove={handleRemove}
+                    onDoneWatching={handleDoneWatching}
+                  />
                 </Grid>
               ))}
             </Grid>
