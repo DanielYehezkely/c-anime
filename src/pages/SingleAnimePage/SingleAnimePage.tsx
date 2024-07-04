@@ -76,7 +76,7 @@ const SingleAnimePage: React.FC = () => {
     };
     fetchAnimeBannerImage();
   }, [anime]);
-  
+
 useEffect(() => {
   const fetchComments = async () => {
     if (animeId) {
@@ -133,7 +133,6 @@ useEffect(() => {
       />
       <CommentSection
         animeId={String(anime.mal_id)}
-        animeTitle={anime.title}
         comments={comments}
         setComments={setComments}
         liked={liked}
