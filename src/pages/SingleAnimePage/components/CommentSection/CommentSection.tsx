@@ -19,7 +19,7 @@ import {
   SubmitButton,
   NoCommentsBox,
 } from "./CommentSection.styles";
-import "./CommentSection.css"; // Import CSS for custom modal styles
+import "./CommentSection.css"; 
 
 interface Comment {
   id: string;
@@ -45,12 +45,10 @@ const CommentSection: React.FC<CommentSectionProps> = ({
 }) => {
   const { user, addComment, deleteComment, editComment } = useAuth();
   const [comment, setComment] = useState("");
-  const [editingComment, setEditingComment] = useState<string | null>(null);
+  const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [editedComment, setEditedComment] = useState<string>("");
   const [userAvatars, setUserAvatars] = useState<{ [key: string]: string }>({});
-  const [isModalOpen, setIsModalOpen] = useState<{ [key: string]: boolean }>(
-    {}
-  );
+  const [isModalOpen, setIsModalOpen] = useState<string | null>(null);
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
     null
   );
@@ -75,10 +73,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   }, [comments]);
 
   const handleModalToggle = (commentId: string) => {
-    setIsModalOpen((prev) => ({
-      ...prev,
-      [commentId]: !prev[commentId],
-    }));
+    setIsModalOpen((prev) => (prev === commentId ? null : commentId));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLDivElement>) => {
@@ -101,34 +96,28 @@ const CommentSection: React.FC<CommentSectionProps> = ({
       setComments((prevComments) =>
         prevComments.filter((comment) => comment.id !== selectedCommentId)
       );
-      setIsModalOpen((prev) => ({
-        ...prev,
-        [selectedCommentId!]: false,
-      }));
+      setIsModalOpen(null);
       setSelectedCommentId(null);
     }
   };
 
   const handleEditComment = (commentObj: Comment) => {
-    setEditingComment(commentObj.id);
+    setEditingCommentId(commentObj.id);
     setEditedComment(commentObj.comment);
-    setIsModalOpen((prev) => ({
-      ...prev,
-      [commentObj.id]: false,
-    }));
+    setIsModalOpen(null);
   };
 
   const handleSaveEdit = async () => {
-    if (editingComment) {
-      await editComment(animeId, editingComment, editedComment);
+    if (editingCommentId) {
+      await editComment(animeId, editingCommentId, editedComment);
       setComments((prevComments) =>
         prevComments.map((comment) =>
-          comment.id === editingComment
+          comment.id === editingCommentId
             ? { ...comment, comment: editedComment }
             : comment
         )
       );
-      setEditingComment(null);
+      setEditingCommentId(null);
       setEditedComment("");
     }
   };
@@ -160,17 +149,19 @@ const CommentSection: React.FC<CommentSectionProps> = ({
             key={index}
             display="flex"
             alignItems="flex-start"
+            flexWrap="wrap"
             justifyContent="space-between"
             mb={2}
             mt={2}
             position="relative"
+            maxWidth="100rem"
           >
             <Box display="flex">
               <Avatar
                 src={
                   userAvatars[commentObj.userId]
                     ? userAvatars[commentObj.userId]
-                    : "Anonymous" //*todo - check the assign here
+                    : "/path/to/default/avatar.png" //* updated default avatar path
                 }
                 alt="user-avatar"
                 sx={{ mr: 2, alignSelf: "flex-start" }}
@@ -181,6 +172,10 @@ const CommentSection: React.FC<CommentSectionProps> = ({
                   flexDirection: "column",
                   gap: "1rem",
                   mb: "1rem",
+                  maxWidth: "50rem",
+                  wordWrap: "break-word",
+                  overflow: "hidden",
+                  whiteSpace: "pre-wrap",
                 }}
               >
                 <Box display="flex" alignItems="center" gap="1rem">
@@ -195,7 +190,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
                     ).toLocaleString()}
                   </Typography>
                 </Box>
-                {editingComment === commentObj.id ? (
+                {editingCommentId === commentObj.id ? (
                   <CommentsInput
                     value={editedComment}
                     onChange={(e) => setEditedComment(e.target.value)}
@@ -207,6 +202,25 @@ const CommentSection: React.FC<CommentSectionProps> = ({
                 )}
               </Box>
             </Box>
+            {editingCommentId === commentObj.id && (
+              <Box display="flex" justifyContent="center" mt={2}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSaveEdit}
+                >
+                  Save
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => setEditingCommentId(null)}
+                  sx={{ ml: 2 }}
+                >
+                  Cancel
+                </Button>
+              </Box>
+            )}
             {commentObj.userId === user?.uid && (
               <IconButton
                 onClick={() => {
@@ -218,7 +232,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
                 <MoreVertIcon sx={{ fontSize: "2rem" }} />
               </IconButton>
             )}
-            {isModalOpen[commentObj.id] && (
+            {isModalOpen === commentObj.id && (
               <div className={`custom-modal open`}>
                 <Box display="flex" flexDirection="column" gap="1rem">
                   <Button
@@ -253,21 +267,6 @@ const CommentSection: React.FC<CommentSectionProps> = ({
         ))
       ) : (
         <NoCommentsBox>No Comments Yet</NoCommentsBox>
-      )}
-      {editingComment && (
-        <Box display="flex" justifyContent="center" mt={2}>
-          <Button variant="contained" color="primary" onClick={handleSaveEdit}>
-            Save
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => setEditingComment(null)}
-            sx={{ ml: 2 }}
-          >
-            Cancel
-          </Button>
-        </Box>
       )}
     </CommentsSectionContainer>
   );

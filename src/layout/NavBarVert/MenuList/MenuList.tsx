@@ -107,7 +107,7 @@ const MenuList: React.FC<MenuListProps> = ({
                     },
                   }}
                 >
-                  {"Register"}
+                  {user ?"No" :"Register"}
                 </Button>
               </Box>
             </Box>
