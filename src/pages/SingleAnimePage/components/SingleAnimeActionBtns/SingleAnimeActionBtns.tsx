@@ -24,8 +24,6 @@ interface SingleAnimeActionBtnsProps {
 
 const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
   anime,
-  liked,
-  disliked,
   setLiked,
   setDisliked,
 }) => {
