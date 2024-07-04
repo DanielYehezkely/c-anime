@@ -4,7 +4,14 @@ import { useParams } from "react-router-dom";
 import { useAnimeApi } from "../../hooks/useAnimeApi";
 import { Anime } from "../../types/Anime";
 import getAnimeBannerByTitle from "../../services/animeMalApi/animeAnilistService";
-import { getDoc, doc } from "firebase/firestore";
+import {
+  getDoc,
+  getDocs,
+  doc,
+  collection,
+  DocumentData,
+  QueryDocumentSnapshot,
+} from "firebase/firestore";
 import { db } from "../../config/firebaseConfig";
 
 import { Loader } from "../../components";
@@ -31,8 +38,25 @@ const SingleAnimePage: React.FC = () => {
   const [comments, setComments] = useState<any[]>([]);
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
 
   const anime = animeList.find((anime: Anime) => anime.mal_id === Number(animeId));
+
+  useEffect(() => {
+    const fetchLikeCount = async () => {
+      const usersCollection = collection(db, "users"); // Correct usage
+      const usersSnapshot = await getDocs(usersCollection);
+      let count = 0;
+      usersSnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
+        const data = doc.data();
+        if (data.likedAnimes && data.likedAnimes.includes(animeId)) {
+          count++;
+        }
+      });
+      setLikeCount(count);
+    };
+    fetchLikeCount();
+  }, [animeId]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -98,7 +122,15 @@ const SingleAnimePage: React.FC = () => {
       />
       <SingleAnimeCard anime={anime} />
       <SingleAnimeData anime={anime} />
-      <SingleAnimeActionBtns anime={anime} liked={liked} disliked={disliked} setLiked={setLiked} setDisliked={setDisliked} />
+      <SingleAnimeActionBtns
+        anime={anime}
+        liked={liked}
+        disliked={disliked}
+        setLiked={setLiked}
+        setDisliked={setDisliked}
+        likeCount={likeCount}
+        setLikeCount={setLikeCount}
+      />
       <CommentSection
         animeId={String(anime.mal_id)}
         comments={comments}
