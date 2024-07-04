@@ -2,14 +2,23 @@ import React from "react";
 import { Card, CardContent, CardMedia, Typography, Box } from "@mui/material";
 import { Anime } from "../../../types/Anime";
 import { CalendarToday as DateIcon } from "@mui/icons-material";
+import { useNavigationHelper } from "../../../hooks/useNavigationHelper";
 
 interface CarouselAnimeCardProps {
   anime: Anime;
 }
 
 const CarouselAnimeCard: React.FC<CarouselAnimeCardProps> = ({ anime }) => {
+
+  const navigateToPage = useNavigationHelper();
+
+  const handleCardClick = () => {
+    navigateToPage(`singleAnime/${anime.mal_id}`); 
+  };
+
   return (
     <Card
+      onClick={handleCardClick}
       sx={{
         width: "25rem",
         overflow: "visible",
