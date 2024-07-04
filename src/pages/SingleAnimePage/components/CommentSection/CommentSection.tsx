@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../../../context/AuthContext/AuthContext";
-import { Box, IconButton, Typography, Avatar, Button, Divider } from "@mui/material";
+import { Box, IconButton, Typography, Avatar, Button } from "@mui/material";
 import {
   AccountCircleRounded,
   MoreVert as MoreVertIcon,

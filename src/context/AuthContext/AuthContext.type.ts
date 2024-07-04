@@ -24,6 +24,7 @@ export interface AuthContextProps {
     commentId: string,
     updatedComment: string
   ) => Promise<void>;
+  deleteComment: (animeId: string, commentId: string) => Promise<void>; 
   fetchUserLikedDislikedAnimes: (userId: string) => Promise<{
     likedAnimes: string[];
     dislikedAnimes: string[];
