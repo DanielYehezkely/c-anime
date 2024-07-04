@@ -79,7 +79,6 @@ const SingleAnimePage: React.FC = () => {
         setDisliked(dislikedAnimes.includes(animeId));
       }
     };
-
     fetchLikedDislikedStatus();
   }, [user, animeId, fetchUserLikedDislikedAnimes]);
 
@@ -104,7 +103,13 @@ const SingleAnimePage: React.FC = () => {
       />
       <SingleAnimeCard anime={anime} />
       <SingleAnimeData anime={anime} />
-      <SingleAnimeActionBtns anime={anime} />
+      <SingleAnimeActionBtns
+        anime={anime}
+        liked={liked}
+        disliked={disliked}
+        setLiked={setLiked}
+        setDisliked={setDisliked}
+      />
       <CommentSection
         animeId={String(anime.mal_id)}
         comments={comments}

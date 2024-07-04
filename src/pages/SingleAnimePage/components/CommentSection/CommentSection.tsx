@@ -98,17 +98,28 @@ const CommentSection: React.FC<CommentSectionProps> = ({
         comments.map((commentObj, index) => (
           <Box key={index} display="flex" alignItems="center" mb={2} mt={2}>
             <Avatar
-              src={userAvatars[commentObj.userId] || "/path/to/default/avatar.png"}
+              src={
+                userAvatars[commentObj.userId] || "/path/to/default/avatar.png"
+              }
               alt="user-avatar"
               sx={{ mr: 2, alignSelf: "flex-start" }}
             />
             <Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: "1rem", mb: "1rem" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "1rem",
+                  mb: "1rem",
+                }}
+              >
                 <Typography sx={{ color: "white", fontSize: "1.4rem" }}>
                   {user?.displayName ? user.displayName : user?.email}
                 </Typography>
                 <Typography sx={{ color: "#ffffff83" }}>
-                  {new Date(commentObj.timestamp.seconds * 1000).toLocaleString()}
+                  {new Date(
+                    commentObj.timestamp.seconds * 1000
+                  ).toLocaleString()}
                 </Typography>
               </Box>
               <Typography sx={{ color: "#ffffffe1", fontSize: "1.6rem" }}>
@@ -125,4 +136,3 @@ const CommentSection: React.FC<CommentSectionProps> = ({
 };
 
 export default CommentSection;
-

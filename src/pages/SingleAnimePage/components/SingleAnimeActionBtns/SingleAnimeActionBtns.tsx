@@ -16,16 +16,30 @@ import { useAuth } from "../../../../context/AuthContext/AuthContext";
 
 interface SingleAnimeActionBtnsProps {
   anime: Anime;
+  liked: boolean;
+  disliked: boolean;
+  setLiked: React.Dispatch<React.SetStateAction<boolean>>;
+  setDisliked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
   anime,
+  liked,
+  disliked,
+  setLiked,
+  setDisliked,
 }) => {
   const { addToWatchlist, likeAnime, dislikeAnime } = useAuth();
 
-const handleAddToWatchlist = () => addToWatchlist(String(anime.mal_id));
-const handleLikeAnime = () => likeAnime(String(anime.mal_id));
-const handleDislikeAnime = () => dislikeAnime(String(anime.mal_id));
+  const handleAddToWatchlist = () => addToWatchlist(String(anime.mal_id));
+  const handleLikeAnime = async () => {
+    await likeAnime(String(anime.mal_id));
+    setLiked(true);
+  };
+  const handleDislikeAnime = async () => {
+    await dislikeAnime(String(anime.mal_id));
+    setDisliked(true);
+  };
 
   return (
     <ActionButtonsContainer>
@@ -33,10 +47,16 @@ const handleDislikeAnime = () => dislikeAnime(String(anime.mal_id));
       <MangaButton variant="contained" href={anime.url}>
         Read Manga
       </MangaButton>
-      <LikeButton variant="contained" onClick={handleLikeAnime}>
+      <LikeButton
+        variant="contained"
+        onClick={handleLikeAnime}
+      >
         Like <LikeIcon />
       </LikeButton>
-      <UnlikeButton variant="contained" onClick={handleDislikeAnime}>
+      <UnlikeButton
+        variant="contained"
+        onClick={handleDislikeAnime}
+      >
         Unlike <DislikeIcon />
       </UnlikeButton>
       <WatchlistButton onClick={handleAddToWatchlist}>

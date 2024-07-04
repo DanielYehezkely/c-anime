@@ -155,6 +155,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
     const userRef = doc(db, "users", user.uid);
     await updateDoc(userRef, {
       likedAnimes: arrayUnion(animeId),
+      dislikedAnimes: arrayRemove(animeId),
     });
   };
 
@@ -163,6 +164,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
     const userRef = doc(db, "users", user.uid);
     await updateDoc(userRef, {
       dislikedAnimes: arrayUnion(animeId),
+      likedAnimes: arrayRemove(animeId),
     });
   };
 
