@@ -5,7 +5,7 @@ import {
   AccountCircleRounded,
   MoreVert as MoreVertIcon,
 } from "@mui/icons-material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../../../../config/firebaseConfig";
@@ -70,8 +70,12 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   }, [comments]);
 
   const handleModalToggle = (commentId: string) => {
-    setSelectedCommentId(commentId);
-    setIsModalOpen((prev) => !prev);
+    if (selectedCommentId === commentId && isModalOpen) {
+      setIsModalOpen(false);
+    } else {
+      setSelectedCommentId(commentId);
+      setIsModalOpen(true);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLDivElement>) => {
@@ -166,44 +170,44 @@ const CommentSection: React.FC<CommentSectionProps> = ({
                 onClick={() => handleModalToggle(commentObj.userId)}
                 sx={{ color: "white" }}
               >
-                <MoreVertIcon sx={{fontSize: "2rem"}} />
+                <MoreVertIcon sx={{ fontSize: "2rem" }} />
               </IconButton>
             )}
-            <div
-              className={`custom-modal ${isModalOpen ? "open" : ""}`}
-            >
-              <Box
-                display="flex"
-                flexDirection="column"
-                justifyContent="space-between"
-              >
-                <Button
-                  onClick={handleDeleteComment}
-                  sx={{
-                    color: "white",
-                    fontSize: "1.4rem",
-                    "&:hover": {
-                      bgcolor: "#bd0606d6",
-                    },
-                  }}
+            {isModalOpen && selectedCommentId === commentObj.userId && (
+              <div className={`custom-modal ${isModalOpen ? "open" : ""}`}>
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  gap="1rem"
                 >
-                  <DeleteIcon />
-                </Button>
-                <StyledDivider />
-                <Button
-                  onClick={() => setIsModalOpen(false)}
-                  sx={{
-                    color: "white",
-                    fontSize: "1.4rem",
-                    "&:hover": {
-                      bgcolor: "#07d823a7",
-                    },
-                  }}
-                >
-                  <EditIcon />
-                </Button>
-              </Box>
-            </div>
+                  <Button
+                    onClick={handleDeleteComment}
+                    sx={{
+                      color: "white",
+                      fontSize: "1.4rem",
+                      "&:hover": {
+                        bgcolor: "#bd0606d6",
+                      },
+                    }}
+                  >
+                    <DeleteIcon style={{ fontSize: "2rem" }} />
+                  </Button>
+                  <StyledDivider />
+                  <Button
+                    onClick={() => setIsModalOpen(false)}
+                    sx={{
+                      color: "white",
+                      fontSize: "1.4rem",
+                      "&:hover": {
+                        bgcolor: "#07d823a7",
+                      },
+                    }}
+                  >
+                    <EditIcon style={{ fontSize: "2rem" }} />
+                  </Button>
+                </Box>
+              </div>
+            )}
           </Box>
         ))
       ) : (
