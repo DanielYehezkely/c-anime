@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Container, Grid, Typography, Tabs, Tab, Box } from "@mui/material";
-import { doc, getDoc, updateDoc, arrayRemove } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  arrayRemove,
+  arrayUnion,
+} from "firebase/firestore";
 import { useAuth } from "../../context/AuthContext/AuthContext";
 import { db } from "../../config/firebaseConfig";
 import { Anime } from "../../types/Anime";
@@ -118,14 +124,18 @@ const WatchListPage: React.FC = () => {
     if (user) {
       const userRef = doc(db, "users", user.uid);
       await updateDoc(userRef, {
-        doneWatching: arrayRemove(id.toString()),
+        watchlist: arrayRemove(id.toString()),
+        doneWatching: arrayUnion(id.toString()), // Add to doneWatching list
       });
-      setDoneWatchingList(
-        doneWatchingList.filter((animeId) => animeId !== id.toString())
-      );
+      setWatchlist(watchlist.filter((animeId) => animeId !== id.toString()));
+      setDoneWatchingList([...doneWatchingList, id.toString()]);
       setFilteredWatchlist(
         filteredWatchlist.filter((anime) => anime.mal_id !== id)
       );
+      const movedAnime = filteredWatchlist.find((anime) => anime.mal_id === id);
+      if (movedAnime) {
+        setFilteredDoneWatchingList((prev) => [...prev, movedAnime]);
+      }
     }
   };
 
@@ -195,12 +205,14 @@ const WatchListPage: React.FC = () => {
           ) : (
             <Grid container spacing={4}>
               {filteredDoneWatchingList.map((anime) => (
-                <Grid item key={anime.mal_id} xs={12} sm={6} md={4}>
-                  <CarouselAnimeCard
-                    anime={anime}
-                    onRemove={handleRemove}
-                    onDoneWatching={handleDoneWatching}
-                  />
+                <Grid item key={anime?.mal_id} xs={12} sm={6} md={4}>
+                  {anime && (
+                    <CarouselAnimeCard
+                      anime={anime}
+                      onRemove={handleRemove}
+                      onDoneWatching={handleDoneWatching}
+                    />
+                  )}
                 </Grid>
               ))}
             </Grid>
