@@ -122,7 +122,7 @@ const MenuList: React.FC<MenuListProps> = ({
             >
               {!user || !user.photoURL ? <AccountCircle /> : null}
             </Avatar>
-          ) : <Loader actionLabel="Loading.."/>}
+          ) : <AccountCircle/>}
         </Popover>
       </StyledBottomList>
     </>
