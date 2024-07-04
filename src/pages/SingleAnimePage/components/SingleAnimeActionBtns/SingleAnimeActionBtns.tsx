@@ -49,7 +49,7 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
         variant="contained"
         onClick={handleLikeAnime}
       >
-        Like <LikeIcon />
+        Like <LikeIcon /> { }
       </LikeButton>
       <UnlikeButton
         variant="contained"

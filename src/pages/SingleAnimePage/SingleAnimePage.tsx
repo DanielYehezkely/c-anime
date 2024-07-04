@@ -26,17 +26,13 @@ const SingleAnimePage: React.FC = () => {
   const { animeId } = useParams<{ animeId: string }>();
   const { animeList } = useAnimeApi();
   const { user, fetchUserLikedDislikedAnimes } = useAuth();
-  const [bannerImageBackground, setBannerImageBackground] = useState<
-    string | null
-  >(null);
+  const [bannerImageBackground, setBannerImageBackground] = useState<string | null>(null);
   const [scrollY, setScrollY] = useState<number>(0);
   const [comments, setComments] = useState<any[]>([]);
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
 
-  const anime = animeList.find(
-    (anime: Anime) => anime.mal_id === Number(animeId)
-  );
+  const anime = animeList.find((anime: Anime) => anime.mal_id === Number(animeId));
 
   useEffect(() => {
     const handleScroll = () => {
@@ -73,8 +69,7 @@ const SingleAnimePage: React.FC = () => {
   useEffect(() => {
     const fetchLikedDislikedStatus = async () => {
       if (user && animeId) {
-        const { likedAnimes, dislikedAnimes } =
-          await fetchUserLikedDislikedAnimes(user.uid);
+        const { likedAnimes, dislikedAnimes } = await fetchUserLikedDislikedAnimes(user.uid);
         setLiked(likedAnimes.includes(animeId));
         setDisliked(dislikedAnimes.includes(animeId));
       }
@@ -103,13 +98,7 @@ const SingleAnimePage: React.FC = () => {
       />
       <SingleAnimeCard anime={anime} />
       <SingleAnimeData anime={anime} />
-      <SingleAnimeActionBtns
-        anime={anime}
-        liked={liked}
-        disliked={disliked}
-        setLiked={setLiked}
-        setDisliked={setDisliked}
-      />
+      <SingleAnimeActionBtns anime={anime} liked={liked} disliked={disliked} setLiked={setLiked} setDisliked={setDisliked} />
       <CommentSection
         animeId={String(anime.mal_id)}
         comments={comments}
@@ -124,3 +113,4 @@ const SingleAnimePage: React.FC = () => {
 };
 
 export default SingleAnimePage;
+
