@@ -12,7 +12,7 @@ export const useAnimeApi = () => {
     setError(null);
     setLoading(true);
     try {
-      const data = await getTopAnimeData();
+      const data = await getTopAnimeData("bypopularity");
       setAnimeList(data);
     } catch (error: any) {
       setError(error.message);

@@ -8,6 +8,7 @@ import {
   BackgroundInfoTypography,
 } from "./SingleAnimeData.styles";
 import { Anime } from "../../../../types/Anime";
+import { Rating } from "@mui/material";
 
 interface SingleAnimeDataProp {
   anime: Anime;
@@ -16,8 +17,15 @@ interface SingleAnimeDataProp {
 const SingleAnimeData: React.FC<SingleAnimeDataProp> = ({ anime }) => {
   return (
     <StyledCardContent>
-      <RankTypography variant="h5" gutterBottom>
-        Rank (out of 100): {anime.rank}
+      <RankTypography variant="h5" gutterBottom sx={{display: "flex", gap:1,}}>
+        Score: 
+        <Rating
+          name="anime-score"
+          value={anime.score / 2}
+          precision={0.5}
+          readOnly
+        />
+        ({anime.score})
       </RankTypography>
       <BackgroundInfoTypography gutterBottom fontWeight="bold">
         {anime.background

@@ -36,7 +36,7 @@ const SingleAnimeCard: React.FC<SingleAnimeCardProp> = ({ anime }) => {
           {anime.synopsis}
         </SynopsisTypography>
         <YearTypography variant="h5">
-          {anime.season} {anime.year}
+          {anime.status}
         </YearTypography>
       </SingleAnimeContent>
     </SingleAnimeCardBox>

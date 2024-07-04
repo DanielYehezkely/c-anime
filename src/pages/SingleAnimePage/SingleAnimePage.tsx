@@ -20,15 +20,19 @@ import {
   SingleAnimePageContainer,
   UnderlayBackgroundBox,
 } from "./SingleAnimePage.styles";
+import { useAuth } from "../../context/AuthContext/AuthContext";
 
 const SingleAnimePage: React.FC = () => {
   const { animeId } = useParams<{ animeId: string }>();
   const { animeList } = useAnimeApi();
+  const { user, fetchUserLikedDislikedAnimes } = useAuth();
   const [bannerImageBackground, setBannerImageBackground] = useState<
     string | null
   >(null);
   const [scrollY, setScrollY] = useState<number>(0);
   const [comments, setComments] = useState<any[]>([]);
+  const [liked, setLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
 
   const anime = animeList.find(
     (anime: Anime) => anime.mal_id === Number(animeId)
@@ -66,6 +70,19 @@ const SingleAnimePage: React.FC = () => {
     fetchComments();
   }, [animeId]);
 
+  useEffect(() => {
+    const fetchLikedDislikedStatus = async () => {
+      if (user && animeId) {
+        const { likedAnimes, dislikedAnimes } =
+          await fetchUserLikedDislikedAnimes(user.uid);
+        setLiked(likedAnimes.includes(animeId));
+        setDisliked(dislikedAnimes.includes(animeId));
+      }
+    };
+
+    fetchLikedDislikedStatus();
+  }, [user, animeId, fetchUserLikedDislikedAnimes]);
+
   const backgroundColor = scrollY > 150 ? "0.1" : 1;
 
   if (!anime) {
@@ -92,6 +109,8 @@ const SingleAnimePage: React.FC = () => {
         animeId={String(anime.mal_id)}
         comments={comments}
         setComments={setComments}
+        liked={liked}
+        disliked={disliked}
       />
       <CarouselShowcase carouselLabel={"Recommendations"} />
       <CarouselShowcase carouselLabel={"Relations"} />

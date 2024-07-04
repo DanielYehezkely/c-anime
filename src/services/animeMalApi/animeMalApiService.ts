@@ -16,13 +16,16 @@ export const getAnimeList = async (): Promise<Anime[]> => {
   }
 };
 
-export const getTopAnimeData = async (): Promise<Anime[]> => {
+export const getTopAnimeData = async (
+  filter: string = "",
+  sfw: boolean = true
+): Promise<Anime[]> => {
   try {
-    const animeListResponse = await axios.get<AnimeResponse>(
-      JIKAN_API_TOP_ANIME_URL
-    );
-    return animeListResponse.data.data;
-  } catch (error) {
+    const response = await axios.get<AnimeResponse>(JIKAN_API_TOP_ANIME_URL, {
+      params: { filter, sfw },
+    });
+    return response.data.data;
+  } catch (error: any) {
     console.error(`FETCH_ANIME_DATA_ERR: ${error}`);
     throw new Error("Failed to fetch anime data");
   }
