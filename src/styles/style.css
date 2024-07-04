@@ -6,3 +6,22 @@
 body {
   font-family: "DefaultFont", sans-serif;
 }
+
+::-webkit-scrollbar {
+   width: 5px;
+    height: 0px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+ 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

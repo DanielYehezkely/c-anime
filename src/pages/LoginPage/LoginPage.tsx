@@ -111,25 +111,16 @@ const LoginPage: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       {loading && <Loader actionLabel="Authenticating..." />}
-      <Container component="main" maxWidth="xs" >
+      <Container component="main" maxWidth="xs">
         <Box
           position="absolute"
           component="img"
-          src="/assets/images/Naruto-Akatsuki-PNG-Transparent-Image.png"
+          src="/assets/images/pngwing.com.png"
           sx={{
-            width: "20rem",
-            top: "40%",
+            width: "30rem",
+            height: "50rem",
+            bottom: "0",
             right: "10%",
-          }}
-        />
-        <Box
-          position="absolute"
-          component="img"
-          src="/assets/images/Naruto-Akatsuki-PNG-Transparent-Image.png"
-          sx={{
-            width: "20rem",
-            top: "20%",
-            left: "10%",
           }}
         />
         <CssBaseline />
