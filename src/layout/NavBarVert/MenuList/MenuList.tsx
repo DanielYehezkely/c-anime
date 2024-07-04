@@ -80,7 +80,7 @@ const MenuList: React.FC<MenuListProps> = ({
               }}
             >
               <Typography variant="body1">
-                Are you sure you want to sign out?
+                {user ? "Are you sure you want to sign out?" : "You are not registered yet , join us now !"}
               </Typography>
               <Box mt={2} display="flex" justifyContent="space-between">
                 <Button
@@ -94,7 +94,7 @@ const MenuList: React.FC<MenuListProps> = ({
                     },
                   }}
                 >
-                  Yes
+                  {user ? "Yes": "Not now "}
                 </Button>
                 <Button
                   onClick={() => setIsPopoverOpen(false)}
@@ -107,13 +107,13 @@ const MenuList: React.FC<MenuListProps> = ({
                     },
                   }}
                 >
-                  No
+                  {"Register"}
                 </Button>
               </Box>
             </Box>
           }
         >
-          {user ?  (
+        
             <Avatar
               alt="user-avatar"
               src={user && user.photoURL ? user.photoURL : ""}
@@ -122,7 +122,7 @@ const MenuList: React.FC<MenuListProps> = ({
             >
               {!user || !user.photoURL ? <AccountCircle /> : null}
             </Avatar>
-          ) : <AccountCircle/>}
+         
         </Popover>
       </StyledBottomList>
     </>
