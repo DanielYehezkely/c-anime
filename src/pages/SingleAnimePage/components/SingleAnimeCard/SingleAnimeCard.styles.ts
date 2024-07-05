@@ -14,6 +14,7 @@ export const SingleAnimeContent = styled(CardContent)`
   width: 50%;
   color: white;
   display: flex;
+  gap: 1rem;
   flex-direction: column;
 `;
 

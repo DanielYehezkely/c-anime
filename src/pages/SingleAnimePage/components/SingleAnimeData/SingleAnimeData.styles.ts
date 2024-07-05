@@ -7,24 +7,42 @@ export const StyledCardContent = styled(CardContent)`
   display: flex;
   flex-direction: column;
   z-index: 2;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 `;
 
 export const BackgroundInfoTypography = styled(Typography)`
-  max-width: 50% ;
+  max-width: 80%;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: #f0f0f0;
+  line-height: 1.5;
 `;
 
 export const RankTypography = styled(Typography)`
-  color: #b967da;
+  color: #ffd700;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 `;
 
 export const BodyTypography = styled(Typography)`
-  font-size: 1.4rem;
+  font-size: 1.2rem;
+  color: #b0c4de;
+  margin-bottom: 1rem;
 `;
 
 export const StreamTypography = styled(Typography)`
-  color: #9b9a9a;
+  color: #87cefa;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
 `;
 
 export const RatingTypography = styled(Typography)`
-  color: #d10707;
+  color: #ff4500;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
 `;

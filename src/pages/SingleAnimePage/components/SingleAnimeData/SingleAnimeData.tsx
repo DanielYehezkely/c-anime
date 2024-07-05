@@ -17,8 +17,8 @@ interface SingleAnimeDataProp {
 const SingleAnimeData: React.FC<SingleAnimeDataProp> = ({ anime }) => {
   return (
     <StyledCardContent>
-      <RankTypography variant="h5" gutterBottom sx={{display: "flex", gap:1,}}>
-        Score: 
+      <RankTypography variant="h5" gutterBottom>
+        Score:
         <Rating
           name="anime-score"
           value={anime.score / 2}
@@ -33,13 +33,13 @@ const SingleAnimeData: React.FC<SingleAnimeDataProp> = ({ anime }) => {
           : "No Background Provided on this anime"}
       </BackgroundInfoTypography>
       <BodyTypography variant="body1" gutterBottom>
-        Released : {anime.aired.string}
+        Released: {anime.aired.string}
       </BodyTypography>
       <StreamTypography variant="h5">
         Daily Stream: {anime.broadcast.day}
       </StreamTypography>
       <StreamTypography variant="h5">
-        Episodes : {anime.episodes}
+        Episodes: {anime.episodes}
       </StreamTypography>
       <RatingTypography variant="h5">{anime.rating}</RatingTypography>
     </StyledCardContent>
