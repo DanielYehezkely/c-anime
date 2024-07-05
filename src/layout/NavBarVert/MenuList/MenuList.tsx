@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Avatar, Typography, Button, Box } from "@mui/material";
+import { Avatar, Typography, Button, Box, Tooltip } from "@mui/material";
 import { VERTICAL_MENU_ITEMS } from "../../../constants/navbarConstants";
 import NavLogo from "../NavLogo/NavLogo";
 import {
@@ -14,7 +14,6 @@ import { useAuth } from "../../../context/AuthContext/AuthContext";
 import { AccountCircle } from "@mui/icons-material";
 import { Popover } from "react-tiny-popover";
 import { Loader } from "../../../components";
-
 
 interface MenuListProps {
   onItemClick: (pageName: string) => void;
@@ -31,7 +30,6 @@ const MenuList: React.FC<MenuListProps> = ({
   const isActive = (path: string) => location.pathname === path;
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  
 
   const handleAvatarClick = () => {
     setIsPopoverOpen(!isPopoverOpen);
@@ -49,14 +47,20 @@ const MenuList: React.FC<MenuListProps> = ({
       <StyledTopList>
         {isMobile && <NavLogo />}
         {VERTICAL_MENU_ITEMS.map((item, index) => (
-          <StyledListItem
+          <Tooltip
+            title={<h1 style={{ color: "#c8b3f8" }}>{item.text}</h1>}
             key={index}
-            onClick={() => onItemClick(item.text)}
-            className={isActive(item.path || "") ? "active" : ""}
+            placement="right"
+            
           >
-            <StyledListItemIcon>{item.icon}</StyledListItemIcon>
-            {isMobile && <StyledListItemText primary={item.text} />}
-          </StyledListItem>
+            <StyledListItem
+              onClick={() => onItemClick(item.text)}
+              className={isActive(item.path || "") ? "active" : ""}
+            >
+              <StyledListItemIcon>{item.icon}</StyledListItemIcon>
+              {isMobile && <StyledListItemText primary={item.text} />}
+            </StyledListItem>
+          </Tooltip>
         ))}
       </StyledTopList>
 
@@ -114,20 +118,22 @@ const MenuList: React.FC<MenuListProps> = ({
             </Box>
           }
         >
-          {loading ?  (<Loader actionLabel="Logging..." />) : (
-          <Avatar
-            alt="user-avatar"
-            src={user && user.photoURL ? user.photoURL : ""}
-            onClick={handleAvatarClick}
-            style={{ cursor: "pointer" }}
-          >
-            {!user || !user.photoURL ? <AccountCircle /> : null}
-          </Avatar>
+          {loading ? (
+            <Loader actionLabel="Logging..." />
+          ) : (
+            <Avatar
+              alt="user-avatar"
+              src={user && user.photoURL ? user.photoURL : ""}
+              onClick={handleAvatarClick}
+              style={{ cursor: "pointer" }}
+            >
+              {!user || !user.photoURL ? <AccountCircle /> : null}
+            </Avatar>
           )}
         </Popover>
       </StyledBottomList>
     </>
   );
 };
-export default MenuList;
 
+export default MenuList;

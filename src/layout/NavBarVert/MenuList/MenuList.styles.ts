@@ -15,6 +15,7 @@ export const StyledTopList = styled(List)(
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 0.5rem;
   `
 );
 
@@ -76,3 +77,5 @@ export const StyledListItemText = styled(ListItemText)(
     }
   `
 );
+
+
