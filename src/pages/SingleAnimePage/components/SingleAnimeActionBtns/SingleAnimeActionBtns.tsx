@@ -13,14 +13,9 @@ import {
 import { useAuth } from "../../../../context/AuthContext/AuthContext";
 import { db } from "../../../../config/firebaseConfig";
 import {
-  doc,
   getDocs,
-  getDoc,
   query,
   collection,
-  updateDoc,
-  arrayUnion,
-  arrayRemove,
 } from "firebase/firestore";
 import { Box } from "@mui/material";
 
@@ -43,7 +38,7 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
   liked,
   disliked
 }) => {
-  const { user, addToWatchlist } = useAuth();
+  const { user, addToWatchlist, likeAnime, dislikeAnime } = useAuth();
   const [isLikedClicked, setIsLikedClicked] = useState(false);
   const [isDislikedClicked, setIsDislikedClicked] = useState(false);
 
@@ -65,49 +60,27 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
     fetchLikeCount();
   }, [anime.mal_id, setLikeCount]);
 
-  const handleLikeAnime = async () => {
-    if (!user) return;
+ const handleLikeAnime = async () => {
+   if (!user) return;
 
-    const userRef = doc(db, "users", user.uid);
-    const userDoc = await getDoc(userRef);
+   await likeAnime(String(anime.mal_id));
+   setLiked(true);
+   setDisliked(false);
+   setLikeCount((prevCount) => prevCount + 1);
+   setIsLikedClicked(true);
+   setIsDislikedClicked(false);
+ };
 
-    if (userDoc.exists()) {
-      const userData = userDoc.data();
-      if (!userData.likedAnimes.includes(String(anime.mal_id))) {
-        await updateDoc(userRef, {
-          likedAnimes: arrayUnion(String(anime.mal_id)),
-          dislikedAnimes: arrayRemove(String(anime.mal_id)),
-        });
-        setLiked(true);
-        setDisliked(false);
-        setLikeCount((prevCount) => prevCount + 1);
-        setIsLikedClicked(true); 
-        setIsDislikedClicked(false);
-      }
-    }
-  };
+   const handleDislikeAnime = async () => {
+     if (!user) return;
 
-  const handleDislikeAnime = async () => {
-    if (!user) return;
-
-    const userRef = doc(db, "users", user.uid);
-    const userDoc = await getDoc(userRef);
-
-    if (userDoc.exists()) {
-      const userData = userDoc.data();
-      if (!userData.dislikedAnimes.includes(String(anime.mal_id))) {
-        await updateDoc(userRef, {
-          dislikedAnimes: arrayUnion(String(anime.mal_id)),
-          likedAnimes: arrayRemove(String(anime.mal_id)),
-        });
-        setDisliked(true);
-        setLiked(false);
-        setLikeCount((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
-        setIsDislikedClicked(true); 
-        setIsLikedClicked(false);
-      }
-    }
-  };
+     await dislikeAnime(String(anime.mal_id));
+     setDisliked(true);
+     setLiked(false);
+     setLikeCount((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
+     setIsDislikedClicked(true);
+     setIsLikedClicked(false);
+   };
 
   const handleAddToWatchlist = async () => {
     if (!user) return;
