@@ -9,7 +9,6 @@ export const StyledCardContent = styled(CardContent)`
   z-index: 2;
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 `;
 
 export const BackgroundInfoTypography = styled(Typography)`

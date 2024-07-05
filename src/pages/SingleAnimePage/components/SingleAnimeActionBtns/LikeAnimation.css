@@ -1,0 +1,20 @@
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.like-icon {
+  transition: fill 0.3s;
+}
+
+.liked {
+  fill: #f44336; /* Change color to red when liked */
+  animation: pop 0.5s ease;
+}

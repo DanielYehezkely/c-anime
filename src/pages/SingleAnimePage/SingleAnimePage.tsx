@@ -113,13 +113,14 @@ useEffect(() => {
         component="div"
         style={{
           backgroundImage: `
-            linear-gradient(to right, #000000 11%, rgba(0, 0, 0, 0.466) 50%),
-            linear-gradient(to top, #0C0C0C, #00000000 20%),
+          linear-gradient(to right, #000000 11%, rgba(0, 0, 0, 0.466) 50%),
+            linear-gradient(to top, #0c0c0cff 1%, #00000000 20%),
             url(${bannerImageBackground || anime.images.jpg.large_image_url})
           `,
           opacity: backgroundColor,
+          // boxShadow: "0 15px 10px 0 #000000",
         }}
-      />
+        />
       <SingleAnimeCard anime={anime} />
       <SingleAnimeData anime={anime} />
       <SingleAnimeActionBtns

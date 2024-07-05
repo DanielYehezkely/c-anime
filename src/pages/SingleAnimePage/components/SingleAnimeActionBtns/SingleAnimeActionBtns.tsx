@@ -1,15 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Anime } from "../../../../types/Anime";
 import {
-  ThumbDown as DislikeIcon,
-  ThumbUp as LikeIcon,
-} from "@mui/icons-material";
-import {
+  LikeIcon,
+  DislikeIcon,
   ActionButtonsContainer,
   TrailerButton,
   MangaButton,
   LikeButton,
-  UnlikeButton,
+  DislikeButton,
   WatchlistButton,
 } from "./SingleAnimeActionBtns.styles";
 import { useAuth } from "../../../../context/AuthContext/AuthContext";
@@ -24,6 +22,7 @@ import {
   arrayUnion,
   arrayRemove,
 } from "firebase/firestore";
+import { Box } from "@mui/material";
 
 interface SingleAnimeActionBtnsProps {
   anime: Anime;
@@ -43,6 +42,8 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
   setLikeCount,
 }) => {
   const { user, addToWatchlist } = useAuth();
+  const [isLiked, setIsLiked] = useState(false);
+  const [isDisliked, setIsDisliked] = useState(false);
 
   useEffect(() => {
     const fetchLikeCount = async () => {
@@ -78,6 +79,8 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
         setLiked(true);
         setDisliked(false);
         setLikeCount((prevCount) => prevCount + 1);
+        setIsLiked(true); 
+        setIsDisliked(false);
       }
     }
   };
@@ -98,28 +101,37 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
         setDisliked(true);
         setLiked(false);
         setLikeCount((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
+        setIsDisliked(true); 
+        setIsLiked(false);
       }
     }
   };
 
-  const handleAddToWatchlist = () => addToWatchlist(String(anime.mal_id));
+  const handleAddToWatchlist = async () => {
+    if (!user) return;
+    await addToWatchlist(String(anime.mal_id));
+  };
 
   return (
-    <ActionButtonsContainer>
-      <TrailerButton href={anime.trailer.url}>Watch Trailer</TrailerButton>
-      <MangaButton variant="contained" href={anime.url}>
-        Read Manga
-      </MangaButton>
-      <LikeButton variant="contained" onClick={handleLikeAnime}>
-        Like <LikeIcon /> {likeCount}
-      </LikeButton>
-      <UnlikeButton variant="contained" onClick={handleDislikeAnime}>
-        Unlike <DislikeIcon />
-      </UnlikeButton>
-      <WatchlistButton onClick={handleAddToWatchlist}>
-        Add to Watchlist
-      </WatchlistButton>
-    </ActionButtonsContainer>
+    <>
+      <ActionButtonsContainer>
+        <TrailerButton href={anime.trailer.url}>Watch Trailer</TrailerButton>
+        <MangaButton variant="contained" href={anime.url}>
+          Read Manga
+        </MangaButton>
+        <Box display="flex">
+        <LikeButton variant="contained" onClick={handleLikeAnime}>
+          <LikeIcon isLiked={isLiked} /> {likeCount}
+        </LikeButton>
+        <DislikeButton variant="contained" onClick={handleDislikeAnime}>
+          <DislikeIcon isDisliked={isDisliked} />
+        </DislikeButton>
+        </Box>
+        <WatchlistButton onClick={handleAddToWatchlist}>
+          Add to Watchlist
+        </WatchlistButton>
+      </ActionButtonsContainer>
+    </>
   );
 };
 

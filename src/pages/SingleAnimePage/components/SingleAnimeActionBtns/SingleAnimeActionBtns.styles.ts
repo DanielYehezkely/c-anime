@@ -1,5 +1,21 @@
-import { styled } from "@mui/material/styles";
+import styled, { keyframes } from "styled-components";
+import {
+  ThumbDown as DislikeIconBase,
+  ThumbUp as LikeIconBase,
+} from "@mui/icons-material";
 import { Box, Button } from "@mui/material";
+
+export const pop = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+`;
 
 export const ActionButtonsContainer = styled(Box)`
   width: 90%;
@@ -54,16 +70,28 @@ export const LikeButton = styled(StyledButton)`
   }
 `;
 
-export const UnlikeButton = styled(StyledButton)`
+export const LikeIcon = styled(LikeIconBase)<{ isLiked: boolean }>`
+  transition: fill 0.3s;
+  fill: ${(props) => (props.isLiked ? "#46f436" : "white")};
+  animation: ${(props) => (props.isLiked ? pop : "none")} 0.5s ease;
+`;
+
+export const DislikeButton = styled(StyledButton)`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(45deg, #f44336, #e57373);
+  /* background: linear-gradient(45deg, #f44336, #e57373); */
   border: none;
 
-  &:hover {
+  /* &:hover {
     background: linear-gradient(45deg, #e57373, #f44336);
-  }
+  } */
+`;
+
+export const DislikeIcon = styled(DislikeIconBase)<{ isDisliked: boolean }>`
+  transition: fill 0.3s;
+  fill: ${(props) => (props.isDisliked ? "#f44336" : "white")};
+  animation: ${(props) => (props.isDisliked ? pop : "none")} 0.5s ease;
 `;
 
 export const WatchlistButton = styled(StyledButton)`
