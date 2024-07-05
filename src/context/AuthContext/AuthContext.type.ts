@@ -2,18 +2,18 @@ import { User } from "firebase/auth";
 
 export interface AuthContextProps {
   user: User | null;
-  loginWithGoogle: (navigateCallback: () => void) => Promise<void>;
+  loginWithGoogle: (callback: () => void) => Promise<void>;
   loginWithEmail: (
     email: string,
     password: string,
-    navigateCallback: () => void
+    callback: () => void
   ) => Promise<void>;
   signUpWithEmail: (
     email: string,
     password: string,
-    navigateCallback: () => void
+    callback: () => void
   ) => Promise<void>;
-  logout: (navigateCallback: () => void) => Promise<void>;
+  logout: (callback: () => void) => Promise<void>;
   addToWatchlist: (animeId: string) => Promise<void>;
   removeFromWatchlist: (animeId: string) => Promise<void>;
   likeAnime: (animeId: string) => Promise<void>;
@@ -29,6 +29,7 @@ export interface AuthContextProps {
     likedAnimes: string[];
     dislikedAnimes: string[];
   }>;
+  sendPasswordReset: (email: string) => Promise<void>;
   loading: boolean;
   error: any;
 }

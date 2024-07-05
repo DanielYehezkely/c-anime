@@ -5,6 +5,7 @@ import {
   signInWithPopup,
   createUserWithEmailAndPassword,
   User,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import {
   doc,
@@ -59,7 +60,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
     }
   };
 
-  const loginWithGoogle = async (navigateCallback: () => void) => {
+  const loginWithGoogle = async (callback: () => void) => {
     setLoading(true);
     setError(null);
     const provider = new GoogleAuthProvider();
@@ -67,7 +68,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
       await createUserDocument(result.user);
-      navigateCallback();
+      callback();
     } catch (error: unknown) {
       setError(error instanceof Error ? error : new Error(String(error)));
     } finally {
@@ -78,7 +79,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
   const loginWithEmail = async (
     email: string,
     password: string,
-    navigateCallback: () => void
+    callback: () => void
   ): Promise<void> => {
     setLoading(true);
     setError(null);
@@ -90,9 +91,9 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       );
       setUser(userCredential.user);
       await createUserDocument(userCredential.user);
-      navigateCallback();
+      callback();
     } catch (error: any) {
-      setError(`Firebase Error: ${error.message}`);
+      setError(`${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -101,7 +102,7 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
   const signUpWithEmail = async (
     email: string,
     password: string,
-    navigateCallback: () => void
+    callback: () => void
   ): Promise<void> => {
     setLoading(true);
     setError(null);
@@ -113,27 +114,39 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
       );
       setUser(userCredential.user);
       await createUserDocument(userCredential.user);
-      navigateCallback();
+      callback();
     } catch (error: any) {
-      setError(`Firebase Error: ${error.message}`);
+      setError(`${error.message}`);
     } finally {
       setLoading(false);
     }
   };
 
-  const logout = async (navigateCallback: () => void): Promise<void> => {
+  const logout = async (callback: () => void): Promise<void> => {
     setLoading(true);
     setError(null);
     try {
       await auth.signOut();
       setUser(null);
-      navigateCallback();
+      callback();
     } catch (error: unknown) {
       setError(error instanceof Error ? error : new Error(String(error)));
     } finally {
       setLoading(false);
     }
   };
+
+   const sendPasswordReset = async (email: string) => {
+     setLoading(true);
+     setError(null);
+     try {
+       await sendPasswordResetEmail(auth, email);
+     } catch (error: any) {
+       setError(`Firebase Error: ${error.message}`);
+     } finally {
+       setLoading(false);
+     }
+   };
 
   const addToWatchlist = async (animeId: string) => {
     if (!user) return;
@@ -249,6 +262,7 @@ const editComment = async (
         loginWithGoogle,
         loginWithEmail,
         signUpWithEmail,
+        sendPasswordReset,
         logout,
         loading,
         error,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Button,
@@ -22,6 +22,7 @@ import { TabPanelProps } from "./LoginPage.types";
 import { useAuth } from "../../context/AuthContext/AuthContext";
 import { Loader } from "../../components";
 import { useNavigate } from "react-router";
+import PasswordResetDialog from "./PasswordReset/PasswordResetDialog";
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -50,22 +51,14 @@ const theme = createTheme();
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const [tabValue, setTabValue] = useState(0);
-  const {
-    loginWithEmail,
-    user,
-    signUpWithEmail,
-    loading,
-    loginWithGoogle,
-  } = useAuth();
-
-  useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
-  }, [user, navigate]);
+  const [errors, setErrors] = useState({ email: "", password: "" });
+  const [openResetDialog, setOpenResetDialog] = useState(false);
+  const { loginWithEmail, signUpWithEmail, loading, loginWithGoogle, error } =
+    useAuth();
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
+    setErrors({ email: "", password: "" });
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -73,30 +66,32 @@ const LoginPage: React.FC = () => {
     const data = new FormData(event.currentTarget);
     const email = data.get("email") as string;
     const password = data.get("password") as string;
+    let newErrors = { email: "", password: "" };
 
-    if (!email || !password) {
-      console.error("Email and password are required.");
-      return;
+    if (!email) {
+      newErrors.email = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Email format is invalid.";
     }
 
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      console.error("Email format is invalid.");
-      return;
+    if (!password) {
+      newErrors.password = "Password is required.";
+    } else if (password.length < 6) {
+      newErrors.password = "Password should be at least 6 characters long.";
     }
 
-    if (password.length < 6) {
-      console.error("Password should be at least 6 characters long.");
-      return;
-    }
+    setErrors(newErrors);
 
-    try {
-      if (tabValue === 0) {
-        await loginWithEmail(email, password, () => navigate("/"));
-      } else if (tabValue === 1) {
-        await signUpWithEmail(email, password, () => setTabValue(0));
+    if (!newErrors.email && !newErrors.password) {
+      try {
+        if (tabValue === 0) {
+          await loginWithEmail(email, password, () => navigate("/"));
+        } else if (tabValue === 1) {
+          await signUpWithEmail(email, password, () => setTabValue(0));
+        }
+      } catch (error) {
+        console.error("Authentication error:", error);
       }
-    } catch (error) {
-      console.error("Authentication error:", error);
     }
   };
 
@@ -106,6 +101,14 @@ const LoginPage: React.FC = () => {
     } catch (error) {
       console.error("Error signing in with Google:", error);
     }
+  };
+
+  const handleResetDialogOpen = () => {
+    setOpenResetDialog(true);
+  };
+
+  const handleResetDialogClose = () => {
+    setOpenResetDialog(false);
   };
 
   return (
@@ -162,6 +165,8 @@ const LoginPage: React.FC = () => {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                error={!!errors.email}
+                helperText={errors.email}
               />
               <TextField
                 margin="normal"
@@ -172,11 +177,18 @@ const LoginPage: React.FC = () => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                error={!!errors.password}
+                helperText={errors.password}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
+              {error && (
+                <Typography color="error" variant="body2">
+                  {error}
+                </Typography>
+              )}
               <Button
                 type="submit"
                 fullWidth
@@ -196,12 +208,16 @@ const LoginPage: React.FC = () => {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  <Link
+                    href="#"
+                    variant="body2"
+                    onClick={handleResetDialogOpen}
+                  >
                     Forgot password?
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link href="#" variant="body2" onClick={() => setTabValue(1)}>
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
@@ -226,6 +242,8 @@ const LoginPage: React.FC = () => {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                error={!!errors.email}
+                helperText={errors.email}
               />
               <TextField
                 margin="normal"
@@ -236,6 +254,8 @@ const LoginPage: React.FC = () => {
                 type="password"
                 id="signup-password"
                 autoComplete="new-password"
+                error={!!errors.password}
+                helperText={errors.password}
               />
               <TextField
                 margin="normal"
@@ -247,6 +267,11 @@ const LoginPage: React.FC = () => {
                 id="confirm-password"
                 autoComplete="new-password"
               />
+              {error && (
+                <Typography color="error" variant="body2">
+                  {error}
+                </Typography>
+              )}
               <Button
                 type="submit"
                 fullWidth
@@ -267,6 +292,10 @@ const LoginPage: React.FC = () => {
             </Box>
           </TabPanel>
         </Box>
+        <PasswordResetDialog
+          open={openResetDialog}
+          handleClose={handleResetDialogClose}
+        />
       </Container>
     </ThemeProvider>
   );

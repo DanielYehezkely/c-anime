@@ -8,7 +8,7 @@ import {
   LoginPage,
 } from "./pages";
 import ProtectedRoute from "./routes/protectedRout";
-import AuthRedirect from "./routes/authRedirect";
+// import AuthRedirect from "./routes/authRedirect";
 
 
 const router = createBrowserRouter([
@@ -40,11 +40,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: (
-      <AuthRedirect>
-        <LoginPage />
-      </AuthRedirect>
-    ),
+    element:  <LoginPage />
   },
   {
     path: "*",
