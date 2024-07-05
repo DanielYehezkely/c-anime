@@ -10,7 +10,7 @@ export const pop = keyframes`
     transform: scale(1);
   }
   50% {
-    transform: scale(1.5);
+    transform: scale(3);
   }
   100% {
     transform: scale(1);
@@ -58,40 +58,42 @@ export const MangaButton = styled(StyledButton)`
   }
 `;
 
-export const LikeButton = styled(StyledButton)`
+export const LikeButton = styled(Button)`
+  font-size: 1.4rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(45deg, #4caf50, #81c784);
+  background: transparent;
   border: none;
+  border-right: 1px solid white;
+`;
 
+export const LikeIcon = styled(LikeIconBase)<{ isLiked: boolean, liked: boolean }>`
+  transition: fill 0.3s, transform 0.2s;
+  fill: ${(props) => (props.liked ? "#46f436" : "white")};
+  animation: ${(props) => (props.isLiked ? pop : "none")} 0.5s ease;
   &:hover {
-    background: linear-gradient(45deg, #81c784, #4caf50);
+    transform: scale(1.5);
   }
 `;
 
-export const LikeIcon = styled(LikeIconBase)<{ isLiked: boolean }>`
-  transition: fill 0.3s;
-  fill: ${(props) => (props.isLiked ? "#46f436" : "white")};
-  animation: ${(props) => (props.isLiked ? pop : "none")} 0.5s ease;
-`;
-
-export const DislikeButton = styled(StyledButton)`
+export const DislikeButton = styled(Button)`
+  font-size: 1.4rem;
+  color: black;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  /* background: linear-gradient(45deg, #f44336, #e57373); */
+  background: transparent;
   border: none;
-
-  /* &:hover {
-    background: linear-gradient(45deg, #e57373, #f44336);
-  } */
 `;
 
-export const DislikeIcon = styled(DislikeIconBase)<{ isDisliked: boolean }>`
-  transition: fill 0.3s;
-  fill: ${(props) => (props.isDisliked ? "#f44336" : "white")};
+export const DislikeIcon = styled(DislikeIconBase)<{ isDisliked: boolean, disliked: boolean }>`
+  transition: fill 0.3s, transform 0.2s;
+  fill: ${(props) => (props.disliked ? "#f44336" : "white")};
   animation: ${(props) => (props.isDisliked ? pop : "none")} 0.5s ease;
+  &:hover {
+    transform: scale(1.5);
+  }
 `;
 
 export const WatchlistButton = styled(StyledButton)`

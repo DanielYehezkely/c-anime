@@ -40,10 +40,12 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
   setDisliked,
   likeCount,
   setLikeCount,
+  liked,
+  disliked
 }) => {
   const { user, addToWatchlist } = useAuth();
-  const [isLiked, setIsLiked] = useState(false);
-  const [isDisliked, setIsDisliked] = useState(false);
+  const [isLikedClicked, setIsLikedClicked] = useState(false);
+  const [isDislikedClicked, setIsDislikedClicked] = useState(false);
 
   useEffect(() => {
     const fetchLikeCount = async () => {
@@ -79,8 +81,8 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
         setLiked(true);
         setDisliked(false);
         setLikeCount((prevCount) => prevCount + 1);
-        setIsLiked(true); 
-        setIsDisliked(false);
+        setIsLikedClicked(true); 
+        setIsDislikedClicked(false);
       }
     }
   };
@@ -101,8 +103,8 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
         setDisliked(true);
         setLiked(false);
         setLikeCount((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
-        setIsDisliked(true); 
-        setIsLiked(false);
+        setIsDislikedClicked(true); 
+        setIsLikedClicked(false);
       }
     }
   };
@@ -119,13 +121,20 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
         <MangaButton variant="contained" href={anime.url}>
           Read Manga
         </MangaButton>
-        <Box display="flex">
-        <LikeButton variant="contained" onClick={handleLikeAnime}>
-          <LikeIcon isLiked={isLiked} /> {likeCount}
-        </LikeButton>
-        <DislikeButton variant="contained" onClick={handleDislikeAnime}>
-          <DislikeIcon isDisliked={isDisliked} />
-        </DislikeButton>
+        <Box
+          display="flex"
+          sx={{
+            border: "1px solid white",
+            borderRadius: "3rem",
+            overflow: "hidden",
+          }}
+        >
+          <LikeButton variant="contained" onClick={handleLikeAnime}>
+            <LikeIcon isLiked={isLikedClicked} liked={liked} /> {likeCount}
+          </LikeButton>
+          <DislikeButton variant="contained" onClick={handleDislikeAnime}>
+            <DislikeIcon isDisliked={isDislikedClicked} disliked={disliked} />
+          </DislikeButton>
         </Box>
         <WatchlistButton onClick={handleAddToWatchlist}>
           Add to Watchlist
