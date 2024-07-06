@@ -12,7 +12,7 @@ export const StyledCardContent = styled(CardContent)`
 `;
 
 export const BackgroundInfoTypography = styled(Typography)`
-  max-width: 80%;
+  max-width: 50%;
   margin-bottom: 1rem;
   font-size: 1.2rem;
   color: #f0f0f0;

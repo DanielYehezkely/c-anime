@@ -3,13 +3,13 @@ import React from "react";
 
 import theme from "../../MUI/theme";
 import { HeaderBox, SearchBox } from "./components";
-import { useAnimeApi } from "../../hooks/useAnimeApi";
 import { Loader } from "../../components";
 import CarouselShowcase from "../../components/CarouselShowcase/CarouselShowcase";
+import { useAnime } from "../../context/FetchMalAnimeContext/FetchMalAnimeContext";
 
 const Home: React.FC = () => {
   
-  const { loading } = useAnimeApi();
+  const { loading } = useAnime();
 
   return (
     <>
