@@ -31,7 +31,7 @@ const LoginPage: React.FC = () => {
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
-    setErrors({ email: "", password: "" });
+    setErrors({ email: "", password: "", confirmPassword: "" });
   };
 
   const handleResetDialogOpen = () => {

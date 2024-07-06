@@ -20,6 +20,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
   handleResetDialogOpen,
   errors,
   error,
+  setTabValue,
 }) => {
   const isSignUp = formType === "SignUp";
 
@@ -63,6 +64,8 @@ const AuthForm: React.FC<AuthFormProps> = ({
             type="password"
             id="confirm-password"
             autoComplete="new-password"
+            error={!!errors.confirmPassword}
+            helperText={errors.confirmPassword}
           />
         )}
         {!isSignUp && (
@@ -98,7 +101,11 @@ const AuthForm: React.FC<AuthFormProps> = ({
             </Grid>
           )}
           <Grid item>
-            <Link href="#" variant="body2">
+            <Link
+              href="#"
+              variant="body2"
+              onClick={() => setTabValue?.(isSignUp ? 0 : 1)}
+            >
               {isSignUp
                 ? "Already have an account? Sign In"
                 : "Don't have an account? Sign Up"}

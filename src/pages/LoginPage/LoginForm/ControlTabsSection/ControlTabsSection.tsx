@@ -2,7 +2,6 @@ import React from "react";
 import { Avatar, Box, Tabs, Tab } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
-
 interface AvatarSectionProps {
   tabValue: number;
   handleTabChange: (event: React.SyntheticEvent, newValue: number) => void;

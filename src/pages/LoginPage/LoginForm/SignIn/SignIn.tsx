@@ -2,12 +2,13 @@ import React from "react";
 import AuthForm from "../../../../components/AuthForm/AuthForm";
 import { AuthFormProps } from "../../../../components/AuthForm/AuthForm.types";
 
-const SignIn: React.FC<Omit<AuthFormProps, "formType" | "setTabValue">> = ({
+const SignIn: React.FC<Omit<AuthFormProps, "formType">> = ({
   handleSubmit,
   handleGoogleSignIn,
-  handleResetDialogOpen,
   errors,
   error,
+  handleResetDialogOpen,
+  setTabValue,
 }) => {
   return (
     <AuthForm
@@ -17,6 +18,7 @@ const SignIn: React.FC<Omit<AuthFormProps, "formType" | "setTabValue">> = ({
       handleResetDialogOpen={handleResetDialogOpen}
       errors={errors}
       error={error}
+      setTabValue={setTabValue}
     />
   );
 };

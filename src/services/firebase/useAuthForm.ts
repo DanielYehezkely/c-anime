@@ -2,24 +2,28 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../context/AuthContext/AuthContext";
 
-
 interface UseAuthFormProps {
   tabValue: number;
-  setTabValue: (value: number) => void;
+  setTabValue: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const useAuthForm = ({ tabValue, setTabValue }: UseAuthFormProps) => {
-  const navigate = useNavigate();
-  const [errors, setErrors] = useState({ email: "", password: "" });
-  const { loginWithEmail, signUpWithEmail, loginWithGoogle, error, loading } =
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const { loginWithEmail, signUpWithEmail, loading, loginWithGoogle, error } =
     useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get("email") as string;
     const password = data.get("password") as string;
-    let newErrors = { email: "", password: "" };
+    const confirmPassword = data.get("confirm-password") as string;
+    let newErrors = { email: "", password: "", confirmPassword: "" };
 
     if (!email) {
       newErrors.email = "Email is required.";
@@ -33,9 +37,13 @@ export const useAuthForm = ({ tabValue, setTabValue }: UseAuthFormProps) => {
       newErrors.password = "Password should be at least 6 characters long.";
     }
 
+    if (tabValue === 1 && password !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match.";
+    }
+
     setErrors(newErrors);
 
-    if (!newErrors.email && !newErrors.password) {
+    if (!newErrors.email && !newErrors.password && !newErrors.confirmPassword) {
       try {
         if (tabValue === 0) {
           await loginWithEmail(email, password, () => navigate("/"));
