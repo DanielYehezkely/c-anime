@@ -5,23 +5,39 @@ import CarouselFilter from "./CarouselFilter/CarouselFilter";
 import CarouselItems from "./CarouselItems/CarouselItems";
 import { useAnimeApi } from "../../hooks/useAnimeApi";
 import { CarouselShowcaseProps } from "./CarouselShowcase.types";
+import { Anime } from "../../types/Anime";
 
-
-
-const CarouselShowcase: React.FC<CarouselShowcaseProps> = ({carouselLabel}) => {
-  const { animeList } = useAnimeApi(); //*TODO - refactor when i can no need to prop it i will make context out of the anime api
+const CarouselShowcase: React.FC<CarouselShowcaseProps> = ({
+  carouselLabel,
+}) => {
+  const { animeList } = useAnimeApi(); // *TODO - refactor when i can no need to prop it i will make context out of the anime api
   const [currentPage, setCurrentPage] = useState<number>(0);
+  const [filteredAnimeList, setFilteredAnimeList] = useState<Anime[]>([]);
   const swiperRef = useRef<any>(null);
+
+  useEffect(() => {
+    setFilteredAnimeList(animeList);
+  }, [animeList]);
 
   const handleSlideChange = (index: number) => {
     setCurrentPage(index);
-    currentPage;
   };
 
   const handlePageChange = ({ selected }: { selected: number }) => {
     setCurrentPage(selected);
     if (swiperRef.current) {
       swiperRef.current.swiper.slideTo(selected);
+    }
+  };
+
+  const handleFilterChange = (genre: string) => {
+    if (genre === "All") {
+      setFilteredAnimeList(animeList);
+    } else {
+      const filteredList = animeList.filter((anime) =>
+        anime.genres.some((g) => g.name === genre)
+      );
+      setFilteredAnimeList(filteredList);
     }
   };
 
@@ -49,14 +65,14 @@ const CarouselShowcase: React.FC<CarouselShowcaseProps> = ({carouselLabel}) => {
       <CarouselPagination
         currentPage={currentPage}
         label={carouselLabel}
-        pageCount={animeList ? animeList.length - 4 : 21}
+        pageCount={filteredAnimeList ? filteredAnimeList.length - 4 : 21}
         onPageChange={handlePageChange}
       />
-      <CarouselFilter />
+      <CarouselFilter onFilterChange={handleFilterChange} />
       <CarouselItems
         onSlideChange={handleSlideChange}
         swiperRef={swiperRef}
-        animeList={animeList}
+        animeList={filteredAnimeList}
       />
     </Box>
   );

@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from "react";
-
 import { Box, IconButton } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -7,7 +6,11 @@ import { GENRES_FILTER } from "../../../constants/globalConstants";
 
 import "./CarouselFilter.css";
 
-const CarouselFilter: React.FC = () => {
+interface CarouselFilterProps {
+  onFilterChange: (genre: string) => void;
+}
+
+const CarouselFilter: React.FC<CarouselFilterProps> = ({ onFilterChange }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isAtStart, setIsAtStart] = useState<boolean>(true);
   const [isAtEnd, setIsAtEnd] = useState<boolean>(false);
@@ -45,6 +48,11 @@ const CarouselFilter: React.FC = () => {
     };
   }, []);
 
+  const handleFilterClick = (genre: string) => {
+    setActiveFilter(genre);
+    onFilterChange(genre);
+  };
+
   return (
     <Box
       component="section"
@@ -74,7 +82,7 @@ const CarouselFilter: React.FC = () => {
           <Box
             key={genre}
             className={`filter-item ${activeFilter === genre ? "active" : ""}`}
-            onClick={() => setActiveFilter(genre)}
+            onClick={() => handleFilterClick(genre)}
           >
             {genre}
           </Box>
