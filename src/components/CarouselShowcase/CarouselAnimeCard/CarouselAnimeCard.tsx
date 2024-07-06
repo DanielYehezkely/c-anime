@@ -116,7 +116,10 @@ const CarouselAnimeCard: React.FC<CarouselAnimeCardProps> = ({
           }}
           component="span"
         >
-          <DateIcon /> {`${anime.season} ${anime.year}`}
+          <DateIcon />
+          {anime.season && anime.year
+            ? `${anime.season} ${anime.year}`
+            : anime.aired.string}
         </Typography>
       </CardContent>
       {isHovered && (
