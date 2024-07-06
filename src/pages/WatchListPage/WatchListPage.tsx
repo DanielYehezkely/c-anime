@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Grid, Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import {
   doc,
   getDoc,
@@ -10,10 +10,10 @@ import {
 import { useAuth } from "../../context/AuthContext/AuthContext";
 import { db } from "../../config/firebaseConfig";
 import { Anime } from "../../types/Anime";
-import { CarouselAnimeCard, Loader } from "../../components";
 import { useAnime } from "../../context/FetchMalAnimeContext/FetchMalAnimeContext";
 import { a11yProps, WatchlistTabPanel, WatchlistTabs } from "./components";
-
+import AnimeList from "./components/AnimeGridList/AnimeList";
+import { Loader } from "../../components";
 
 
 const WatchListPage: React.FC = () => {
@@ -86,7 +86,7 @@ const WatchListPage: React.FC = () => {
       const userRef = doc(db, "users", user.uid);
       await updateDoc(userRef, {
         watchlist: arrayRemove(id.toString()),
-        doneWatching: arrayUnion(id.toString()), // Add to doneWatching list
+        doneWatching: arrayUnion(id.toString()),
       });
       setWatchlist(watchlist.filter((animeId) => animeId !== id.toString()));
       setDoneWatchingList([...doneWatchingList, id.toString()]);
@@ -117,44 +117,15 @@ const WatchListPage: React.FC = () => {
           a11yProps={a11yProps}
         />
         <WatchlistTabPanel value={value} index={0}>
-          {filteredWatchlist.length === 0 ? (
-            <Typography variant="h6" sx={{ color: "white" }}>
-              Your watchlist is empty.
-            </Typography>
-          ) : (
-            <Grid container spacing={4}>
-              {filteredWatchlist.map((anime) => (
-                <Grid item key={anime.mal_id} xs={12} sm={6} md={4}>
-                  <CarouselAnimeCard
-                    anime={anime}
-                    onRemove={handleRemove}
-                    onDoneWatching={handleDoneWatching}
-                  />
-                </Grid>
-              ))}
-            </Grid>
-          )}
+        <AnimeList
+        animeList={filteredWatchlist}
+        emptyMessage="Your Watchlist is Empty"
+        handleDoneWatching={handleDoneWatching}
+        handleRemove={handleRemove}
+        />
         </WatchlistTabPanel>
         <WatchlistTabPanel value={value} index={1}>
-          {filteredDoneWatchingList.length === 0 ? (
-            <Typography variant="h6" sx={{ color: "white" }}>
-              Your done watching list is empty.
-            </Typography>
-          ) : (
-            <Grid container spacing={4}>
-              {filteredDoneWatchingList.map((anime) => (
-                <Grid item key={anime?.mal_id} xs={12} sm={6} md={4}>
-                  {anime && (
-                    <CarouselAnimeCard
-                      anime={anime}
-                      onRemove={handleRemove}
-                      onDoneWatching={handleDoneWatching}
-                    />
-                  )}
-                </Grid>
-              ))}
-            </Grid>
-          )}
+          <AnimeList animeList={filteredDoneWatchingList} emptyMessage="Your Done Watchinglist is Empty" handleDoneWatching={handleDoneWatching} handleRemove={handleRemove}/>
         </WatchlistTabPanel>
       </Container>
     </>
