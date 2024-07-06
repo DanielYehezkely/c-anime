@@ -9,6 +9,8 @@ export const boxStyle: SxProps = {
   [theme.breakpoints.down("md")]: {
     width: "100%",
     padding: "0 1rem 1rem 1rem",
+    display: "flex",
+    justifyContent: "center"
   },
 };
 
@@ -46,6 +48,10 @@ export const autoCompleteStyle: SxProps = {
   },
   "& .MuiAutocomplete-paper": {
     backgroundColor: "#101010",
+  },
+  [theme.breakpoints.down("md")]: {
+    alignSelf: "center",
+    width: "100%",
   },
 };
 
