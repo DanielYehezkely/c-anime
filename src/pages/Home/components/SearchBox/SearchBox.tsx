@@ -9,7 +9,6 @@ import {
   InputAdornment,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { useAnimeApi } from "../../../../hooks/useAnimeApi";
 import {
   boxStyle,
   autoCompleteStyle,
@@ -17,9 +16,10 @@ import {
   startAdornmentStyle,
 } from "./SearchBox.styles";
 import { Anime } from "../../../../types/Anime";
+import { useAnime } from "../../../../context/FetchMalAnimeContext/FetchMalAnimeContext";
 
 const SearchBox: React.FC = () => {
-  const { animeList, loading, error } = useAnimeApi();
+  const { animeList, loading, error } = useAnime();
   const navigate = useNavigate();
 
   const handleOptionSelect = (

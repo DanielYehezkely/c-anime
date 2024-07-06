@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import AnimeCardShow from "./AnimeCardShow/AnimeCardShow";
 import { Anime } from "../../../../types/Anime";
-import { useAnimeApi } from "../../../../hooks/useAnimeApi";
+
 import getAnimeBannerByTitle from "../../../../services/animeMalApi/animeAnilistService";
 import HeaderBoxUnderlay from "./AnimeCardShow/HeaderBoxUnderlay";
+import { useAnime } from "../../../../context/FetchMalAnimeContext/FetchMalAnimeContext";
  
 
 const HeaderBox: React.FC = () => {
-  const { animeList } = useAnimeApi();
+  const { animeList } = useAnime();
   const [currentAnime, setCurrentAnime] = useState<Anime | null>(null);
   const [bannerImage, setBannerImage] = useState<string | null>(null);
   const [opacity, setOpacity] = useState<number>(1);
