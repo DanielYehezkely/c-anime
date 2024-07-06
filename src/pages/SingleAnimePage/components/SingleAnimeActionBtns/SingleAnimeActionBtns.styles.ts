@@ -10,7 +10,7 @@ export const pop = keyframes`
     transform: scale(1);
   }
   50% {
-    transform: scale(1.5);
+    transform: scale(3);
   }
   100% {
     transform: scale(1);
@@ -57,7 +57,8 @@ export const MangaButton = styled(StyledButton)`
   }
 `;
 
-export const LikeButton = styled(StyledButton)`
+export const LikeButton = styled(Button)`
+  font-size: 1.4rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -66,10 +67,7 @@ export const LikeButton = styled(StyledButton)`
   border-right: 1px solid white;
 `;
 
-export const LikeIcon = styled(LikeIconBase)<{
-  isLikedClicked: boolean;
-  liked: boolean;
-}>`
+export const LikeIcon = styled(LikeIconBase)<{ isLikedClicked: boolean, liked: boolean }>`
   transition: fill 0.3s, transform 0.2s;
   fill: ${(props) => (props.liked ? "#46f436" : "white")};
   animation: ${(props) => (props.isLikedClicked ? pop : "none")} 0.5s ease;
@@ -78,7 +76,9 @@ export const LikeIcon = styled(LikeIconBase)<{
   }
 `;
 
-export const DislikeButton = styled(StyledButton)`
+export const DislikeButton = styled(Button)`
+  font-size: 1.4rem;
+  color: black;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -86,10 +86,7 @@ export const DislikeButton = styled(StyledButton)`
   border: none;
 `;
 
-export const DislikeIcon = styled(DislikeIconBase)<{
-  isDislikedClicked: boolean;
-  disliked: boolean;
-}>`
+export const DislikeIcon = styled(DislikeIconBase)<{ isDislikedClicked: boolean, disliked: boolean }>`
   transition: fill 0.3s, transform 0.2s;
   fill: ${(props) => (props.disliked ? "#f44336" : "white")};
   animation: ${(props) => (props.isDislikedClicked ? pop : "none")} 0.5s ease;

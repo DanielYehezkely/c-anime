@@ -51,7 +51,6 @@ const MenuList: React.FC<MenuListProps> = ({
             title={<h1 style={{ color: "#c8b3f8" }}>{item.text}</h1>}
             key={index}
             placement="right"
-            
           >
             <StyledListItem
               onClick={() => onItemClick(item.text)}
@@ -89,7 +88,7 @@ const MenuList: React.FC<MenuListProps> = ({
               </Typography>
               <Box mt={2} display="flex" justifyContent="space-between">
                 <Button
-                  onClick={handleLogout}
+                  onClick={user ? handleLogout : () => setIsPopoverOpen(false)}
                   sx={{
                     color: "white",
                     fontSize: "1.4rem",
@@ -102,7 +101,7 @@ const MenuList: React.FC<MenuListProps> = ({
                   {user ? "Yes" : "Not now "}
                 </Button>
                 <Button
-                  onClick={() => setIsPopoverOpen(false)}
+                  onClick={user ? () => setIsPopoverOpen(false) :() => navigate("/login")}
                   sx={{
                     color: "white",
                     fontSize: "1.4rem",

@@ -119,7 +119,7 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
     <>
       <ActionButtonsContainer>
         <TrailerButton
-          // @ts-ignore
+          // @ts-ignore\
           component="a"
           href={anime.trailer.url}
           target="_blank"

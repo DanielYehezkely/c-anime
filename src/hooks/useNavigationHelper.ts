@@ -8,7 +8,6 @@ export const useNavigationHelper = () => {
       pageName === "Home"
         ? "/"
         : `/${pageName.trim().toLowerCase().replace(/\s+/g, "")}`;
-        console.log("Navigating to:", path); //*todo - remove this after all
     navigate(path);
   };
 
