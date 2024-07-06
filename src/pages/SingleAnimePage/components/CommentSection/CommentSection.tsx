@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../../../../context/AuthContext/AuthContext";
+
 import { Box, IconButton, Typography, Avatar, Button } from "@mui/material";
 import {
   AccountCircleRounded,
@@ -7,8 +7,12 @@ import {
 } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../../../config/firebaseConfig";
+import { useAuth } from "../../../../context/AuthContext/AuthContext";
+import { useFirebase } from "../../../../context/FirebaseContext/FirebaseContext";
+
 import {
   CommentsSectionContainer,
   CommentsHeader,
@@ -18,15 +22,9 @@ import {
   SubmitButton,
   NoCommentsBox,
 } from "./CommentSection.styles";
-import { useFirebase } from "../../../../context/FirebaseContext/FirebaseContext";
 import "./CommentSection.css";
 
-interface Comment {
-  id: string;
-  userId: string;
-  comment: string;
-  timestamp: any;
-}
+import { Comment } from "../../../../types/Comment";
 
 interface CommentSectionProps {
   animeId: string;

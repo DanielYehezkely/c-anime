@@ -1,11 +1,7 @@
 import { Anime } from "../../types/Anime";
+import { Comment } from "../../types/Comment";
 
-export interface Comment {
-  id: string;
-  userId: string;
-  comment: string;
-  timestamp: any;
-}
+
 
 export interface FirebaseContextProps {
   watchlist: Anime[];
