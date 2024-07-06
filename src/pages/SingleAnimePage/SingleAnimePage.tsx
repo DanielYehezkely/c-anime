@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { Anime } from "../../types/Anime";
-import getAnimeBannerByTitle from "../../services/animeMalApi/animeAnilistService";
+import getAnimeBannerByTitle from "../../services/animeAnilistApi/animeAnilistService";
 import {
   getDoc,
   getDocs,

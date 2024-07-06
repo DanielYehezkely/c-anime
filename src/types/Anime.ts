@@ -90,3 +90,4 @@ export interface AnimeResponse {
   pagination: Pagination;
   data: Anime[];
 }
+

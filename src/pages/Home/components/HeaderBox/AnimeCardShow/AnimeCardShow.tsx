@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { Button, Card, CardMedia } from "@mui/material";
-import { Props } from "./AnimeCardShow.types";
+import { Anime } from "../../../../../types/Anime";
 
 import {
   StyledCard,
@@ -14,7 +14,7 @@ import {
   StyledButton,
 } from "./AnimeCardShow.styles";
 
-const AnimeCardShow: React.FC<Props> = ({ anime }) => {
+const AnimeCardShow: React.FC<{ anime: Anime }> = ({ anime }) => {
   return (
     <Card
       sx={{
@@ -25,7 +25,7 @@ const AnimeCardShow: React.FC<Props> = ({ anime }) => {
         bgcolor: "transparent",
       }}
     >
-      <StyledCard >
+      <StyledCard>
         <StyledCardContent>
           <StyledTitle variant="h3">{anime.title}</StyledTitle>
           <StyledSubtitle variant="subtitle1" color="text.secondary">
@@ -43,7 +43,7 @@ const AnimeCardShow: React.FC<Props> = ({ anime }) => {
           <StyledButton variant="outlined" href={anime.trailer.url}>
             Watch Trailer
           </StyledButton>
-          <Button               //*TODO - make this styled ( cant styled a link component, maybe try another way)
+          <Button 
             variant="outlined"
             component={Link}
             to={`/singleAnime/${anime.mal_id}`}

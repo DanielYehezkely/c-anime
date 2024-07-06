@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import AnimeCardShow from "./AnimeCardShow/AnimeCardShow";
 import { Anime } from "../../../../types/Anime";
 
-import getAnimeBannerByTitle from "../../../../services/animeMalApi/animeAnilistService";
+import getAnimeBannerByTitle from "../../../../services/animeAnilistApi/animeAnilistService";
 import HeaderBoxUnderlay from "./AnimeCardShow/HeaderBoxUnderlay";
 import { useAnime } from "../../../../context/FetchMalAnimeContext/FetchMalAnimeContext";
 
