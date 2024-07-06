@@ -28,14 +28,12 @@ import {
 } from "./SingleAnimePage.styles";
 import { useAuth } from "../../context/AuthContext/AuthContext";
 import { useAnime } from "../../context/FetchMalAnimeContext/FetchMalAnimeContext";
+import useAnilistBannerImage from "../../hooks/useAnilistBannerImage";
 
 const SingleAnimePage: React.FC = () => {
   const { animeId } = useParams<{ animeId: string }>();
   const { combinedAnimeList } = useAnime();
   const { user, fetchUserLikedDislikedAnimes } = useAuth();
-  const [bannerImageBackground, setBannerImageBackground] = useState<
-    string | null
-  >(null);
   const [scrollY, setScrollY] = useState<number>(0);
   const [comments, setComments] = useState<any[]>([]);
   const [liked, setLiked] = useState(false);
@@ -45,7 +43,8 @@ const SingleAnimePage: React.FC = () => {
   const anime = combinedAnimeList.find(
     (anime: Anime) => anime.mal_id === Number(animeId)
   );
-
+  const bannerImage = useAnilistBannerImage(anime);
+  
   useEffect(() => {
     const fetchLikeCount = async () => {
       const usersCollection = collection(db, "users");
@@ -71,15 +70,7 @@ const SingleAnimePage: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    const fetchAnimeBannerImage = async (): Promise<void> => {
-      if (anime) {
-        const bannerImg = await getAnimeBannerByTitle(anime);
-        setBannerImageBackground(bannerImg);
-      }
-    };
-    fetchAnimeBannerImage();
-  }, [anime]);
+
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -120,7 +111,7 @@ const SingleAnimePage: React.FC = () => {
           backgroundImage: `
           linear-gradient(to right, #000000 11%, rgba(0, 0, 0, 0.466) 50%),
             linear-gradient(to top, #0c0c0cff 1%, #00000000 20%),
-            url(${bannerImageBackground || anime.images.jpg.large_image_url})
+            url(${bannerImage || anime.images.jpg.large_image_url})
           `,
           opacity: backgroundColor,
         }}
