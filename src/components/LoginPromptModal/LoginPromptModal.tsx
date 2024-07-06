@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, Box, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import theme from "../../MUI/theme";
 
 interface LoginPromptModalProps {
   open: boolean;
@@ -32,6 +33,9 @@ const LoginPromptModal: React.FC<LoginPromptModalProps> = ({
           boxShadow: "1px 1px 15px 1px white",
           p: 4,
           overflow: "hidden",
+          [theme.breakpoints.down("md")]: {
+            width: "80%",
+          },
         }}
       >
         <Box

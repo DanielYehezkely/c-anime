@@ -65,7 +65,7 @@ const MenuList: React.FC<MenuListProps> = ({
 
       <StyledBottomList>
         <Popover
-          containerStyle={{ zIndex: "10" }}
+          containerStyle={{ zIndex: "1200" }}
           positions={["top"]}
           isOpen={isPopoverOpen}
           padding={10}
@@ -84,7 +84,7 @@ const MenuList: React.FC<MenuListProps> = ({
               <Typography variant="body1">
                 {user
                   ? "Are you sure you want to sign out?"
-                  : "You are not registered yet , join us now !"}
+                  : "You are not registered yet, join us now!"}
               </Typography>
               <Box mt={2} display="flex" justifyContent="space-between">
                 <Button
@@ -98,10 +98,14 @@ const MenuList: React.FC<MenuListProps> = ({
                     },
                   }}
                 >
-                  {user ? "Yes" : "Not now "}
+                  {user ? "Yes" : "Not now"}
                 </Button>
                 <Button
-                  onClick={user ? () => setIsPopoverOpen(false) :() => navigate("/login")}
+                  onClick={
+                    user
+                      ? () => setIsPopoverOpen(false)
+                      : () => navigate("/login")
+                  }
                   sx={{
                     color: "white",
                     fontSize: "1.4rem",
