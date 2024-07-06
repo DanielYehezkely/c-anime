@@ -31,7 +31,7 @@ import { useAnime } from "../../context/FetchMalAnimeContext/FetchMalAnimeContex
 
 const SingleAnimePage: React.FC = () => {
   const { animeId } = useParams<{ animeId: string }>();
-  const { trendingAnimeList } = useAnime();
+  const { combinedAnimeList } = useAnime();
   const { user, fetchUserLikedDislikedAnimes } = useAuth();
   const [bannerImageBackground, setBannerImageBackground] = useState<
     string | null
@@ -42,7 +42,7 @@ const SingleAnimePage: React.FC = () => {
   const [disliked, setDisliked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
 
-  const anime = trendingAnimeList.find(
+  const anime = combinedAnimeList.find(
     (anime: Anime) => anime.mal_id === Number(animeId)
   );
 
