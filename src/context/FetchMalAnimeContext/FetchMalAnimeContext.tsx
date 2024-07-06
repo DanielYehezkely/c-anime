@@ -1,20 +1,17 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-
 import { Anime } from "../../types/Anime";
-import { getTopAnimeData } from "../../services/animeMalApi/animeMalApiService";
+import {
+  getTopAnimeData,
+  getAnimeList,
+} from "../../services/animeMalApi/animeMalApiService";
 import { ContextProviderProp } from "../../types/Context";
-
-interface AnimeContextProps {
-  trendingAnimeList: Anime[];
-  error: string | null;
-  loading: boolean;
-  fetchTrendingAnime: () => Promise<void>;
-}
+import { AnimeContextProps } from "./FetchMalAnimeContext.types";
 
 const AnimeContext = createContext<AnimeContextProps | undefined>(undefined);
 
 export const AnimeProvider: React.FC<ContextProviderProp> = ({ children }) => {
-  const [trendingAnimeList, settrendingAnimeList] = useState<Anime[]>([]);
+  const [trendingAnimeList, setTrendingAnimeList] = useState<Anime[]>([]);
+  const [animeList, setAnimeList] = useState<Anime[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -23,7 +20,20 @@ export const AnimeProvider: React.FC<ContextProviderProp> = ({ children }) => {
     setLoading(true);
     try {
       const data = await getTopAnimeData("bypopularity");
-      settrendingAnimeList(data);
+      setTrendingAnimeList(data);
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchAnimeList = async (): Promise<void> => {
+    setError(null);
+    setLoading(true);
+    try {
+      const data = await getAnimeList();
+      setAnimeList(data);
     } catch (error: any) {
       setError(error.message);
     } finally {
@@ -37,7 +47,13 @@ export const AnimeProvider: React.FC<ContextProviderProp> = ({ children }) => {
 
   return (
     <AnimeContext.Provider
-      value={{ trendingAnimeList, error, loading, fetchTrendingAnime }}
+      value={{
+        trendingAnimeList,
+        animeList,
+        error,
+        loading,
+        fetchAnimeList,
+      }}
     >
       {children}
     </AnimeContext.Provider>

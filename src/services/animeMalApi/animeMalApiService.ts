@@ -4,7 +4,7 @@ import { Anime, AnimeResponse } from "../../types/Anime";
 const JIKAN_API_BASE_URL = import.meta.env.VITE_JIKAN_API_BASE_URL;
 const JIKAN_API_TOP_ANIME_URL = import.meta.env.VITE_JIKAN_API_TOP_ANIME_URL;
 
-// export const gettrendingAnimeList = async (): Promise<Anime[]> => {
+// export const getAnimeList = async (): Promise<Anime[]> => {
 //   try {
 //     const response = await axios.get<AnimeResponse>(JIKAN_API_BASE_URL);
 //     return response.data.data;
@@ -18,7 +18,7 @@ const JIKAN_API_TOP_ANIME_URL = import.meta.env.VITE_JIKAN_API_TOP_ANIME_URL;
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export const gettrendingAnimeList = async (): Promise<Anime[]> => {
+export const getAnimeList = async (): Promise<Anime[]> => {
   let allAnime: Anime[] = [];
   let currentPage = 1;
   const animePerPage = 25; // Jikan API returns 25 anime per page
