@@ -24,6 +24,7 @@ import {
 } from "firebase/firestore";
 import { Box } from "@mui/material";
 import { useDebounce } from "../../../../hooks/useDebounce";
+import { useFirebase } from "../../../../context/FirebaseContext/FirebaseContext";
 
 interface SingleAnimeActionBtnsProps {
   anime: Anime;
@@ -44,7 +45,8 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
   liked,
   disliked,
 }) => {
-  const { user, addToWatchlist } = useAuth();
+  const { addToWatchlist } = useFirebase();
+  const { user } = useAuth();
   const [isLikedClicked, setIsLikedClicked] = useState(false);
   const [isDislikedClicked, setIsDislikedClicked] = useState(false);
 
