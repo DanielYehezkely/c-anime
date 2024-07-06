@@ -4,10 +4,45 @@ import { Anime, AnimeResponse } from "../../types/Anime";
 const JIKAN_API_BASE_URL = import.meta.env.VITE_JIKAN_API_BASE_URL;
 const JIKAN_API_TOP_ANIME_URL = import.meta.env.VITE_JIKAN_API_TOP_ANIME_URL;
 
-export const getAnimeList = async (): Promise<Anime[]> => {
+// export const gettrendingAnimeList = async (): Promise<Anime[]> => {
+//   try {
+//     const response = await axios.get<AnimeResponse>(JIKAN_API_BASE_URL);
+//     return response.data.data;
+//   } catch (error: any) {
+//     if (axios.isAxiosError(error)) {
+//       throw new Error(`GET_ANIME_ERR_MSG: ${error.message}`);
+//     }
+//     throw new Error("GET_ANIME_ERR_MSG: An unexpected error occurred");
+//   }
+// };
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export const gettrendingAnimeList = async (): Promise<Anime[]> => {
+  let allAnime: Anime[] = [];
+  let currentPage = 1;
+  const animePerPage = 25; // Jikan API returns 25 anime per page
+  const totalAnime = 100; // Total number of anime we want to fetch
+  const totalPages = Math.ceil(totalAnime / animePerPage);
+
   try {
-    const response = await axios.get<AnimeResponse>(JIKAN_API_BASE_URL);
-    return response.data.data;
+    while (currentPage <= totalPages) {
+      const response = await axios.get<AnimeResponse>(JIKAN_API_BASE_URL, {
+        params: { page: currentPage },
+      });
+      allAnime = allAnime.concat(response.data.data);
+      currentPage++;
+
+      // Check if we need to delay to respect the rate limit
+      if (currentPage % 3 === 0) {
+        await delay(1000); // Delay for 1 second every 3 requests to respect the 3 requests/second limit
+      }
+
+      if (currentPage % 60 === 0) {
+        await delay(60000); // Delay for 1 minute every 60 requests to respect the 60 requests/minute limit
+      }
+    }
+    return allAnime;
   } catch (error: any) {
     if (axios.isAxiosError(error)) {
       throw new Error(`GET_ANIME_ERR_MSG: ${error.message}`);

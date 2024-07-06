@@ -31,20 +31,24 @@ import { useAnime } from "../../context/FetchMalAnimeContext/FetchMalAnimeContex
 
 const SingleAnimePage: React.FC = () => {
   const { animeId } = useParams<{ animeId: string }>();
-  const { animeList } = useAnime();
+  const { trendingAnimeList } = useAnime();
   const { user, fetchUserLikedDislikedAnimes } = useAuth();
-  const [bannerImageBackground, setBannerImageBackground] = useState<string | null>(null);
+  const [bannerImageBackground, setBannerImageBackground] = useState<
+    string | null
+  >(null);
   const [scrollY, setScrollY] = useState<number>(0);
   const [comments, setComments] = useState<any[]>([]);
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
 
-  const anime = animeList.find((anime: Anime) => anime.mal_id === Number(animeId));
+  const anime = trendingAnimeList.find(
+    (anime: Anime) => anime.mal_id === Number(animeId)
+  );
 
   useEffect(() => {
     const fetchLikeCount = async () => {
-      const usersCollection = collection(db, "users"); 
+      const usersCollection = collection(db, "users");
       const usersSnapshot = await getDocs(usersCollection);
       let count = 0;
       usersSnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
@@ -77,23 +81,24 @@ const SingleAnimePage: React.FC = () => {
     fetchAnimeBannerImage();
   }, [anime]);
 
-useEffect(() => {
-  const fetchComments = async () => {
-    if (animeId) {
-      const commentsRef = doc(db, "comments", animeId);
-      const commentsDoc = await getDoc(commentsRef);
-      if (commentsDoc.exists()) {
-        setComments(commentsDoc.data().comments);
+  useEffect(() => {
+    const fetchComments = async () => {
+      if (animeId) {
+        const commentsRef = doc(db, "comments", animeId);
+        const commentsDoc = await getDoc(commentsRef);
+        if (commentsDoc.exists()) {
+          setComments(commentsDoc.data().comments);
+        }
       }
-    }
-  };
-  fetchComments();
-}, [animeId]);
+    };
+    fetchComments();
+  }, [animeId]);
 
   useEffect(() => {
     const fetchLikedDislikedStatus = async () => {
       if (user && animeId) {
-        const { likedAnimes, dislikedAnimes } = await fetchUserLikedDislikedAnimes(user.uid);
+        const { likedAnimes, dislikedAnimes } =
+          await fetchUserLikedDislikedAnimes(user.uid);
         setLiked(likedAnimes.includes(animeId));
         setDisliked(dislikedAnimes.includes(animeId));
       }
@@ -119,7 +124,7 @@ useEffect(() => {
           `,
           opacity: backgroundColor,
         }}
-        />
+      />
       <SingleAnimeCard anime={anime} />
       <SingleAnimeData anime={anime} />
       <SingleAnimeActionBtns
@@ -145,4 +150,3 @@ useEffect(() => {
 };
 
 export default SingleAnimePage;
-

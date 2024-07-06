@@ -10,14 +10,16 @@ import { useAnime } from "../../context/FetchMalAnimeContext/FetchMalAnimeContex
 const CarouselShowcase: React.FC<CarouselShowcaseProps> = ({
   carouselLabel,
 }) => {
-  const { animeList } = useAnime(); 
+  const { trendingAnimeList } = useAnime();
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [filteredAnimeList, setFilteredAnimeList] = useState<Anime[]>([]);
+  const [filteredtrendingAnimeList, setFilteredtrendingAnimeList] = useState<
+    Anime[]
+  >([]);
   const swiperRef = useRef<any>(null);
 
   useEffect(() => {
-    setFilteredAnimeList(animeList);
-  }, [animeList]);
+    setFilteredtrendingAnimeList(trendingAnimeList);
+  }, [trendingAnimeList]);
 
   const handleSlideChange = (index: number) => {
     setCurrentPage(index);
@@ -32,12 +34,12 @@ const CarouselShowcase: React.FC<CarouselShowcaseProps> = ({
 
   const handleFilterChange = (genre: string) => {
     if (genre === "All") {
-      setFilteredAnimeList(animeList);
+      setFilteredtrendingAnimeList(trendingAnimeList);
     } else {
-      const filteredList = animeList.filter((anime) =>
+      const filteredList = trendingAnimeList.filter((anime) =>
         anime.genres.some((g) => g.name === genre)
       );
-      setFilteredAnimeList(filteredList);
+      setFilteredtrendingAnimeList(filteredList);
     }
   };
 
@@ -65,14 +67,16 @@ const CarouselShowcase: React.FC<CarouselShowcaseProps> = ({
       <CarouselPagination
         currentPage={currentPage}
         label={carouselLabel}
-        pageCount={filteredAnimeList ? filteredAnimeList.length - 4 : 21}
+        pageCount={
+          filteredtrendingAnimeList ? filteredtrendingAnimeList.length - 4 : 21
+        }
         onPageChange={handlePageChange}
       />
       <CarouselFilter onFilterChange={handleFilterChange} />
       <CarouselItems
         onSlideChange={handleSlideChange}
         swiperRef={swiperRef}
-        animeList={filteredAnimeList}
+        trendingAnimeList={filteredtrendingAnimeList}
       />
     </Box>
   );

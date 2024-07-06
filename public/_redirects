@@ -1,2 +1,2 @@
-/api/*  https://api.myanimelist.net/v2/:splat  200
+/api/*  https://api.mytrendingAnimeList.net/v2/:splat  200
 /*      /index.html                           200

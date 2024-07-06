@@ -14,13 +14,13 @@ import CarouselAnimeCard from "../CarouselAnimeCard/CarouselAnimeCard";
 interface CarouselItemsProps {
   onSlideChange: (currentSlide: number) => void;
   swiperRef: any;
-  animeList: Anime[];
+  trendingAnimeList: Anime[];
 }
 
 const CarouselItems: React.FC<CarouselItemsProps> = ({
   onSlideChange,
   swiperRef,
-  animeList,
+  trendingAnimeList,
 }) => {
   return (
     <Box
@@ -41,7 +41,7 @@ const CarouselItems: React.FC<CarouselItemsProps> = ({
         speed={800}
         onSlideChange={() => onSlideChange(swiperRef.current.swiper.realIndex)}
       >
-        {animeList.map((anime) => (
+        {trendingAnimeList.map((anime) => (
           <SwiperSlide key={anime.mal_id} style={{ width: "25rem" }}>
             <CarouselAnimeCard anime={anime} />
           </SwiperSlide>

@@ -19,12 +19,10 @@ import { Anime } from "../../../../types/Anime";
 import { useAnime } from "../../../../context/FetchMalAnimeContext/FetchMalAnimeContext";
 
 const SearchBox: React.FC = () => {
-  const { animeList, loading, error } = useAnime();
+  const { trendingAnimeList, loading, error } = useAnime();
   const navigate = useNavigate();
 
-  const handleOptionSelect = (
-    value: string | Anime | null | undefined
-  ) => {
+  const handleOptionSelect = (value: string | Anime | null | undefined) => {
     if (value && typeof value !== "string" && typeof value !== "number") {
       navigate(`/singleAnime/${value.mal_id}`);
     }
@@ -37,15 +35,14 @@ const SearchBox: React.FC = () => {
         <Autocomplete
           freeSolo
           id="free-solo-2-demo"
-          options={animeList.map((option) => option.title)}
+          options={trendingAnimeList.map((option) => option.title)}
           getOptionLabel={(option: string) => option}
-          
-          onChange={(_, value) =>
-            handleOptionSelect(value)    //*? need to go over it again ! 
+          onChange={
+            (_, value) => handleOptionSelect(value) //*? need to go over it again !
           }
           sx={autoCompleteStyle}
           renderOption={(props, option) => {
-            const selectedAnime = animeList.find(
+            const selectedAnime = trendingAnimeList.find(
               (anime) => anime.title === option
             );
             return (

@@ -4,9 +4,8 @@ import { Anime } from "../../types/Anime";
 import { getTopAnimeData } from "../../services/animeMalApi/animeMalApiService";
 import { ContextProviderProp } from "../../types/Context";
 
-
 interface AnimeContextProps {
-  animeList: Anime[];
+  trendingAnimeList: Anime[];
   error: string | null;
   loading: boolean;
   fetchTrendingAnime: () => Promise<void>;
@@ -14,8 +13,8 @@ interface AnimeContextProps {
 
 const AnimeContext = createContext<AnimeContextProps | undefined>(undefined);
 
-export const AnimeProvider: React.FC<ContextProviderProp> = ({ children }) => { 
-  const [animeList, setAnimeList] = useState<Anime[]>([]);
+export const AnimeProvider: React.FC<ContextProviderProp> = ({ children }) => {
+  const [trendingAnimeList, settrendingAnimeList] = useState<Anime[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -24,7 +23,7 @@ export const AnimeProvider: React.FC<ContextProviderProp> = ({ children }) => {
     setLoading(true);
     try {
       const data = await getTopAnimeData("bypopularity");
-      setAnimeList(data);
+      settrendingAnimeList(data);
     } catch (error: any) {
       setError(error.message);
     } finally {
@@ -37,7 +36,9 @@ export const AnimeProvider: React.FC<ContextProviderProp> = ({ children }) => {
   }, []);
 
   return (
-    <AnimeContext.Provider value={{ animeList, error, loading, fetchTrendingAnime }}>
+    <AnimeContext.Provider
+      value={{ trendingAnimeList, error, loading, fetchTrendingAnime }}
+    >
       {children}
     </AnimeContext.Provider>
   );
