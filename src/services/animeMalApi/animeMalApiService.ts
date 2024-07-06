@@ -1,8 +1,8 @@
 import axios from "axios";
 import { Anime, AnimeResponse } from "../../types/Anime";
 
-const JIKAN_API_BASE_URL = "https://api.jikan.moe/v4/anime";
-const JIKAN_API_TOP_ANIME_URL = "https://api.jikan.moe/v4/top/anime";
+const JIKAN_API_BASE_URL = import.meta.env.VITE_JIKAN_API_BASE_URL;
+const JIKAN_API_TOP_ANIME_URL = import.meta.env.VITE_JIKAN_API_TOP_ANIME_URL;
 
 export const getAnimeList = async (): Promise<Anime[]> => {
   try {

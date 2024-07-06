@@ -1,6 +1,8 @@
 import axios from "axios";
 import { Anime } from "../../types/Anime";
 
+const ANILIST_API_URL = import.meta.env.VITE_ANILIST_API_URL;
+
 const getAnimeBannerByTitle = async (anime: Anime): Promise<string | null> => {
   const query = `
     query ($search: String) {
@@ -13,11 +15,9 @@ const getAnimeBannerByTitle = async (anime: Anime): Promise<string | null> => {
     search: anime.title,
   };
 
-  const url = "https://graphql.anilist.co";
-
   try {
     const response = await axios.post(
-      url,
+      ANILIST_API_URL,
       {
         query: query,
         variables: variables,
