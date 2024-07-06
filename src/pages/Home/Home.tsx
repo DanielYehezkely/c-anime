@@ -25,6 +25,7 @@ const Home: React.FC = () => {
           padding: 0,
           [theme.breakpoints.down("md")]: {
             width: "100%",
+            alignItems: "center",
           },
         }}
       >

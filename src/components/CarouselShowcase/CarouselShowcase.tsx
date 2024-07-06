@@ -6,6 +6,7 @@ import CarouselItems from "./CarouselItems/CarouselItems";
 import { CarouselShowcaseProps } from "./CarouselShowcase.types";
 import { Anime } from "../../types/Anime";
 import { useAnime } from "../../context/FetchMalAnimeContext/FetchMalAnimeContext";
+import theme from "../../MUI/theme";
 
 const CarouselShowcase: React.FC<CarouselShowcaseProps> = ({
   carouselLabel,
@@ -93,6 +94,10 @@ const CarouselShowcase: React.FC<CarouselShowcaseProps> = ({
         flexDirection: "column",
         alignItems: "center",
         paddingTop: "4rem",
+        [theme.breakpoints.down("md")]: {
+          
+          
+        },
       }}
     >
       <CarouselPagination

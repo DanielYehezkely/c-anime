@@ -1,7 +1,8 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import ReactPaginate from "react-paginate";
 import "./CarouselPagination.css";
+import theme from "../../../MUI/theme";
 
 interface CarouselPaginationProps {
   label: string;
@@ -16,6 +17,9 @@ const CarouselPagination: React.FC<CarouselPaginationProps> = ({
   onPageChange,
   currentPage,
 }) => {
+
+  const isXs = useMediaQuery(theme.breakpoints.only("xs"));
+
   return (
     <Box
       component="section"
@@ -29,7 +33,7 @@ const CarouselPagination: React.FC<CarouselPaginationProps> = ({
         zIndex: 6
       }}
     >
-      <h1 className="carousel-label">{label}</h1>
+      {!isXs &&       
       <ReactPaginate
         pageCount={pageCount}
         pageRangeDisplayed={pageCount}
@@ -43,7 +47,10 @@ const CarouselPagination: React.FC<CarouselPaginationProps> = ({
         disabledClassName={"disabled"}
         onPageChange={onPageChange}
         forcePage={currentPage}
+        
       />
+      }
+      <h1 className="carousel-label">{label}</h1>
     </Box>
   );
 };

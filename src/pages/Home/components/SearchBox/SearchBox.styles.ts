@@ -1,10 +1,15 @@
 import { SxProps } from "@mui/material";
+import theme from "../../../../MUI/theme";
 
 export const boxStyle: SxProps = {
   height: "auto",
   width: "95%",
   zIndex: 10,
   padding: "20px",
+  [theme.breakpoints.down("md")]: {
+    width: "100%",
+    padding: "0 1rem 1rem 1rem",
+  },
 };
 
 export const autoCompleteStyle: SxProps = {

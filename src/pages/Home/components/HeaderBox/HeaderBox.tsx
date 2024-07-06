@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import AnimeCardShow from "./AnimeCardShow/AnimeCardShow";
 import { Anime } from "../../../../types/Anime";
 
 import getAnimeBannerByTitle from "../../../../services/animeAnilistApi/animeAnilistService";
 import HeaderBoxUnderlay from "./AnimeCardShow/HeaderBoxUnderlay";
 import { useAnime } from "../../../../context/FetchMalAnimeContext/FetchMalAnimeContext";
+import theme from "../../../../MUI/theme";
 
 const HeaderBox: React.FC = () => {
   const { trendingAnimeList } = useAnime();
@@ -13,6 +14,7 @@ const HeaderBox: React.FC = () => {
   const [bannerImage, setBannerImage] = useState<string | null>(null);
   const [opacity, setOpacity] = useState<number>(1);
   const [translateY, setTranslateY] = useState<string>("0rem");
+   const isXs = useMediaQuery(theme.breakpoints.only("xs"));
 
   useEffect(() => {
     if (trendingAnimeList.length > 0) {
@@ -42,8 +44,27 @@ const HeaderBox: React.FC = () => {
     return <div>No anime found.</div>;
   }
 
-  return (
-    <>
+return (
+  <>
+    <Box
+    component="h1"
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        height: "10rem",
+        width: "100%",
+        color: "white",
+        fontSize: "2.5rem",
+        marginTop: "10rem",
+        [theme.breakpoints.down("md")]: {
+          
+        },
+      }}
+    >
+      Welcome to My Anime App !
+    </Box>
+    {!isXs && (
+      <>
       <HeaderBoxUnderlay
         bannerImage={bannerImage}
         currentAnime={currentAnime}
@@ -61,12 +82,18 @@ const HeaderBox: React.FC = () => {
           transition: "opacity 0.5s ease-in-out, transform 0.5s ease-in-out",
           opacity: opacity,
           transform: `translateY(${translateY})`,
+          [theme.breakpoints.down("md")]: {
+            display: "none",
+          },
         }}
-      >
+        >
         <AnimeCardShow anime={currentAnime} />
       </Box>
-    </>
-  );
+        </>
+    )}
+  </>
+);
 };
+
 
 export default HeaderBox;
