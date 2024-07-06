@@ -6,12 +6,15 @@ import { useNavigationHelper } from "../../hooks/useNavigationHelper";
 import Logo from "./NavLogo/NavLogo";
 import MenuList from "./MenuList/MenuList";
 import { StyledAppBar, StyledToolbar, StyledDrawer } from "./NavBarVert.styles";
+import { useLocation } from "react-router";
 
 const VerticalNavBar: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigateToPage = useNavigationHelper();
+  const location = useLocation().pathname;
+  
 
   const handleDrawerToggle = (): void => {
     setDrawerOpen(!drawerOpen);
@@ -26,7 +29,21 @@ const VerticalNavBar: React.FC = () => {
 
   return (
     <>
-      <StyledAppBar position="fixed">
+      <StyledAppBar
+        position="fixed"
+        sx={{
+          [theme.breakpoints.down("md")]: {
+            backgroundColor:
+              location !== "/" && location !== "/watchlist"
+                ? "transparent"
+                : "#0c0c0c",
+                boxShadow: location !== "/" && location !== "/watchlist"
+                ? "none" 
+                : ""
+          },
+         
+        }}
+      >
         <StyledToolbar>
           {!isMobile && <Logo />}
           {isMobile && (
@@ -40,11 +57,17 @@ const VerticalNavBar: React.FC = () => {
             </IconButton>
           )}
         </StyledToolbar>
-        {!isMobile && <MenuList isMobile={isMobile} onItemClick={handleIconClick} />}
+        {!isMobile && (
+          <MenuList isMobile={isMobile} onItemClick={handleIconClick} />
+        )}
       </StyledAppBar>
 
-      <StyledDrawer anchor="left" open={drawerOpen} onClose={handleDrawerToggle}>
-        <MenuList onItemClick={handleIconClick}/>
+      <StyledDrawer
+        anchor="left"
+        open={drawerOpen}
+        onClose={handleDrawerToggle}
+      >
+        <MenuList onItemClick={handleIconClick} />
       </StyledDrawer>
     </>
   );

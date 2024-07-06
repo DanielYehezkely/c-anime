@@ -46,7 +46,8 @@ const HeaderBox: React.FC = () => {
 
 return (
   <>
-    <Box
+  {isXs &&
+  <Box
     component="h1"
       sx={{
         display: "flex",
@@ -56,13 +57,12 @@ return (
         color: "white",
         fontSize: "2.5rem",
         marginTop: "10rem",
-        [theme.breakpoints.down("md")]: {
-          
-        },
       }}
-    >
+      > 
       Welcome to My Anime App !
     </Box>
+    }
+    
     {!isXs && (
       <>
       <HeaderBoxUnderlay

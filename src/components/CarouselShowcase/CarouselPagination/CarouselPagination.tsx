@@ -33,6 +33,7 @@ const CarouselPagination: React.FC<CarouselPaginationProps> = ({
         zIndex: 6
       }}
     >
+      <h1 className="carousel-label">{label}</h1>
       {!isXs &&       
       <ReactPaginate
         pageCount={pageCount}
@@ -50,7 +51,6 @@ const CarouselPagination: React.FC<CarouselPaginationProps> = ({
         
       />
       }
-      <h1 className="carousel-label">{label}</h1>
     </Box>
   );
 };
