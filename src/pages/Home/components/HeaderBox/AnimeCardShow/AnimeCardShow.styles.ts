@@ -2,14 +2,13 @@ import styled from "styled-components";
 import { CardContent, Typography, Box, Button } from "@mui/material";
 
 
-export const StyledCard = styled(Box)`
+export const ContentBox = styled(Box)`
   display: flex;
   flex-direction: column;
-  color: white;
   width: 50rem;
 `;
 
-export const StyledCardContent = styled(CardContent)`
+export const Content = styled(CardContent)`
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -18,16 +17,16 @@ export const StyledCardContent = styled(CardContent)`
   text-align: center;
 `;
 
-export const StyledTitle = styled(Typography)`
+export const Title = styled(Typography)`
   font-weight: bold;
 `;
 
-export const StyledSubtitle = styled(Typography)`
+export const EpisodeSubtitle = styled(Typography)`
   font-size: 1.8rem;
   color: #ebeaea;
 `;
 
-export const StyledDescription = styled(Typography)`
+export const Description = styled(Typography)`
   font-size: 1.4rem;
   color: #ebeaea;
   overflow: scroll;
@@ -50,7 +49,7 @@ export const StyledDescription = styled(Typography)`
   }
 `;
 
-export const StyledButtonBox = styled(Box)`
+export const ButtonsBox = styled(Box)`
   display: flex;
   justify-content: center;
   height: 7rem;
@@ -59,13 +58,27 @@ export const StyledButtonBox = styled(Box)`
   
 `;
 
-export const StyledButton = styled(Button)`
+export const WatchTrailerButton = styled(Button)`
   font-size: 1.4rem;
   font-weight: bold;
   height: 4rem;
   color: #d3c8fd;
   border: #fff 1px solid;
   box-shadow: 0px 0px 0px 1px #9463d4;
+  &:hover {
+    background-color: #9463d4;
+    color: #fff;
+    border: #9463d4 1px solid;
+  }
+`;
+
+export const ViewDetailsButton = styled(Button)`
+  font-size: 1.4rem;
+  height: 4rem;
+  color: #d3c8fd;
+  border: #fff 1px solid;
+  box-shadow: 0px 0px 0px 1px #9463d4;
+  font-weight: bold;
   &:hover {
     background-color: #9463d4;
     color: #fff;

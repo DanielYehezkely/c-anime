@@ -1,17 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { Button, Card, CardMedia } from "@mui/material";
+import { Card, CardMedia } from "@mui/material";
 import { Anime } from "../../../../../types/Anime";
 
 import {
-  StyledCard,
-  StyledCardContent,
-  StyledTitle,
-  StyledSubtitle,
-  StyledDescription,
-  StyledButtonBox,
-  StyledButton,
+ ButtonsBox,
+ Description,
+ EpisodeSubtitle,
+ WatchTrailerButton,
+  ContentBox,
+  Content,
+  Title,
+  ViewDetailsButton
 } from "./AnimeCardShow.styles";
 
 const AnimeCardShow: React.FC<{ anime: Anime }> = ({ anime }) => {
@@ -25,46 +26,39 @@ const AnimeCardShow: React.FC<{ anime: Anime }> = ({ anime }) => {
         bgcolor: "transparent",
       }}
     >
-      <StyledCard>
-        <StyledCardContent>
-          <StyledTitle variant="h3">{anime.title}</StyledTitle>
-          <StyledSubtitle variant="subtitle1" color="text.secondary">
+      <ContentBox>
+        <Content>
+          <Title variant="h3">{anime.title}</Title>
+          <EpisodeSubtitle variant="subtitle1" color="text.secondary">
             {`${anime.episodes} Episodes`}
-          </StyledSubtitle>
-          <StyledDescription
+          </EpisodeSubtitle>
+          <Description
             variant="subtitle1"
             color="text.secondary"
             className="custom-scrollbar"
           >
             {anime.synopsis}
-          </StyledDescription>
-        </StyledCardContent>
-        <StyledButtonBox>
-          <StyledButton variant="outlined" href={anime.trailer.url}>
-            Watch Trailer
-          </StyledButton>
-          <Button 
+          </Description>
+        </Content>
+        <ButtonsBox>
+          <WatchTrailerButton
+            //@ts-ignore
+            target="_blank"
             variant="outlined"
+            href={anime.trailer.url}
+          >
+            Watch Trailer
+          </WatchTrailerButton>
+          <ViewDetailsButton
+            variant="outlined"
+            //@ts-ignore
             component={Link}
             to={`/singleAnime/${anime.mal_id}`}
-            sx={{
-              fontSize: "1.4rem",
-              height: "4rem",
-              color: "#d3c8fd;",
-              border: "#fff 1px solid",
-              boxShadow: "0px 0px 0px 1px #9463d4",
-              fontWeight: "bold",
-              "&:hover": {
-                backgroundColor: "#9463d4",
-                color: " #fff",
-                border: " #9463d4 1px solid",
-              },
-            }}
           >
             View Details
-          </Button>
-        </StyledButtonBox>
-      </StyledCard>
+          </ViewDetailsButton>
+        </ButtonsBox>
+      </ContentBox>
       <CardMedia
         component="img"
         sx={{ width: "20rem", borderRadius: "1rem", height: "90%" }}
