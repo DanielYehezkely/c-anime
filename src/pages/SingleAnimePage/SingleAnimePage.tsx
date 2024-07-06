@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
 import { Anime } from "../../types/Anime";
-import getAnimeBannerByTitle from "../../services/animeAnilistApi/animeAnilistService";
 import {
-  getDoc,
   getDocs,
-  doc,
   collection,
   DocumentData,
   QueryDocumentSnapshot,
 } from "firebase/firestore";
 import { db } from "../../config/firebaseConfig";
-
 import { Loader } from "../../components";
 import {
   CarouselShowcase,
@@ -21,7 +16,6 @@ import {
   SingleAnimeCard,
   SingleAnimeData,
 } from "./components";
-
 import {
   SingleAnimePageContainer,
   UnderlayBackgroundBox,
@@ -29,13 +23,14 @@ import {
 import { useAuth } from "../../context/AuthContext/AuthContext";
 import { useAnime } from "../../context/FetchMalAnimeContext/FetchMalAnimeContext";
 import useAnilistBannerImage from "../../hooks/useAnilistBannerImage";
+import { useFirebase } from "../../context/FirebaseContext/FirebaseContext";
 
 const SingleAnimePage: React.FC = () => {
   const { animeId } = useParams<{ animeId: string }>();
   const { combinedAnimeList } = useAnime();
   const { user, fetchUserLikedDislikedAnimes } = useAuth();
+  const { fetchComments } = useFirebase();
   const [scrollY, setScrollY] = useState<number>(0);
-  const [comments, setComments] = useState<any[]>([]);
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
@@ -43,8 +38,9 @@ const SingleAnimePage: React.FC = () => {
   const anime = combinedAnimeList.find(
     (anime: Anime) => anime.mal_id === Number(animeId)
   );
-  const bannerImage = useAnilistBannerImage(anime);
-  
+  const bannerImageBg = useAnilistBannerImage(anime);
+  const backgroundColor = scrollY > 150 ? "0.1" : 1;
+
   useEffect(() => {
     const fetchLikeCount = async () => {
       const usersCollection = collection(db, "users");
@@ -70,20 +66,9 @@ const SingleAnimePage: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-
-
   useEffect(() => {
-    const fetchComments = async () => {
-      if (animeId) {
-        const commentsRef = doc(db, "comments", animeId);
-        const commentsDoc = await getDoc(commentsRef);
-        if (commentsDoc.exists()) {
-          setComments(commentsDoc.data().comments);
-        }
-      }
-    };
-    fetchComments();
-  }, [animeId]);
+    fetchComments(animeId || "");
+  }, [animeId, fetchComments]);
 
   useEffect(() => {
     const fetchLikedDislikedStatus = async () => {
@@ -97,8 +82,6 @@ const SingleAnimePage: React.FC = () => {
     fetchLikedDislikedStatus();
   }, [user, animeId, fetchUserLikedDislikedAnimes]);
 
-  const backgroundColor = scrollY > 150 ? "0.1" : 1;
-
   if (!anime) {
     return <Loader actionLabel="fetching..." />;
   }
@@ -111,7 +94,7 @@ const SingleAnimePage: React.FC = () => {
           backgroundImage: `
           linear-gradient(to right, #000000 11%, rgba(0, 0, 0, 0.466) 50%),
             linear-gradient(to top, #0c0c0cff 1%, #00000000 20%),
-            url(${bannerImage || anime.images.jpg.large_image_url})
+            url(${bannerImageBg || anime.images.jpg.large_image_url})
           `,
           opacity: backgroundColor,
         }}
@@ -129,8 +112,6 @@ const SingleAnimePage: React.FC = () => {
       />
       <CommentSection
         animeId={String(anime.mal_id)}
-        comments={comments}
-        setComments={setComments}
         liked={liked}
         disliked={disliked}
       />

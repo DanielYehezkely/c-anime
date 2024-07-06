@@ -5,12 +5,14 @@ import {
   updateDoc,
   arrayRemove,
   arrayUnion,
+  setDoc,
 } from "firebase/firestore";
 import { Anime } from "../../types/Anime";
 import { useAuth } from "../AuthContext/AuthContext";
 import { useAnime } from "../FetchMalAnimeContext/FetchMalAnimeContext";
 import { db } from "../../config/firebaseConfig";
 import { FirebaseContextProps } from "./FirebaseContext.types";
+import { Timestamp } from "firebase/firestore";
 
 const FirebaseContext = createContext<FirebaseContextProps | undefined>(
   undefined
@@ -30,6 +32,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({
   const { user } = useAuth();
   const { combinedAnimeList } = useAnime();
   const [watchlist, setWatchlist] = useState<Anime[]>([]);
+  const [comments, setComments] = useState<any[]>([]);
   const [doneWatchingList, setDoneWatchingList] = useState<Anime[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -107,6 +110,68 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const fetchComments = async (animeId: string) => {
+    const commentsRef = doc(db, "comments", animeId);
+    const commentsDoc = await getDoc(commentsRef);
+    setComments(commentsDoc.exists() ? commentsDoc.data().comments : []);
+  };
+
+  const addComment = async (animeId: string, comment: string) => {
+    if (!user) return;
+    const commentsRef = doc(db, "comments", animeId);
+    const commentsDoc = await getDoc(commentsRef);
+    const newComment = {
+      id: `${user.uid}-${Timestamp.now().seconds}`,
+      userId: user.uid,
+      comment,
+      timestamp: Timestamp.now(),
+    };
+
+    if (commentsDoc.exists()) {
+      await updateDoc(commentsRef, {
+        comments: arrayUnion(newComment),
+      });
+    } else {
+      await setDoc(commentsRef, {
+        comments: [newComment],
+      });
+    }
+
+    setComments((prev) => [...prev, newComment]);
+  };
+
+  const deleteComment = async (animeId: string, commentId: string) => {
+    const commentsRef = doc(db, "comments", animeId);
+    const commentsDoc = await getDoc(commentsRef);
+    if (commentsDoc.exists()) {
+      const comments = commentsDoc
+        .data()
+        .comments.filter((comment: any) => comment.id !== commentId);
+      await updateDoc(commentsRef, { comments });
+      setComments(comments);
+    }
+  };
+
+  const editComment = async (
+    animeId: string,
+    commentId: string,
+    newComment: string
+  ) => {
+    const commentsRef = doc(db, "comments", animeId);
+    const commentsDoc = await getDoc(commentsRef);
+    if (commentsDoc.exists()) {
+      const comments = commentsDoc
+        .data()
+        .comments.map((comment: any) =>
+          comment.id === commentId
+            ? { ...comment, comment: newComment }
+            : comment
+        );
+      await updateDoc(commentsRef, { comments });
+      setComments(comments);
+    }
+  };
+
   return (
     <FirebaseContext.Provider
       value={{
@@ -116,6 +181,11 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({
         handleRemove,
         handleDoneWatching,
         addToWatchlist,
+        fetchComments,
+        comments,
+        addComment,
+        deleteComment,
+        editComment,
       }}
     >
       {children}

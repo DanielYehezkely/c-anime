@@ -7,9 +7,8 @@ import {
 } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { getDoc, doc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../../../config/firebaseConfig";
-import { Timestamp } from "firebase/firestore";
 import {
   CommentsSectionContainer,
   CommentsHeader,
@@ -19,7 +18,8 @@ import {
   SubmitButton,
   NoCommentsBox,
 } from "./CommentSection.styles";
-import "./CommentSection.css"; 
+import { useFirebase } from "../../../../context/FirebaseContext/FirebaseContext";
+import "./CommentSection.css";
 
 interface Comment {
   id: string;
@@ -30,20 +30,17 @@ interface Comment {
 
 interface CommentSectionProps {
   animeId: string;
-  comments: Comment[];
-  setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
   liked: boolean;
   disliked: boolean;
 }
 
 const CommentSection: React.FC<CommentSectionProps> = ({
   animeId,
-  comments,
-  setComments,
   liked,
   disliked,
 }) => {
-  const { user, addComment, deleteComment, editComment } = useAuth();
+  const { user } = useAuth();
+  const { comments, addComment, deleteComment, editComment } = useFirebase();
   const [comment, setComment] = useState("");
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [editedComment, setEditedComment] = useState<string>("");
@@ -79,23 +76,13 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   const handleSubmit = async (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (!comment) return;
-    const newComment = {
-      id: `${user!.uid}-${Timestamp.now().seconds}`, // Create a unique ID for each comment
-      userId: user!.uid,
-      comment,
-      timestamp: Timestamp.now(),
-    };
-    await addComment(animeId, newComment.comment);
-    setComments((prevComments) => [...prevComments, newComment]);
+    await addComment(animeId, comment);
     setComment("");
   };
 
   const handleDeleteComment = async () => {
     if (selectedCommentId) {
       await deleteComment(animeId, selectedCommentId);
-      setComments((prevComments) =>
-        prevComments.filter((comment) => comment.id !== selectedCommentId)
-      );
       setIsModalOpen(null);
       setSelectedCommentId(null);
     }
@@ -110,13 +97,6 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   const handleSaveEdit = async () => {
     if (editingCommentId) {
       await editComment(animeId, editingCommentId, editedComment);
-      setComments((prevComments) =>
-        prevComments.map((comment) =>
-          comment.id === editingCommentId
-            ? { ...comment, comment: editedComment }
-            : comment
-        )
-      );
       setEditingCommentId(null);
       setEditedComment("");
     }
