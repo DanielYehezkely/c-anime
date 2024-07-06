@@ -1,5 +1,5 @@
 import React from "react";
-import AuthForm from "../../../../../components/AuthForm/AuthForm";
+import { AuthForm } from "../../../../../components";
 import { AuthFormProps } from "../../../../../components/AuthForm/AuthForm.types";
 
 const SignUp: React.FC<
