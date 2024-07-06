@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { useAnimeApi } from "../../hooks/useAnimeApi";
 import { Anime } from "../../types/Anime";
 import getAnimeBannerByTitle from "../../services/animeMalApi/animeAnilistService";
 import {
@@ -28,10 +27,11 @@ import {
   UnderlayBackgroundBox,
 } from "./SingleAnimePage.styles";
 import { useAuth } from "../../context/AuthContext/AuthContext";
+import { useAnime } from "../../context/FetchMalAnimeContext/FetchMalAnimeContext";
 
 const SingleAnimePage: React.FC = () => {
   const { animeId } = useParams<{ animeId: string }>();
-  const { animeList } = useAnimeApi();
+  const { animeList } = useAnime();
   const { user, fetchUserLikedDislikedAnimes } = useAuth();
   const [bannerImageBackground, setBannerImageBackground] = useState<string | null>(null);
   const [scrollY, setScrollY] = useState<number>(0);
@@ -44,7 +44,7 @@ const SingleAnimePage: React.FC = () => {
 
   useEffect(() => {
     const fetchLikeCount = async () => {
-      const usersCollection = collection(db, "users"); // Correct usage
+      const usersCollection = collection(db, "users"); 
       const usersSnapshot = await getDocs(usersCollection);
       let count = 0;
       usersSnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {

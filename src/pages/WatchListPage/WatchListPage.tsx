@@ -10,9 +10,9 @@ import {
 import { useAuth } from "../../context/AuthContext/AuthContext";
 import { db } from "../../config/firebaseConfig";
 import { Anime } from "../../types/Anime";
-import { useAnimeApi } from "../../hooks/useAnimeApi";
 import { Loader } from "../../components";
 import CarouselAnimeCard from "../../components/CarouselShowcase/CarouselAnimeCard/CarouselAnimeCard";
+import { useAnime } from "../../context/FetchMalAnimeContext/FetchMalAnimeContext";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -57,7 +57,7 @@ function a11yProps(index: number) {
 
 const WatchListPage: React.FC = () => {
   const { user } = useAuth();
-  const { animeList, loading } = useAnimeApi();
+  const { animeList, loading } = useAnime();
   const [watchlist, setWatchlist] = useState<string[]>([]);
   const [doneWatchingList, setDoneWatchingList] = useState<string[]>([]);
   const [filteredWatchlist, setFilteredWatchlist] = useState<Anime[]>([]);
