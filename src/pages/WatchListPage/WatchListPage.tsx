@@ -57,7 +57,7 @@ function a11yProps(index: number) {
 
 const WatchListPage: React.FC = () => {
   const { user } = useAuth();
-  const { trendingAnimeList, loading } = useAnime();
+  const { combinedAnimeList, loading } = useAnime();
   const [watchlist, setWatchlist] = useState<string[]>([]);
   const [doneWatchingList, setDoneWatchingList] = useState<string[]>([]);
   const [filteredWatchlist, setFilteredWatchlist] = useState<Anime[]>([]);
@@ -83,22 +83,22 @@ const WatchListPage: React.FC = () => {
   }, [user]);
 
   useEffect(() => {
-    if (trendingAnimeList.length && watchlist.length) {
-      const filtered = trendingAnimeList.filter((anime) =>
+    if (combinedAnimeList.length && watchlist.length) {
+      const filtered = combinedAnimeList.filter((anime) =>
         watchlist.includes(anime.mal_id.toString())
       );
       setFilteredWatchlist(filtered);
     }
-  }, [trendingAnimeList, watchlist]);
+  }, [combinedAnimeList, watchlist]);
 
   useEffect(() => {
-    if (trendingAnimeList.length && doneWatchingList.length) {
-      const filtered = trendingAnimeList.filter((anime) =>
+    if (combinedAnimeList.length && doneWatchingList.length) {
+      const filtered = combinedAnimeList.filter((anime) =>
         doneWatchingList.includes(anime.mal_id.toString())
       );
       setFilteredDoneWatchingList(filtered);
     }
-  }, [trendingAnimeList, doneWatchingList]);
+  }, [combinedAnimeList, doneWatchingList]);
 
   const handleRemove = async (id: number) => {
     if (user) {

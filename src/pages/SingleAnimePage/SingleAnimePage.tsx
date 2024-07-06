@@ -145,6 +145,7 @@ const SingleAnimePage: React.FC = () => {
       />
       <CarouselShowcase carouselLabel={"Recommendations"} />
       <CarouselShowcase carouselLabel={"Relations"} />
+      <CarouselShowcase carouselLabel={"Top 25"} />
     </SingleAnimePageContainer>
   );
 };

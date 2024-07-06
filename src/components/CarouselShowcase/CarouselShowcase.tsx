@@ -10,16 +10,27 @@ import { useAnime } from "../../context/FetchMalAnimeContext/FetchMalAnimeContex
 const CarouselShowcase: React.FC<CarouselShowcaseProps> = ({
   carouselLabel,
 }) => {
-  const { trendingAnimeList } = useAnime();
+  const { trendingAnimeList, airingAnimeList, topAnimeList } = useAnime();
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [filteredtrendingAnimeList, setFilteredtrendingAnimeList] = useState<
-    Anime[]
-  >([]);
+  const [filteredAnimeList, setFilteredAnimeList] = useState<Anime[]>([]);
   const swiperRef = useRef<any>(null);
 
   useEffect(() => {
-    setFilteredtrendingAnimeList(trendingAnimeList);
-  }, [trendingAnimeList]);
+    switch (carouselLabel) {
+      case "Recommendations":
+        setFilteredAnimeList(trendingAnimeList);
+        break;
+      case "Relations":
+        setFilteredAnimeList(airingAnimeList);
+        break;
+      case "Top 25":
+        setFilteredAnimeList(topAnimeList);
+        break;
+      default:
+        setFilteredAnimeList(trendingAnimeList);
+        break;
+    }
+  }, [carouselLabel, trendingAnimeList, airingAnimeList, topAnimeList]);
 
   const handleSlideChange = (index: number) => {
     setCurrentPage(index);
@@ -34,12 +45,32 @@ const CarouselShowcase: React.FC<CarouselShowcaseProps> = ({
 
   const handleFilterChange = (genre: string) => {
     if (genre === "All") {
-      setFilteredtrendingAnimeList(trendingAnimeList);
+      switch (carouselLabel) {
+        case "Recommendations":
+          setFilteredAnimeList(trendingAnimeList);
+          break;
+        case "Relations":
+          setFilteredAnimeList(airingAnimeList);
+          break;
+        case "Top 25":
+          setFilteredAnimeList(topAnimeList);
+          break;
+        default:
+          setFilteredAnimeList(trendingAnimeList);
+          break;
+      }
     } else {
-      const filteredList = trendingAnimeList.filter((anime) =>
+      const listToFilter =
+        carouselLabel === "Recommendations"
+          ? trendingAnimeList
+          : carouselLabel === "Relations"
+          ? airingAnimeList
+          : topAnimeList;
+
+      const filteredList = listToFilter.filter((anime) =>
         anime.genres.some((g) => g.name === genre)
       );
-      setFilteredtrendingAnimeList(filteredList);
+      setFilteredAnimeList(filteredList);
     }
   };
 
@@ -67,16 +98,14 @@ const CarouselShowcase: React.FC<CarouselShowcaseProps> = ({
       <CarouselPagination
         currentPage={currentPage}
         label={carouselLabel}
-        pageCount={
-          filteredtrendingAnimeList ? filteredtrendingAnimeList.length - 4 : 21
-        }
+        pageCount={filteredAnimeList.length - 4}
         onPageChange={handlePageChange}
       />
       <CarouselFilter onFilterChange={handleFilterChange} />
       <CarouselItems
         onSlideChange={handleSlideChange}
         swiperRef={swiperRef}
-        trendingAnimeList={filteredtrendingAnimeList}
+        animeList={filteredAnimeList}
       />
     </Box>
   );
