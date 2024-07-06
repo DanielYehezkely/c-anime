@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
-import { TabPanelProps } from "../../LoginPage.types";
-
+import { TabPanelProps } from "../../../LoginPage.types";
 
 export function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;

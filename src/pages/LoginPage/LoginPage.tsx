@@ -1,19 +1,15 @@
 import React, { useState } from "react";
+
 import {
   CssBaseline,
-  Box,
   Container,
   createTheme,
   ThemeProvider,
 } from "@mui/material";
-import { Loader } from "../../components";
-import PasswordResetDialog from "./PasswordReset/PasswordResetDialog";
-import SignIn from "./LoginForm/SignIn/SignIn";
-import SignUp from "./LoginForm/SignUp/SignUp";
-import { useAuthForm } from "../../services/firebase/useAuthForm";
-import ControlTabsSection from "./LoginForm/ControlTabsSection/ControlTabsSection";
-import { a11yProps, TabPanel } from "./LoginForm/TabPanel/TabPanel";
 
+import { useAuthForm } from "../../services/firebase/useAuthForm";
+import { Loader } from "../../components";
+import { a11yProps, AnimeImage, ControlTabsSection, PasswordResetDialog, SignIn, SignUp, TabPanel } from "./components";
 
 const theme = createTheme();
 
@@ -46,17 +42,7 @@ const LoginPage: React.FC = () => {
     <ThemeProvider theme={theme}>
       {loading && <Loader actionLabel="Authenticating..." />}
       <Container component="main" maxWidth="xs">
-        <Box
-          position="absolute"
-          component="img"
-          src="/assets/images/pngwing.com.png"
-          sx={{
-            width: "30rem",
-            height: "50rem",
-            bottom: "0",
-            right: "10%",
-          }}
-        />
+        <AnimeImage />
         <CssBaseline />
         <ControlTabsSection
           tabValue={tabValue}
