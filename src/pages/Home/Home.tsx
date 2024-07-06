@@ -30,7 +30,7 @@ const Home: React.FC = () => {
         }}
       >
         {error ? (
-          <ErrorComp message={`Error: ${error}`} />
+          <ErrorComp message={`Error: an Error occurred .`} />
         ) : (
           <>
             <HeaderBox />

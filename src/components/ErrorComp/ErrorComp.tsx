@@ -5,7 +5,7 @@ interface ErrorProps {
   message: string;
 }
 
-const Error: React.FC<ErrorProps> = ({ message }) => {
+const ErrorComp: React.FC<ErrorProps> = ({ message }) => {
   return (
     <Box
       sx={{
@@ -25,4 +25,4 @@ const Error: React.FC<ErrorProps> = ({ message }) => {
   );
 };
 
-export default Error;
+export default ErrorComp;

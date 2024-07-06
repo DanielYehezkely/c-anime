@@ -74,7 +74,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
             label="Remember me"
           />
         )}
-        {error && <ErrorComp message={error} />}
+        {error && <ErrorComp message={"Invalid credentials."} />}
         <Button
           type="submit"
           fullWidth
