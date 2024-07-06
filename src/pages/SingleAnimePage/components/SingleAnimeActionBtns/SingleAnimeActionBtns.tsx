@@ -13,11 +13,17 @@ import {
 import { useAuth } from "../../../../context/AuthContext/AuthContext";
 import { db } from "../../../../config/firebaseConfig";
 import {
+  doc,
   getDocs,
+  getDoc,
   query,
   collection,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 import { Box } from "@mui/material";
+import { useDebounce } from "../../../../hooks/useDebounce";
 
 interface SingleAnimeActionBtnsProps {
   anime: Anime;
@@ -38,7 +44,7 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
   liked,
   disliked
 }) => {
-  const { user, addToWatchlist, likeAnime, dislikeAnime } = useAuth();
+  const { user, addToWatchlist } = useAuth();
   const [isLikedClicked, setIsLikedClicked] = useState(false);
   const [isDislikedClicked, setIsDislikedClicked] = useState(false);
 
@@ -60,27 +66,50 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
     fetchLikeCount();
   }, [anime.mal_id, setLikeCount]);
 
- const handleLikeAnime = async () => {
-   if (!user) return;
+const debouncedLikeAnime = useDebounce(async () => {
+  if (!user) return;
+  
+  const userRef = doc(db, "users", user.uid);
+  const userDoc = await getDoc(userRef);
+  console.log('debounce');
 
-   await likeAnime(String(anime.mal_id));
-   setLiked(true);
-   setDisliked(false);
-   setLikeCount((prevCount) => prevCount + 1);
-   setIsLikedClicked(true);
-   setIsDislikedClicked(false);
- };
+  if (userDoc.exists()) {
+    const userData = userDoc.data();
+    if (!userData.likedAnimes.includes(String(anime.mal_id))) {
+      await updateDoc(userRef, {
+        likedAnimes: arrayUnion(String(anime.mal_id)),
+        dislikedAnimes: arrayRemove(String(anime.mal_id)),
+      });
+      setLiked(true);
+      setDisliked(false);
+      setLikeCount((prevCount) => prevCount + 1);
+      setIsLikedClicked(true);
+      setIsDislikedClicked(false);
+    }
+  }
+}, 500);
 
-   const handleDislikeAnime = async () => {
-     if (!user) return;
+const debouncedDislikeAnime = useDebounce(async () => {
+  if (!user) return;
 
-     await dislikeAnime(String(anime.mal_id));
-     setDisliked(true);
-     setLiked(false);
-     setLikeCount((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
-     setIsDislikedClicked(true);
-     setIsLikedClicked(false);
-   };
+  const userRef = doc(db, "users", user.uid);
+  const userDoc = await getDoc(userRef);
+  if (userDoc.exists()) {
+    const userData = userDoc.data();
+    if (!userData.dislikedAnimes.includes(String(anime.mal_id))) {
+      await updateDoc(userRef, {
+        dislikedAnimes: arrayUnion(String(anime.mal_id)),
+        likedAnimes: arrayRemove(String(anime.mal_id)),
+      });
+      setDisliked(true);
+      setLiked(false);
+      setLikeCount((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
+      setIsDislikedClicked(true);
+      setIsLikedClicked(false);
+    }
+  }
+}, 500);
+
 
   const handleAddToWatchlist = async () => {
     if (!user) return;
@@ -102,11 +131,11 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
             overflow: "hidden",
           }}
         >
-          <LikeButton variant="contained" onClick={handleLikeAnime}>
-            <LikeIcon isLiked={isLikedClicked} liked={liked} /> {likeCount}
+          <LikeButton variant="contained" onClick={debouncedLikeAnime}>
+            <LikeIcon isLikedClicked={isLikedClicked} liked={liked} /> {likeCount}
           </LikeButton>
-          <DislikeButton variant="contained" onClick={handleDislikeAnime}>
-            <DislikeIcon isDisliked={isDislikedClicked} disliked={disliked} />
+          <DislikeButton variant="contained" onClick={debouncedDislikeAnime}>
+            <DislikeIcon isDislikedClicked={isDislikedClicked} disliked={disliked} />
           </DislikeButton>
         </Box>
         <WatchlistButton onClick={handleAddToWatchlist}>

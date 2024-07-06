@@ -68,10 +68,10 @@ export const LikeButton = styled(Button)`
   border-right: 1px solid white;
 `;
 
-export const LikeIcon = styled(LikeIconBase)<{ isLiked: boolean, liked: boolean }>`
+export const LikeIcon = styled(LikeIconBase)<{ isLikedClicked: boolean, liked: boolean }>`
   transition: fill 0.3s, transform 0.2s;
   fill: ${(props) => (props.liked ? "#46f436" : "white")};
-  animation: ${(props) => (props.isLiked ? pop : "none")} 0.5s ease;
+  animation: ${(props) => (props.isLikedClicked ? pop : "none")} 0.5s ease;
   &:hover {
     transform: scale(1.5);
   }
@@ -87,10 +87,10 @@ export const DislikeButton = styled(Button)`
   border: none;
 `;
 
-export const DislikeIcon = styled(DislikeIconBase)<{ isDisliked: boolean, disliked: boolean }>`
+export const DislikeIcon = styled(DislikeIconBase)<{ isDislikedClicked: boolean, disliked: boolean }>`
   transition: fill 0.3s, transform 0.2s;
   fill: ${(props) => (props.disliked ? "#f44336" : "white")};
-  animation: ${(props) => (props.isDisliked ? pop : "none")} 0.5s ease;
+  animation: ${(props) => (props.isDislikedClicked ? pop : "none")} 0.5s ease;
   &:hover {
     transform: scale(1.5);
   }
