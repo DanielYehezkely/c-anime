@@ -4,19 +4,19 @@ import React from "react";
 const AnimeImage:React.FC = () => {
   return (
     <Box
-      position="absolute"
+      position="fixed"
       component="img"
       src="/assets/images/pngwing.com.png"
       sx={{
         width: {
-          xs: "15rem", // width for extra small screens
+          xs: "12rem", // width for extra small screens
           sm: "20rem", // width for small screens
           md: "25rem", // width for medium screens
           lg: "30rem", // width for large screens
           xl: "35rem", // width for extra large screens
         },
         height: {
-          xs: "23rem", // height for extra small screens
+          xs: "20rem", // height for extra small screens
           sm: "30rem", // height for small screens
           md: "40rem", // height for medium screens
           lg: "50rem", // height for large screens
