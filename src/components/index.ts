@@ -1,7 +1,6 @@
 import Loader from "./Loader/Loader";
-import Error from "./ErrorComp/Error";
+import ErrorComp from "./ErrorComp/ErrorComp";
 import LoginPromptModal from "./LoginPromptModal/LoginPromptModal";
 import CarouselShowcase from "./CarouselShowcase/CarouselShowcase";
 
-
-export {Loader, Error, CarouselShowcase, LoginPromptModal}
+export { Loader, ErrorComp, CarouselShowcase, LoginPromptModal };

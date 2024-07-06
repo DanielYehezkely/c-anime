@@ -1,28 +1,22 @@
 import React, { useState } from "react";
 import {
   Avatar,
-  Button,
   CssBaseline,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  Link,
-  Grid,
   Box,
   Tabs,
   Tab,
-  Typography,
   Container,
   createTheme,
   ThemeProvider,
 } from "@mui/material";
-import { FcGoogle } from "react-icons/fc";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { TabPanelProps } from "./LoginPage.types";
 import { useAuth } from "../../context/AuthContext/AuthContext";
 import { Loader } from "../../components";
 import { useNavigate } from "react-router";
 import PasswordResetDialog from "./PasswordReset/PasswordResetDialog";
+import SignIn from "./SignIn/SignIn";
+import SignUp from "./SignUp/SignUp";
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -147,149 +141,21 @@ const LoginPage: React.FC = () => {
             <Tab label="Sign Up" {...a11yProps(1)} />
           </Tabs>
           <TabPanel value={tabValue} index={0}>
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
-            <Box
-              component="form"
-              onSubmit={handleSubmit}
-              noValidate
-              sx={{ mt: 1 }}
-            >
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                error={!!errors.email}
-                helperText={errors.email}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                error={!!errors.password}
-                helperText={errors.password}
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              {error && (
-                <Typography color="error" variant="body2">
-                  {error}
-                </Typography>
-              )}
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Sign In
-              </Button>
-              <Button
-                startIcon={<FcGoogle />}
-                fullWidth
-                variant="outlined"
-                onClick={handleGoogleSignIn}
-                sx={{ mt: 1, mb: 2 }}
-              >
-                Sign In with Google
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link
-                    href="#"
-                    variant="body2"
-                    onClick={handleResetDialogOpen}
-                  >
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2" onClick={() => setTabValue(1)}>
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
-            </Box>
+            <SignIn
+              handleSubmit={handleSubmit}
+              handleGoogleSignIn={handleGoogleSignIn}
+              handleResetDialogOpen={handleResetDialogOpen}
+              errors={errors}
+              error={error}
+            />
           </TabPanel>
           <TabPanel value={tabValue} index={1}>
-            <Typography component="h1" variant="h5">
-              Sign Up
-            </Typography>
-            <Box
-              component="form"
-              onSubmit={handleSubmit}
-              noValidate
-              sx={{ mt: 1 }}
-            >
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="signup-email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                error={!!errors.email}
-                helperText={errors.email}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="signup-password"
-                autoComplete="new-password"
-                error={!!errors.password}
-                helperText={errors.password}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="confirm-password"
-                label="Confirm Password"
-                type="password"
-                id="confirm-password"
-                autoComplete="new-password"
-              />
-              {error && (
-                <Typography color="error" variant="body2">
-                  {error}
-                </Typography>
-              )}
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Sign Up
-              </Button>
-              <Button
-                startIcon={<FcGoogle />}
-                fullWidth
-                variant="outlined"
-                onClick={handleGoogleSignIn}
-                sx={{ mt: 1, mb: 2 }}
-              >
-                Sign Up with Google
-              </Button>
-            </Box>
+            <SignUp
+              handleSubmit={handleSubmit}
+              handleGoogleSignIn={handleGoogleSignIn}
+              errors={errors}
+              error={error}
+            />
           </TabPanel>
         </Box>
         <PasswordResetDialog

@@ -3,7 +3,7 @@ import React from "react";
 
 import theme from "../../MUI/theme";
 import { HeaderBox, SearchBox } from "./components";
-import { Error, Loader } from "../../components";
+import { ErrorComp, Loader } from "../../components";
 import CarouselShowcase from "../../components/CarouselShowcase/CarouselShowcase";
 import { useAnime } from "../../context/FetchMalAnimeContext/FetchMalAnimeContext";
 
@@ -29,7 +29,7 @@ const Home: React.FC = () => {
         }}
       >
         {error ? (
-          <Error message={`Error: ${error}`} />
+          <ErrorComp message={`Error: ${error}`} />
         ) : (
           <>
             <HeaderBox />
