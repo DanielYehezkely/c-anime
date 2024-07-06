@@ -1,4 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
 import SharedLayout from "./layout/SharedLayout";
 import {
   Home,
@@ -8,8 +9,6 @@ import {
   LoginPage,
 } from "./pages";
 import ProtectedRoute from "./routes/protectedRout";
-// import AuthRedirect from "./routes/authRedirect";
-
 
 const router = createBrowserRouter([
   {

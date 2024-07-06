@@ -9,7 +9,7 @@ interface AnimeContextProps {
   animeList: Anime[];
   error: string | null;
   loading: boolean;
-  fetchAnime: () => Promise<void>;
+  fetchTrendingAnime: () => Promise<void>;
 }
 
 const AnimeContext = createContext<AnimeContextProps | undefined>(undefined);
@@ -19,7 +19,7 @@ export const AnimeProvider: React.FC<ContextProviderProp> = ({ children }) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const fetchAnime = async (): Promise<void> => {
+  const fetchTrendingAnime = async (): Promise<void> => {
     setError(null);
     setLoading(true);
     try {
@@ -33,11 +33,11 @@ export const AnimeProvider: React.FC<ContextProviderProp> = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchAnime();
+    fetchTrendingAnime();
   }, []);
 
   return (
-    <AnimeContext.Provider value={{ animeList, error, loading, fetchAnime }}>
+    <AnimeContext.Provider value={{ animeList, error, loading, fetchTrendingAnime }}>
       {children}
     </AnimeContext.Provider>
   );
