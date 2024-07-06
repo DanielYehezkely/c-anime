@@ -70,6 +70,7 @@ const LoginPage: React.FC = () => {
               handleResetDialogOpen={handleResetDialogOpen}
               errors={errors}
               error={error}
+              setTabValue={setTabValue}
             />
           </TabPanel>
           <TabPanel value={tabValue} index={1}>
@@ -78,6 +79,7 @@ const LoginPage: React.FC = () => {
               handleGoogleSignIn={handleGoogleSignIn}
               errors={errors}
               error={error}
+              setTabValue={setTabValue}
             />
           </TabPanel>
         </ControlTabsSection>
