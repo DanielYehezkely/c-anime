@@ -28,6 +28,43 @@ const SearchBox: React.FC = () => {
     }
   };
 
+  const renderOption = (props: React.HTMLAttributes<HTMLLIElement>, option: string) => {
+    const selectedAnime = combinedAnimeList.find((anime) => anime.title === option);
+    return (
+      <li
+        {...props}
+        key={selectedAnime?.mal_id}
+        onClick={() => handleOptionSelect(selectedAnime)}
+        style={{ cursor: "pointer" }}
+      >
+        {option}
+      </li>
+    );
+  };
+
+  const renderInput = (params: any) => (
+    <TextField
+      {...params}
+      label="Search Anime"
+      InputLabelProps={{ style: inputLabelPropsStyle }}
+      InputProps={{
+        ...params.InputProps,
+        type: "search",
+        startAdornment: (
+          <InputAdornment position="start">
+            <SearchIcon style={startAdornmentStyle} />
+          </InputAdornment>
+        ),
+        endAdornment: (
+          <>
+            {loading ? <CircularProgress color="inherit" size={20} /> : null}
+            {params.InputProps.endAdornment}
+          </>
+        ),
+      }}
+    />
+  );
+
   return (
     <Box component="section" sx={boxStyle}>
       {error && <div>Error fetching data: {error}</div>}
@@ -39,47 +76,8 @@ const SearchBox: React.FC = () => {
           getOptionLabel={(option: string) => option}
           onChange={(_, value) => handleOptionSelect(value)}
           sx={autoCompleteStyle}
-          renderOption={(props, option) => {
-            const selectedAnime = combinedAnimeList.find(
-              (anime) => anime.title === option
-            );
-            return (
-              <li
-                {...props}
-                key={selectedAnime?.mal_id}
-                onClick={() => handleOptionSelect(selectedAnime)}
-                style={{ cursor: "pointer" }}
-              >
-                {option}
-              </li>
-            );
-          }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Search Anime"
-              InputLabelProps={{
-                style: inputLabelPropsStyle,
-              }}
-              InputProps={{
-                ...params.InputProps,
-                type: "search",
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon style={startAdornmentStyle} />
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <>
-                    {loading ? (
-                      <CircularProgress color="inherit" size={20} />
-                    ) : null}
-                    {params.InputProps.endAdornment}
-                  </>
-                ),
-              }}
-            />
-          )}
+          renderOption={renderOption}
+          renderInput={renderInput}
         />
       </Stack>
     </Box>
