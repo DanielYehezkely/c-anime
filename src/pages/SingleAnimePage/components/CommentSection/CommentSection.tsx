@@ -122,9 +122,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({
         </Typography>
       )}
       {comments.length > 0 ? (
-        comments.map((commentObj, index) => (
+        comments.map((commentObj) => (
           <Box
-            key={index}
+            key={commentObj.id}
             display="flex"
             alignItems="flex-start"
             flexWrap="wrap"

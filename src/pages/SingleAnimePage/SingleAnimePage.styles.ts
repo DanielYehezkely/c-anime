@@ -16,7 +16,6 @@ export const UnderlayBackgroundBox = styled(Box)`
   left: 0;
   width: 100%;
   min-height: 85%;
-  /* filter: blur(1px); */
   transition: all 0.4s ease;
   background-position: center;
   background-repeat: no-repeat;

@@ -54,7 +54,7 @@ export const AnimeProvider: React.FC<ContextProviderProp> = ({ children }) => {
     setError(null);
     setLoading(true);
     try {
-      const data = await getTopAnimeData("airing");
+      const data = await getTopAnimeData("favorite");
       
       setAiringAnimeList(data);
     } catch (error: any) {

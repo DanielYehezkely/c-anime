@@ -22,6 +22,7 @@ const CarouselItems: React.FC<CarouselItemsProps> = ({
   swiperRef,
   animeList,
 }) => {
+ 
   return (
     <Box
       component="section"
@@ -42,6 +43,7 @@ const CarouselItems: React.FC<CarouselItemsProps> = ({
         onSlideChange={() => onSlideChange(swiperRef.current.swiper.realIndex)}
       >
         {animeList.map((anime) => (
+          
           <SwiperSlide key={anime.mal_id} style={{ width: "25rem" }}>
             <CarouselAnimeCard anime={anime} />
           </SwiperSlide>
