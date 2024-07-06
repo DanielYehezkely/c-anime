@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+
 import { Container, Typography } from "@mui/material";
-import { a11yProps, WatchlistTabPanel, WatchlistTabs } from "./components";
-import AnimeList from "./components/AnimeGridList/AnimeList";
-import { Loader } from "../../components";
+
 import { useFirebase } from "../../context/FirebaseContext/FirebaseContext";
+
+import { a11yProps, AnimeList, WatchlistTabPanel, WatchlistTabs } from "./components";
+import { Loader } from "../../components";
 
 const WatchListPage: React.FC = () => {
   const {

@@ -148,23 +148,6 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
      }
    };
 
-  const addToWatchlist = async (animeId: string) => {
-    if (!user) return;
-    const userRef = doc(db, "users", user.uid);
-    await updateDoc(userRef, {
-      watchlist: arrayUnion(animeId),
-    });
-  };
-
-  const removeFromWatchlist = async (animeId: string) => {
-    if (!user) return;
-    const userRef = doc(db, "users", user.uid);
-    await updateDoc(userRef, {
-      watchlist: arrayRemove(animeId),
-    });
-  };
-
-
 const addComment = async (animeId: string, comment: string) => {
   if (!user) return;
   const commentsRef = doc(db, "comments", animeId);
@@ -186,7 +169,6 @@ const addComment = async (animeId: string, comment: string) => {
     });
   }
 };
-
 
 const editComment = async (
   animeId: string,
@@ -249,8 +231,6 @@ const editComment = async (
         logout,
         loading,
         error,
-        addToWatchlist,
-        removeFromWatchlist,
         deleteComment,
         addComment,
         editComment,

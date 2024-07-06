@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Anime } from "../../../../types/Anime";
 import {
   LikeIcon,
   DislikeIcon,
@@ -25,16 +24,8 @@ import {
 import { Box } from "@mui/material";
 import { useDebounce } from "../../../../hooks/useDebounce";
 import { useFirebase } from "../../../../context/FirebaseContext/FirebaseContext";
+import { SingleAnimeActionBtnsProps } from "./SingleAnimeActionBtns.types";
 
-interface SingleAnimeActionBtnsProps {
-  anime: Anime;
-  liked: boolean;
-  disliked: boolean;
-  setLiked: React.Dispatch<React.SetStateAction<boolean>>;
-  setDisliked: React.Dispatch<React.SetStateAction<boolean>>;
-  likeCount: number;
-  setLikeCount: React.Dispatch<React.SetStateAction<number>>;
-}
 
 const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
   anime,
