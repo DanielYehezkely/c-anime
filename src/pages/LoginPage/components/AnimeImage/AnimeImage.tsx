@@ -17,26 +17,18 @@ const AnimeImage:React.FC = () => {
       }
       sx={{
         width: {
-          xs: "50%", // width for extra small screens
-          sm: "20rem", // width for small screens
-          // md: "25rem", // width for medium screens
-          // lg: "30rem", // width for large screens
-          // xl: "35rem", // width for extra large screens
+          xs: "50%",
+          sm: "20rem", 
         },
         height: {
-          xs: "20%", // height for extra small screens
-          sm: "30rem", // height for small screens
-          // md: "40rem", // height for medium screens
-          // lg: "50rem", // height for large screens
-          // xl: "60rem", // height for extra large screens
+          xs: "20%", 
+          sm: "30rem", 
+         
         },
         bottom: isXs ? "5%" : 0 ,
         right: {
-          xs: "30%", // right position for extra small screens
-          sm: "7%", // right position for small screens
-          // md: "10%", // right position for medium screens
-          // lg: "12%", // right position for large screens
-          // xl: "15%", // right position for extra large screens
+          xs: "30%", 
+          sm: "7%", 
         },
       }}
     />
