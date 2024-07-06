@@ -1,6 +1,6 @@
 import React from "react";
-import AuthForm from "../../../components/AuthForm/AuthForm";
-import { AuthFormProps } from "../../../components/AuthForm/AuthForm.types";
+import AuthForm from "../../../../components/AuthForm/AuthForm";
+import { AuthFormProps } from "../../../../components/AuthForm/AuthForm.types";
 
 const SignIn: React.FC<Omit<AuthFormProps, "formType" | "setTabValue">> = ({
   handleSubmit,
