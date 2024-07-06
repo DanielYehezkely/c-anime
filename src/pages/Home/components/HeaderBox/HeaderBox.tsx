@@ -4,9 +4,10 @@ import AnimeCardShow from "./AnimeCardShow/AnimeCardShow";
 import { Anime } from "../../../../types/Anime";
 import { useAnimeApi } from "../../../../hooks/useAnimeApi";
 import getAnimeBannerByTitle from "../../../../services/animeMalApi/animeAnilistService";
+import HeaderBoxUnderlay from "./AnimeCardShow/HeaderBoxUnderlay";
+ 
 
 const HeaderBox: React.FC = () => {
-  
   const { animeList } = useAnimeApi();
   const [currentAnime, setCurrentAnime] = useState<Anime | null>(null);
   const [bannerImage, setBannerImage] = useState<string | null>(null);
@@ -43,23 +44,10 @@ const HeaderBox: React.FC = () => {
 
   return (
     <>
-      <Box
-        position="absolute"
-        sx={{
-          right: 0,
-          height: "54rem",
-          width: "95%",
-          zIndex: 1,
-          transition:
-            "background-image 0.5s ease-in-out, opacity 0.5s ease-in-out",
-          backgroundImage: `linear-gradient(to top, rgba(12, 12, 12, 1), rgba(0, 0, 0, 0.445) 30%), url(${
-            bannerImage || currentAnime.images.webp.large_image_url
-          })`,
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center",
-          opacity: opacity,
-        }}
+      <HeaderBoxUnderlay
+        bannerImage={bannerImage}
+        currentAnime={currentAnime}
+        opacity={opacity}
       />
       <Box
         component="header"

@@ -118,7 +118,6 @@ useEffect(() => {
             url(${bannerImageBackground || anime.images.jpg.large_image_url})
           `,
           opacity: backgroundColor,
-          // boxShadow: "0 15px 10px 0 #000000",
         }}
         />
       <SingleAnimeCard anime={anime} />
