@@ -61,10 +61,8 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
 
   const debouncedLikeAnime = useDebounce(async () => {
     if (!user) return;
-
     const userRef = doc(db, "users", user.uid);
     const userDoc = await getDoc(userRef);
-    console.log("debounce");
 
     if (userDoc.exists()) {
       const userData = userDoc.data();

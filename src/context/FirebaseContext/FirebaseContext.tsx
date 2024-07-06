@@ -112,9 +112,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const fetchComments = async (animeId: string) => {
     const commentsRef = doc(db, "comments", animeId);
-    console.log(commentsRef);
     const commentsDoc = await getDoc(commentsRef);
-    console.log(commentsDoc);
     setComments(commentsDoc.exists() ? commentsDoc.data().comments : []);
   };
 

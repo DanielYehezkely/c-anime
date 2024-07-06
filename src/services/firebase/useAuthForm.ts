@@ -51,7 +51,7 @@ export const useAuthForm = ({ tabValue, setTabValue }: UseAuthFormProps) => {
           await signUpWithEmail(email, password, () => setTabValue(0));
         }
       } catch (error) {
-        console.error("Authentication error:", error);
+        console.error("Authentication error, check the context:", error);  
       }
     }
   };
@@ -60,7 +60,7 @@ export const useAuthForm = ({ tabValue, setTabValue }: UseAuthFormProps) => {
     try {
       await loginWithGoogle(() => navigate("/"));
     } catch (error) {
-      console.error("Error signing in with Google:", error);
+      console.error("Error signing in with Google, check the context:", error);
     }
   };
 
