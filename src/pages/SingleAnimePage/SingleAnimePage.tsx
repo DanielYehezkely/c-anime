@@ -4,8 +4,6 @@ import { Anime } from "../../types/Anime";
 import {
   getDocs,
   collection,
-  DocumentData,
-  QueryDocumentSnapshot,
 } from "firebase/firestore";
 import { db } from "../../config/firebaseConfig";
 import { Loader } from "../../components";
@@ -41,21 +39,23 @@ const SingleAnimePage: React.FC = () => {
   const bannerImageBg = useAnilistBannerImage(anime);
   const backgroundColor = scrollY > 150 ? "0.1" : 1;
 
-  useEffect(() => {
-    const fetchLikeCount = async () => {
-      const usersCollection = collection(db, "users");
-      const usersSnapshot = await getDocs(usersCollection);
-      let count = 0;
-      usersSnapshot.forEach((doc: QueryDocumentSnapshot<DocumentData>) => {
-        const data = doc.data();
-        if (data.likedAnimes && data.likedAnimes.includes(animeId)) {
-          count++;
-        }
-      });
-      setLikeCount(count);
-    };
-    fetchLikeCount();
-  }, [animeId]);
+useEffect(() => {
+  const fetchLikeCount = async () => {
+    console.log(`Fetching like count for animeId: ${animeId}`);
+    const usersCollection = collection(db, "users");
+    const usersSnapshot = await getDocs(usersCollection);
+    let count = 0;
+    usersSnapshot.forEach((doc) => {
+      const data = doc.data();
+      if (data.likedAnimes && data.likedAnimes.includes(animeId)) {
+        count++;
+      }
+    });
+    setLikeCount(count);
+    console.log(`Fetched like count: ${count} for animeId: ${animeId}`);
+  };
+  fetchLikeCount();
+}, [animeId]);
 
   useEffect(() => {
     const handleScroll = () => {

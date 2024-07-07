@@ -36,32 +36,34 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({
   const [doneWatchingList, setDoneWatchingList] = useState<Anime[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchLists = async () => {
-      if (user) {
-        const userRef = doc(db, "users", user.uid);
-        const userDoc = await getDoc(userRef);
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          const watchlistIds = userData.watchlist || [];
-          const doneWatchingIds = userData.doneWatching || [];
+useEffect(() => {
+  const fetchLists = async () => {
+    console.log(`Fetching lists for user: ${user?.uid}`);
+    if (user) {
+      const userRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userRef);
+      console.log(`Read user document for user: ${user.uid}`);
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const watchlistIds = userData.watchlist || [];
+        const doneWatchingIds = userData.doneWatching || [];
 
-          const filteredWatchlist = combinedAnimeList.filter((anime) =>
-            watchlistIds.includes(anime.mal_id.toString())
-          );
-          const filteredDoneWatchingList = combinedAnimeList.filter((anime) =>
-            doneWatchingIds.includes(anime.mal_id.toString())
-          );
+        const filteredWatchlist = combinedAnimeList.filter((anime) =>
+          watchlistIds.includes(anime.mal_id.toString())
+        );
+        const filteredDoneWatchingList = combinedAnimeList.filter((anime) =>
+          doneWatchingIds.includes(anime.mal_id.toString())
+        );
 
-          setWatchlist(filteredWatchlist);
-          setDoneWatchingList(filteredDoneWatchingList);
-        }
+        setWatchlist(filteredWatchlist);
+        setDoneWatchingList(filteredDoneWatchingList);
       }
-      setLoading(false);
-    };
+    }
+    setLoading(false);
+  };
 
-    fetchLists();
-  }, [user, combinedAnimeList]);
+  fetchLists();
+}, [user, combinedAnimeList]);
 
   const handleRemove = async (id: number) => {
     if (user) {

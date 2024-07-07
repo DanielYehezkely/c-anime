@@ -48,24 +48,27 @@ const CommentSection: React.FC<CommentSectionProps> = ({
     null
   );
 
-  useEffect(() => {
-    const fetchUserAvatars = async () => {
-      const avatars: { [key: string]: string } = {};
-      for (const comment of comments) {
-        if (!avatars[comment.userId]) {
-          const userRef = doc(db, "users", comment.userId);
-          const userDoc = await getDoc(userRef);
-          if (userDoc.exists()) {
-            const userData = userDoc.data();
-            avatars[comment.userId] = userData.photoURL || "";
-          }
+useEffect(() => {
+  const fetchUserAvatars = async () => {
+    console.log(`Fetching user avatars for comments`);
+    const avatars: { [key: string]: string } = {};
+    for (const comment of comments) {
+      if (!avatars[comment.userId]) {
+        const userRef = doc(db, "users", comment.userId);
+        const userDoc = await getDoc(userRef);
+        console.log(`Read user document for user: ${comment.userId}`);
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          avatars[comment.userId] = userData.photoURL || "";
         }
       }
-      setUserAvatars(avatars);
-    };
+    }
+    setUserAvatars(avatars);
+  };
 
-    fetchUserAvatars();
-  }, [comments]);
+  fetchUserAvatars();
+}, [comments]);
+
 
   const handleModalToggle = (commentId: string) => {
     setIsModalOpen((prev) => (prev === commentId ? null : commentId));

@@ -42,23 +42,26 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  const createUserDocument = async (user: User) => {
-    const userRef = doc(db, "users", user.uid);
-    const docSnap = await getDoc(userRef);
-    if (!docSnap.exists()) {
-      const displayName = user.displayName
-        ? user.displayName
-        : user.email
-        ? user.email.split("@")[0]
-        : "Anonymous";
-      await setDoc(userRef, {
-        name: displayName,
-        watchlist: [],
-        likedAnimes: [],
-        dislikedAnimes: [],
-      });
-    }
-  };
+const createUserDocument = async (user: User) => {
+  console.log(`Creating user document for user: ${user.uid}`);
+  const userRef = doc(db, "users", user.uid);
+  const docSnap = await getDoc(userRef);
+  console.log(`Read user document for user: ${user.uid}`);
+  if (!docSnap.exists()) {
+    const displayName = user.displayName
+      ? user.displayName
+      : user.email
+      ? user.email.split("@")[0]
+      : "Anonymous";
+    await setDoc(userRef, {
+      name: displayName,
+      watchlist: [],
+      likedAnimes: [],
+      dislikedAnimes: [],
+    });
+    console.log(`Created user document for user: ${user.uid}`);
+  }
+};
 
   const loginWithGoogle = async (callback: () => void) => {
     setLoading(true);
