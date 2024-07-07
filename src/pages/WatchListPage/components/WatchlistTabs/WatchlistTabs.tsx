@@ -1,6 +1,6 @@
 import React from "react";
-import { Tab, Box } from "@mui/material";
-import { StyledTabs } from "./WatchlistTabs.styles"; // Import your styled components
+import { Tab, Box, Tabs } from "@mui/material";
+// import { StyledTabs } from "./WatchlistTabs.styles"; // Import your styled components
 
 interface WatchlistTabsProps {
   value: number;
@@ -15,14 +15,32 @@ const WatchlistTabs: React.FC<WatchlistTabsProps> = ({
 }) => {
   return (
     <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-      <StyledTabs
+      <Tabs
         value={value}
         onChange={handleChange}
         aria-label="anime lists tabs"
+        sx={{
+          "& .MuiTab-root": {
+            color: "white",
+          },
+          "& .css-bjr47-MuiButtonBase-root-MuiTab-root.Mui-selected": {
+            color: "#ffffe0",
+            fontSize: "1.6rem",
+            fontWeight: "bold",
+            borderTopLeftRadius: "0.5rem",
+            borderTopRightRadius: "0.5rem",
+            backgroundColor: "#0c0c0c",
+            border: "1px solid #ffffff57",
+            borderBottom: "none",
+          },
+          "& .MuiTabs-indicator": {
+            display: "none",
+          },
+        }}
       >
         <Tab label="Watchlist" {...a11yProps(0)} />
         <Tab label="Done Watching" {...a11yProps(1)} />
-      </StyledTabs>
+      </Tabs>
     </Box>
   );
 };
