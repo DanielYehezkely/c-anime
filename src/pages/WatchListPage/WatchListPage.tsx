@@ -4,10 +4,11 @@ import {
   a11yProps,
   AnimeList,
   WatchlistTabPanel,
-  WatchlistTabs,
+  // WatchlistTabs,
 } from "./components";
 import { Loader } from "../../components";
 import { StyledContainer, StyledTypography } from "./WatchListPage.styles"; // Import your styled components
+import { Tab, Tabs } from "@mui/material";
 
 const WatchListPage: React.FC = () => {
   const {
@@ -30,11 +31,32 @@ const WatchListPage: React.FC = () => {
         <StyledTypography variant="h4" gutterBottom>
           My Anime Lists
         </StyledTypography>
-        <WatchlistTabs
+        <Tabs
           value={value}
-          handleChange={handleChange}
-          a11yProps={a11yProps}
-        />
+          onChange={handleChange}
+          aria-label="anime lists tabs"
+          sx={{
+            "& .MuiTab-root": {
+              color: "white",
+            },
+            "& .css-bjr47-MuiButtonBase-root-MuiTab-root.Mui-selected": {
+              color: "#ffffe0",
+              fontSize: "1.6rem",
+              fontWeight: "bold",
+              borderTopLeftRadius: "0.5rem",
+              borderTopRightRadius: "0.5rem",
+              backgroundColor: "#0c0c0c",
+              border: "1px solid #ffffff57",
+              borderBottom: "none",
+            },
+            "& .MuiTabs-indicator": {
+              display: "none",
+            },
+          }}
+        >
+          <Tab label="Watchlist" {...a11yProps(0)} />
+          <Tab label="Done Watching" {...a11yProps(1)} />
+        </Tabs>
         <WatchlistTabPanel value={value} index={0}>
           <AnimeList
             animeList={watchlist}
