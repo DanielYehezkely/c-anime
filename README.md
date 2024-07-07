@@ -1,6 +1,6 @@
 # C-Anime <img src="/public/assets/icons/favicon_logoai/faviconTemp.ico">
 
-<img src="/path/to/your/animated-gif.gif" alt="App Demo" width="600">
+<img src="/public/assets/readme-images/C-Anime - 7 July 2024 (1).gif" alt="App Demo" width="600">
 
 ## Table of Contents
 
