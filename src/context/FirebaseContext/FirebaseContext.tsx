@@ -1,19 +1,30 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+} from "react";
 import {
   doc,
   getDoc,
+  getDocs,
   updateDoc,
   arrayRemove,
   arrayUnion,
+  collection,
+  query,
+  where,
   setDoc,
 } from "firebase/firestore";
-import { Anime } from "../../types/Anime";
 import { useAuth } from "../AuthContext/AuthContext";
 import { useAnime } from "../FetchMalAnimeContext/FetchMalAnimeContext";
 import { db } from "../../config/firebaseConfig";
 import { FirebaseContextProps } from "./FirebaseContext.types";
 import { Timestamp } from "firebase/firestore";
 import { useDebounce } from "../../hooks/useDebounce";
+import { Anime } from "../../types/Anime";
 
 const FirebaseContext = createContext<FirebaseContextProps | undefined>(
   undefined
@@ -36,40 +47,68 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({
   const [comments, setComments] = useState<any[]>([]);
   const [doneWatchingList, setDoneWatchingList] = useState<Anime[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userAvatars, setUserAvatars] = useState<{ [key: string]: string }>({});
 
-const memoizedCombinedAnimeList = useMemo(
-  () => combinedAnimeList,
-  [combinedAnimeList]
-);
+  const memoizedCombinedAnimeList = useMemo(
+    () => combinedAnimeList,
+    [combinedAnimeList]
+  );
 
-const fetchLists = useDebounce(async () => {
-  if (user) {
-    console.log(`Fetching lists for user: ${user.uid}`);
-    const userRef = doc(db, "users", user.uid);
-    const userDoc = await getDoc(userRef);
-    console.log(`Read user document for user: ${user.uid}`);
-    if (userDoc.exists()) {
-      const userData = userDoc.data();
-      const watchlistIds = userData.watchlist || [];
-      const doneWatchingIds = userData.doneWatching || [];
+  const fetchLists = useDebounce(async () => {
+    if (user) {
+      console.log(`Fetching lists for user: ${user.uid}`);
+      const userRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userRef);
+      console.log(`Read user document for user: ${user.uid}`);
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const watchlistIds = userData.watchlist || [];
+        const doneWatchingIds = userData.doneWatching || [];
 
-      const filteredWatchlist = memoizedCombinedAnimeList.filter((anime) =>
-        watchlistIds.includes(anime.mal_id.toString())
-      );
-      const filteredDoneWatchingList = memoizedCombinedAnimeList.filter(
-        (anime) => doneWatchingIds.includes(anime.mal_id.toString())
-      );
+        const filteredWatchlist = memoizedCombinedAnimeList.filter((anime) =>
+          watchlistIds.includes(anime.mal_id.toString())
+        );
+        const filteredDoneWatchingList = memoizedCombinedAnimeList.filter(
+          (anime) => doneWatchingIds.includes(anime.mal_id.toString())
+        );
 
-      setWatchlist(filteredWatchlist);
-      setDoneWatchingList(filteredDoneWatchingList);
+        setWatchlist(filteredWatchlist);
+        setDoneWatchingList(filteredDoneWatchingList);
+        console.log(`Set watchlist and doneWatchingList for user: ${user.uid}`);
+      }
+      setLoading(false);
     }
-    setLoading(false);
-  }
-}, 300);
+  }, 300);
 
-useEffect(() => {
-  fetchLists();
-}, [user, memoizedCombinedAnimeList]);
+  useEffect(() => {
+    fetchLists();
+  }, [user, memoizedCombinedAnimeList]);
+
+  const fetchUserAvatars = useCallback(
+    async (comments: any[]) => {
+      console.log(`Fetching user avatars for comments`);
+      const avatars: { [key: string]: string } = { ...userAvatars };
+      const userIdsToFetch = comments
+        .map((comment) => comment.userId)
+        .filter((userId) => !avatars[userId]);
+
+      if (userIdsToFetch.length > 0) {
+        const usersQuery = query(
+          collection(db, "users"),
+          where("uid", "in", userIdsToFetch)
+        );
+        const usersSnapshot = await getDocs(usersQuery);
+        usersSnapshot.forEach((userDoc) => {
+          const userData = userDoc.data();
+          avatars[userDoc.id] = userData.photoURL || "";
+          console.log(`Read user document for user: ${userDoc.id}`);
+        });
+      }
+
+      setUserAvatars(avatars);
+    },
+    [userAvatars]
+  );
 
   const handleRemove = async (id: number) => {
     if (user) {
@@ -194,6 +233,8 @@ useEffect(() => {
         addComment,
         deleteComment,
         editComment,
+        fetchUserAvatars,
+        userAvatars,
       }}
     >
       {children}

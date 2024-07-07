@@ -8,6 +8,7 @@ export interface FirebaseContextProps {
   comments: Comment[];
   doneWatchingList: Anime[];
   loading: boolean;
+  userAvatars: { [key: string]: string };
   handleRemove: (id: number) => Promise<void>;
   handleDoneWatching: (id: number) => Promise<void>;
   addToWatchlist: (animeId: string) => Promise<void>;
@@ -19,4 +20,5 @@ export interface FirebaseContextProps {
     commentId: string,
     newComment: string
   ) => Promise<void>;
+  fetchUserAvatars: (comments: Comment[]) => Promise<void>;
 }

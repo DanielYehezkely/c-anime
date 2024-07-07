@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import { Box, IconButton, Typography, Avatar, Button } from "@mui/material";
 import {
   AccountCircleRounded,
@@ -7,12 +6,8 @@ import {
 } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../../../../config/firebaseConfig";
 import { useAuth } from "../../../../context/AuthContext/AuthContext";
 import { useFirebase } from "../../../../context/FirebaseContext/FirebaseContext";
-
 import {
   CommentsSectionContainer,
   CommentsHeader,
@@ -23,7 +18,6 @@ import {
   NoCommentsBox,
 } from "./CommentSection.styles";
 import "./CommentSection.css";
-
 import { Comment } from "../../../../types/Comment";
 
 interface CommentSectionProps {
@@ -38,37 +32,25 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   disliked,
 }) => {
   const { user } = useAuth();
-  const { comments, addComment, deleteComment, editComment } = useFirebase();
+  const {
+    comments,
+    addComment,
+    deleteComment,
+    editComment,
+    fetchUserAvatars,
+    userAvatars,
+  } = useFirebase();
   const [comment, setComment] = useState("");
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [editedComment, setEditedComment] = useState<string>("");
-  const [userAvatars, setUserAvatars] = useState<{ [key: string]: string }>({});
   const [isModalOpen, setIsModalOpen] = useState<string | null>(null);
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
     null
   );
 
-useEffect(() => {
-  const fetchUserAvatars = async () => {
-    console.log(`Fetching user avatars for comments`);
-    const avatars: { [key: string]: string } = {};
-    for (const comment of comments) {
-      if (!avatars[comment.userId]) {
-        const userRef = doc(db, "users", comment.userId);
-        const userDoc = await getDoc(userRef);
-        console.log(`Read user document for user: ${comment.userId}`);
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          avatars[comment.userId] = userData.photoURL || "";
-        }
-      }
-    }
-    setUserAvatars(avatars);
-  };
-
-  fetchUserAvatars();
-}, [comments]);
-
+  useEffect(() => {
+    fetchUserAvatars(comments);
+  }, []);
 
   const handleModalToggle = (commentId: string) => {
     setIsModalOpen((prev) => (prev === commentId ? null : commentId));
