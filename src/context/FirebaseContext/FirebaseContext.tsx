@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import {
   doc,
   getDoc,
@@ -13,6 +13,7 @@ import { useAnime } from "../FetchMalAnimeContext/FetchMalAnimeContext";
 import { db } from "../../config/firebaseConfig";
 import { FirebaseContextProps } from "./FirebaseContext.types";
 import { Timestamp } from "firebase/firestore";
+import { useDebounce } from "../../hooks/useDebounce";
 
 const FirebaseContext = createContext<FirebaseContextProps | undefined>(
   undefined
@@ -36,34 +37,39 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({
   const [doneWatchingList, setDoneWatchingList] = useState<Anime[]>([]);
   const [loading, setLoading] = useState(true);
 
-useEffect(() => {
-  const fetchLists = async () => {
-    console.log(`Fetching lists for user: ${user?.uid}`);
-    if (user) {
-      const userRef = doc(db, "users", user.uid);
-      const userDoc = await getDoc(userRef);
-      console.log(`Read user document for user: ${user.uid}`);
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        const watchlistIds = userData.watchlist || [];
-        const doneWatchingIds = userData.doneWatching || [];
+const memoizedCombinedAnimeList = useMemo(
+  () => combinedAnimeList,
+  [combinedAnimeList]
+);
 
-        const filteredWatchlist = combinedAnimeList.filter((anime) =>
-          watchlistIds.includes(anime.mal_id.toString())
-        );
-        const filteredDoneWatchingList = combinedAnimeList.filter((anime) =>
-          doneWatchingIds.includes(anime.mal_id.toString())
-        );
+const fetchLists = useDebounce(async () => {
+  if (user) {
+    console.log(`Fetching lists for user: ${user.uid}`);
+    const userRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userRef);
+    console.log(`Read user document for user: ${user.uid}`);
+    if (userDoc.exists()) {
+      const userData = userDoc.data();
+      const watchlistIds = userData.watchlist || [];
+      const doneWatchingIds = userData.doneWatching || [];
 
-        setWatchlist(filteredWatchlist);
-        setDoneWatchingList(filteredDoneWatchingList);
-      }
+      const filteredWatchlist = memoizedCombinedAnimeList.filter((anime) =>
+        watchlistIds.includes(anime.mal_id.toString())
+      );
+      const filteredDoneWatchingList = memoizedCombinedAnimeList.filter(
+        (anime) => doneWatchingIds.includes(anime.mal_id.toString())
+      );
+
+      setWatchlist(filteredWatchlist);
+      setDoneWatchingList(filteredDoneWatchingList);
     }
     setLoading(false);
-  };
+  }
+}, 300);
 
+useEffect(() => {
   fetchLists();
-}, [user, combinedAnimeList]);
+}, [user, memoizedCombinedAnimeList]);
 
   const handleRemove = async (id: number) => {
     if (user) {
