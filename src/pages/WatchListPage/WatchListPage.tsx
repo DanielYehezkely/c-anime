@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-
-import { Container, Typography } from "@mui/material";
-
 import { useFirebase } from "../../context/FirebaseContext/FirebaseContext";
-
-import { a11yProps, AnimeList, WatchlistTabPanel, WatchlistTabs } from "./components";
+import {
+  a11yProps,
+  AnimeList,
+  WatchlistTabPanel,
+  WatchlistTabs,
+} from "./components";
 import { Loader } from "../../components";
+import { StyledContainer, StyledTypography } from "./WatchListPage.styles"; // Import your styled components
 
 const WatchListPage: React.FC = () => {
   const {
@@ -24,10 +26,10 @@ const WatchListPage: React.FC = () => {
   return (
     <>
       {loading && <Loader actionLabel="Loading Your Watchlist ..." />}
-      <Container sx={{ paddingTop: "10rem" }}>
-        <Typography variant="h4" gutterBottom sx={{ color: "white" }}>
+      <StyledContainer>
+        <StyledTypography variant="h4" gutterBottom>
           My Anime Lists
-        </Typography>
+        </StyledTypography>
         <WatchlistTabs
           value={value}
           handleChange={handleChange}
@@ -49,7 +51,7 @@ const WatchListPage: React.FC = () => {
             handleRemove={handleRemove}
           />
         </WatchlistTabPanel>
-      </Container>
+      </StyledContainer>
     </>
   );
 };
