@@ -21,10 +21,11 @@ import {
   arrayUnion,
   arrayRemove,
 } from "firebase/firestore";
-import { Box } from "@mui/material";
+import { Box, Snackbar, Alert } from "@mui/material";
 import { useDebounce } from "../../../../hooks/useDebounce";
 import { useFirebase } from "../../../../context/FirebaseContext/FirebaseContext";
 import { SingleAnimeActionBtnsProps } from "./SingleAnimeActionBtns.types";
+
 
 
 const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
@@ -40,6 +41,8 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
   const { user } = useAuth();
   const [isLikedClicked, setIsLikedClicked] = useState(false);
   const [isDislikedClicked, setIsDislikedClicked] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   useEffect(() => {
     const fetchLikeCount = async () => {
@@ -104,6 +107,8 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
   const handleAddToWatchlist = async () => {
     if (!user) return;
     await addToWatchlist(String(anime.mal_id));
+    setSnackbarMessage("Added to watchlist successfully!");
+    setSnackbarOpen(true);
   };
 
   return (
@@ -150,6 +155,19 @@ const SingleAnimeActionBtns: React.FC<SingleAnimeActionBtnsProps> = ({
           Add to Watchlist
         </WatchlistButton>
       </ActionButtonsContainer>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <Alert
+          onClose={() => setSnackbarOpen(false)}
+          severity="success"
+          sx={{ width: "100%",fontSize: "2rem"}}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 };
