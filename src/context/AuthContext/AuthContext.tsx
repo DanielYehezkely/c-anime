@@ -43,10 +43,8 @@ export const AuthProvider: React.FC<ContextProviderProp> = ({ children }) => {
   }, []);
 
 const createUserDocument = async (user: User) => {
-  console.log(`Creating user document for user: ${user.uid}`);
   const userRef = doc(db, "users", user.uid);
   const docSnap = await getDoc(userRef);
-  console.log(`Read user document for user: ${user.uid}`);
   if (!docSnap.exists()) {
     const displayName = user.displayName
       ? user.displayName
@@ -59,7 +57,6 @@ const createUserDocument = async (user: User) => {
       likedAnimes: [],
       dislikedAnimes: [],
     });
-    console.log(`Created user document for user: ${user.uid}`);
   }
 };
 
@@ -155,7 +152,7 @@ const addComment = async (animeId: string, comment: string) => {
   if (!user) return;
   const commentsRef = doc(db, "comments", animeId);
   const newComment = {
-    id: `${user.uid}-${Timestamp.now().seconds}`, // Create a unique ID for each comment
+    id: `${user.uid}-${Timestamp.now().seconds}`, 
     userId: user.uid,
     comment,
     timestamp: new Date(),

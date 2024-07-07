@@ -56,10 +56,8 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const fetchLists = useDebounce(async () => {
     if (user) {
-      console.log(`Fetching lists for user: ${user.uid}`);
       const userRef = doc(db, "users", user.uid);
       const userDoc = await getDoc(userRef);
-      console.log(`Read user document for user: ${user.uid}`);
       if (userDoc.exists()) {
         const userData = userDoc.data();
         const watchlistIds = userData.watchlist || [];
@@ -71,10 +69,8 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({
         const filteredDoneWatchingList = memoizedCombinedAnimeList.filter(
           (anime) => doneWatchingIds.includes(anime.mal_id.toString())
         );
-
         setWatchlist(filteredWatchlist);
         setDoneWatchingList(filteredDoneWatchingList);
-        console.log(`Set watchlist and doneWatchingList for user: ${user.uid}`);
       }
       setLoading(false);
     }
@@ -86,7 +82,6 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const fetchUserAvatars = useCallback(
     async (comments: any[]) => {
-      console.log(`Fetching user avatars for comments`);
       const avatars: { [key: string]: string } = { ...userAvatars };
       const userIdsToFetch = comments
         .map((comment) => comment.userId)
@@ -101,7 +96,6 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({
         usersSnapshot.forEach((userDoc) => {
           const userData = userDoc.data();
           avatars[userDoc.id] = userData.photoURL || "";
-          console.log(`Read user document for user: ${userDoc.id}`);
         });
       }
 

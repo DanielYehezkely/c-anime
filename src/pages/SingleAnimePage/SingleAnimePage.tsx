@@ -41,7 +41,6 @@ const SingleAnimePage: React.FC = () => {
 
 useEffect(() => {
   const fetchLikeCount = async () => {
-    console.log(`Fetching like count for animeId: ${animeId}`);
     const usersCollection = collection(db, "users");
     const usersSnapshot = await getDocs(usersCollection);
     let count = 0;
@@ -52,7 +51,6 @@ useEffect(() => {
       }
     });
     setLikeCount(count);
-    console.log(`Fetched like count: ${count} for animeId: ${animeId}`);
   };
   fetchLikeCount();
 }, [animeId]);
