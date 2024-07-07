@@ -5,8 +5,8 @@ export const StyledTabs = styled(Tabs)`
   & .MuiTab-root {
     color: white;
   }
-  & .css-bjr47-MuiButtonBase-root-MuiTab-root.Mui-selected {
-    color: #ffffe0;
+  & .MuiTab-root.Mui-selected {
+    color: #ffffe0 !important;
     font-size: 1.6rem;
     font-weight: bold;
     border-top-left-radius: 0.5rem;
