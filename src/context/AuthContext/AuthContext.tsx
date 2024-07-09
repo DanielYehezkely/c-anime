@@ -10,11 +10,7 @@ import {
 import {
   doc,
   setDoc,
-  updateDoc,
-  arrayUnion,
-  arrayRemove,
   getDoc,
-  Timestamp,
 } from "firebase/firestore";
 import { auth, db } from "../../config/firebaseConfig";
 import { AUTH_PROVIDER_ERR_MSG } from "../../constants/globalConstants";
@@ -148,64 +144,6 @@ const createUserDocument = async (user: User) => {
      }
    };
 
-const addComment = async (animeId: string, comment: string) => {
-  if (!user) return;
-  const commentsRef = doc(db, "comments", animeId);
-  const newComment = {
-    id: `${user.uid}-${Timestamp.now().seconds}`, 
-    userId: user.uid,
-    comment,
-    timestamp: new Date(),
-  };
-
-  const commentsDoc = await getDoc(commentsRef);
-  if (commentsDoc.exists()) {
-    await updateDoc(commentsRef, {
-      comments: arrayUnion(newComment),
-    });
-  } else {
-    await setDoc(commentsRef, {
-      comments: [newComment],
-    });
-  }
-};
-
-const editComment = async (
-  animeId: string,
-  commentId: string,
-  updatedComment: string
-) => {
-  if (!user) return;
-  const commentsRef = doc(db, "comments", animeId);
-  const commentsDoc = await getDoc(commentsRef);
-  if (commentsDoc.exists()) {
-    const comments = commentsDoc.data().comments;
-    const commentIndex = comments.findIndex(
-      (c: any) => c.id === commentId && c.userId === user.uid
-    );
-    if (commentIndex > -1) {
-      comments[commentIndex].comment = updatedComment;
-      comments[commentIndex].timestamp = new Date();
-      await updateDoc(commentsRef, { comments });
-    }
-  }
-};
-
-  const deleteComment = async (animeId: string, commentId: string) => {
-    if (!user) return;
-    const commentsRef = doc(db, "comments", animeId);
-    const commentsDoc = await getDoc(commentsRef);
-    if (commentsDoc.exists()) {
-      const comments = commentsDoc.data().comments;
-      const commentToRemove = comments.find((c: any) => c.id === commentId);
-      if (commentToRemove) {
-        await updateDoc(commentsRef, {
-          comments: arrayRemove(commentToRemove),
-        });
-      }
-    }
-  };
-
 
   const fetchUserLikedDislikedAnimes = async (userId: string) => {
     const userRef = doc(db, "users", userId);
@@ -231,9 +169,6 @@ const editComment = async (
         logout,
         loading,
         error,
-        deleteComment,
-        addComment,
-        editComment,
         fetchUserLikedDislikedAnimes,
       }}
     >

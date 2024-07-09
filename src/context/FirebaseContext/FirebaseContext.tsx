@@ -104,7 +104,7 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({
     [userAvatars]
   );
 
-  const handleRemove = async (id: number) => {
+  const handleRemoveFromWatchlist = async (id: number) => {
     if (user) {
       const userRef = doc(db, "users", user.uid);
       await updateDoc(userRef, {
@@ -135,27 +135,27 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-const addToWatchlist = async (animeId: string) => {
-  if (user) {
-    const userRef = doc(db, "users", user.uid);
-    await updateDoc(userRef, {
-      watchlist: arrayUnion(animeId),
-    });
-
-    const animeToAdd = combinedAnimeList.find(
-      (anime) => anime.mal_id.toString() === animeId
-    );
-
-    if (animeToAdd) {
-      setWatchlist((prev) => {
-        if (prev.some((anime) => anime.mal_id.toString() === animeId)) {
-          return prev;
-        }
-        return [...prev, animeToAdd]; 
+  const addToWatchlist = async (animeId: string) => {
+    if (user) {
+      const userRef = doc(db, "users", user.uid);
+      await updateDoc(userRef, {
+        watchlist: arrayUnion(animeId),
       });
+
+      const animeToAdd = combinedAnimeList.find(
+        (anime) => anime.mal_id.toString() === animeId
+      );
+
+      if (animeToAdd) {
+        setWatchlist((prev) => {
+          if (prev.some((anime) => anime.mal_id.toString() === animeId)) {
+            return prev;
+          }
+          return [...prev, animeToAdd];
+        });
+      }
     }
-  }
-};
+  };
 
   const fetchComments = async (animeId: string) => {
     const commentsRef = doc(db, "comments", animeId);
@@ -225,7 +225,7 @@ const addToWatchlist = async (animeId: string) => {
         watchlist,
         doneWatchingList,
         loading,
-        handleRemove,
+        handleRemoveFromWatchlist,
         handleDoneWatching,
         addToWatchlist,
         fetchComments,

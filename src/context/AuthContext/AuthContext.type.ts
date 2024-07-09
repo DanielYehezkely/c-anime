@@ -14,13 +14,6 @@ export interface AuthContextProps {
     callback: () => void
   ) => Promise<void>;
   logout: (callback: () => void) => Promise<void>;
-  addComment: (animeTitle: string, comment: string) => Promise<void>;
-  editComment: (
-    animeId: string,
-    commentId: string,
-    updatedComment: string
-  ) => Promise<void>;
-  deleteComment: (animeId: string, commentId: string) => Promise<void>;
   fetchUserLikedDislikedAnimes: (userId: string) => Promise<{
     likedAnimes: string[];
     dislikedAnimes: string[];

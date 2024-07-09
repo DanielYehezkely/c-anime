@@ -3,19 +3,17 @@ import { Grid, Typography } from "@mui/material";
 import { CarouselAnimeCard } from "../../../../components";
 import { Anime } from "../../../../types/Anime";
 
-
-
 interface AnimeListProps {
   animeList: Anime[];
   emptyMessage: string;
-  handleRemove: (id: number) => void;
+  handleRemoveFromWatchlist: (id: number) => void;
   handleDoneWatching: (id: number) => void;
 }
 
 const AnimeList: React.FC<AnimeListProps> = ({
   animeList,
   emptyMessage,
-  handleRemove,
+  handleRemoveFromWatchlist,
   handleDoneWatching,
 }) => {
   if (animeList.length === 0) {
@@ -32,7 +30,7 @@ const AnimeList: React.FC<AnimeListProps> = ({
         <Grid item key={anime.mal_id} xs={12} sm={6} md={4}>
           <CarouselAnimeCard
             anime={anime}
-            onRemove={handleRemove}
+            onRemove={handleRemoveFromWatchlist}
             onDoneWatching={handleDoneWatching}
           />
         </Grid>

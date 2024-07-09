@@ -1,15 +1,13 @@
 import { Anime } from "../../types/Anime";
 import { Comment } from "../../types/Comment";
 
-
-
 export interface FirebaseContextProps {
   watchlist: Anime[];
   comments: Comment[];
   doneWatchingList: Anime[];
   loading: boolean;
   userAvatars: { [key: string]: string };
-  handleRemove: (id: number) => Promise<void>;
+  handleRemoveFromWatchlist: (id: number) => Promise<void>;
   handleDoneWatching: (id: number) => Promise<void>;
   addToWatchlist: (animeId: string) => Promise<void>;
   fetchComments: (animeId: string) => Promise<void>;

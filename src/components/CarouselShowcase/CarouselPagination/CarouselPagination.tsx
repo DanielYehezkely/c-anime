@@ -48,7 +48,6 @@ const CarouselPagination: React.FC<CarouselPaginationProps> = ({
         disabledClassName={"disabled"}
         onPageChange={onPageChange}
         forcePage={currentPage}
-        
       />
       }
     </Box>

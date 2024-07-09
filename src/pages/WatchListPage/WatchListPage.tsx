@@ -14,7 +14,7 @@ const WatchListPage: React.FC = () => {
     watchlist,
     doneWatchingList,
     loading,
-    handleRemove,
+    handleRemoveFromWatchlist,
     handleDoneWatching,
   } = useFirebase();
   const [value, setValue] = useState(0);
@@ -40,7 +40,7 @@ const WatchListPage: React.FC = () => {
             animeList={watchlist}
             emptyMessage="Your Watchlist is Empty"
             handleDoneWatching={handleDoneWatching}
-            handleRemove={handleRemove}
+            handleRemoveFromWatchlist={handleRemoveFromWatchlist}
           />
         </WatchlistTabPanel>
         <WatchlistTabPanel value={value} index={1}>
@@ -48,7 +48,7 @@ const WatchListPage: React.FC = () => {
             animeList={doneWatchingList}
             emptyMessage="Your Done Watchinglist is Empty"
             handleDoneWatching={handleDoneWatching}
-            handleRemove={handleRemove}
+            handleRemoveFromWatchlist={handleRemoveFromWatchlist}
           />
         </WatchlistTabPanel>
       </StyledContainer>
