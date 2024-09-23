@@ -157,7 +157,7 @@ The application requires a `.env` file to store environment-specific configurati
    - Add comprehensive analytics and reporting features to provide insights into user activities and preferences.
 
 4. **Admin Panel**:
-   - Implement an admin panel for managing user data, comments, and anime listings.
+   - Implement an admin panel for managing user data, comments, and anime listings !.
 
 ## Links
 
